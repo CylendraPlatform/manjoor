@@ -26,6 +26,7 @@ describe("public catalog visibility", () => {
 
   it("hides regulated names even when approved", () => {
     expect(isRegulatedText("أركيلة خشب")).toBe(true);
+    expect(isRegulatedText("بكار أراكيل خشبي")).toBe(true);
     expect(toPublicProduct(row({ name: "أركيلة خشب" }), categories)).toBeNull();
   });
 

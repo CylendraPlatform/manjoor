@@ -2,7 +2,7 @@ import { db } from "@/integrations/supabase/db";
 import { getErrorMessage } from "@/lib/utils";
 import { OFFERING_DIRECTIONS, type OfferingDirection } from "@/content/offerings";
 
-const REGULATED = /أركيل|اركيل|شيش|نرجيل|hookah|shisha|tobacco|تبغ|معسل/i;
+const REGULATED = /أراكيل|أركيل|اركيل|شيش|نرجيل|hookah|shisha|tobacco|تبغ|معسل/i;
 
 export interface PublicProduct {
   id: string;

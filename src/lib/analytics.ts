@@ -19,6 +19,7 @@ export type AnalyticsEvent =
   | "custom_order_request"
   | "concept_gallery_view"
   | "concept_inquiry_click"
+  | "hero_cta_click"
   | "lead_qualified"
   | "lead_won";
 
