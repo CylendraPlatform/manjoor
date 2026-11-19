@@ -10,20 +10,13 @@ interface Props extends WhatsAppContext {
 }
 
 /**
- * Context-aware WhatsApp call-to-action. Renders disabled guidance when no
- * approved business number is configured (never invents one). A click is an
- * intent signal, tracked as `whatsapp_click` — NOT a confirmed lead.
+ * Context-aware WhatsApp call-to-action.
+ * Hidden entirely when no approved business number is configured (never invents one).
+ * A click is an intent signal, tracked as `whatsapp_click` — NOT a confirmed lead.
  */
 export default function WhatsAppCta({ className, label = "تواصل عبر واتساب", variant = "solid", topic, productName, productRef, quantity }: Props) {
   const url = buildWhatsAppUrl({ topic, productName, productRef, quantity });
-
-  if (!url) {
-    return (
-      <span className={cn("inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm text-muted-foreground border border-dashed border-border", className)} title="رقم واتساب الرسمي لم يُضف بعد">
-        <MessageCircle size={18} /> واتساب (قيد التهيئة)
-      </span>
-    );
-  }
+  if (!url) return null;
 
   return (
     <a
@@ -32,7 +25,7 @@ export default function WhatsAppCta({ className, label = "تواصل عبر وا
       rel="noreferrer"
       onClick={() => trackEvent("whatsapp_click", { topic: topic ?? "general" })}
       className={cn(
-        "inline-flex items-center gap-2 rounded-full px-5 py-3 font-bold transition-transform hover:scale-[1.03]",
+        "inline-flex items-center gap-2 rounded-full px-5 py-3 font-bold transition-transform hover:scale-[1.03] motion-reduce:transform-none",
         variant === "solid" ? "bg-[#25D366] text-white shadow-lg" : "border border-[#25D366] text-[#128C7E]",
         className,
       )}

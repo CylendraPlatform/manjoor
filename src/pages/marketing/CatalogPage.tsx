@@ -65,7 +65,12 @@ export default function CatalogPage() {
         {catalog.isLoading && <p className="mt-8">جارٍ التحميل…</p>}
         {catalog.data?.state === "unavailable" && <p className="mt-8" role="alert">الكتالوج غير متاح حالياً: {catalog.data.message}</p>}
         {catalog.data && catalog.data.state !== "unavailable" && products.length === 0 && (
-          <p className="mt-8 rounded-2xl bg-white p-6 leading-7">{catalog.data.message || "لا توجد منتجات مطابقة ضمن المعتمد للعرض."}</p>
+          <div className="mt-8 rounded-2xl bg-white p-6 leading-7">
+            <p>{catalog.data.message || "لا توجد منتجات مطابقة ضمن المعتمد للعرض."}</p>
+            <Link to="/custom-orders" className="mt-3 inline-block font-bold text-manjoor-walnut underline-offset-4 hover:underline">
+              استعرض أفكار التصنيع حسب الطلب
+            </Link>
+          </div>
         )}
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (

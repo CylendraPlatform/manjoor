@@ -12,6 +12,11 @@ export interface WhatsAppContext {
   topic?: "wholesale" | "custom" | "product" | "general";
 }
 
+/** False until brand.contact.whatsapp is an approved number. Never invent one. */
+export function isWhatsAppConfigured(): boolean {
+  return toWaNumber(brand.contact.whatsapp).length > 0;
+}
+
 export function buildWhatsAppMessage(ctx: WhatsAppContext = {}): string {
   const lines: string[] = ["مرحباً منجور،"];
   if (ctx.topic === "wholesale") {

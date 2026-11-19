@@ -89,6 +89,19 @@
     @apply transition-transform duration-200 hover:scale-105;
   }
 
+  .card-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-md;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-lift {
+      transition: none;
+    }
+    .card-lift:hover {
+      transform: none;
+    }
+  }
+
   @keyframes fly-to-cart {
     0% {
       transform: translate(var(--start-x), var(--start-y)) scale(1.5);

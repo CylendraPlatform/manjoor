@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { ZodError } from "zod";
 import Seo from "@/components/Seo";
 import MarketingShell from "@/components/marketing/MarketingShell";
 import ContactFields from "@/components/marketing/ContactFields";
 import Reveal from "@/components/marketing/Reveal";
-import WhatsAppCta from "@/components/WhatsAppCta";
+import ConceptCard from "@/components/marketing/ConceptCard";
 import {
+  CONCEPT_CROP_NOTE,
   CONCEPT_DISCLAIMER,
+  CONCEPT_GROUPS,
   CONCEPT_LABEL,
   MANUFACTURING_CONCEPTS,
   conceptById,
-  conceptInquiryPath,
 } from "@/content/concepts";
 import { customOrderSchema, emptyContact, LeadSubmissionDisabledError, submitCustomOrder, zodFieldErrors, type ContactDraft } from "@/lib/leads";
 import { claimSubmission, releaseSubmission, submissionKey } from "@/lib/submission-guard";
@@ -38,6 +39,8 @@ export default function CustomOrderPage() {
   useEffect(() => {
     if (!concept) return;
     setSpecifications((current) => current.trim().length > 0 ? current : `طلب دراسة تصنيع مشابه لـ«${concept.title}» (${concept.id}). ${CONCEPT_LABEL}`);
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById("custom-inquiry")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
   }, [concept]);
 
   const onFile = (file: File | undefined) => {
@@ -92,35 +95,27 @@ export default function CustomOrderPage() {
       <div className="container py-10">
         <p className="text-sm font-bold tracking-wide text-manjoor-brass">من فكرتك... نصنع قطعة مميزة</p>
         <h1 className="mt-2 text-3xl font-extrabold text-manjoor-walnut">تصاميم تصورية للتصنيع حسب الطلب</h1>
+        <p className="mt-2 text-sm font-bold text-manjoor-walnut">{CONCEPT_LABEL}</p>
         <p className="mt-3 max-w-3xl leading-8">{CONCEPT_DISCLAIMER}</p>
+        <p className="mt-2 max-w-3xl text-sm leading-7 text-manjoor-charcoal/70">{CONCEPT_CROP_NOTE}</p>
         {concept && (
           <p className="mt-4 rounded-2xl border border-manjoor-brass bg-white p-4" role="status">
-            الفكرة المختارة: <strong>{concept.title}</strong> ({concept.id}). أكمل النموذج أسفل المعرض.
+            الفكرة المختارة: <strong>{concept.title}</strong>. أكمل النموذج أسفل المعرض.
           </p>
         )}
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {MANUFACTURING_CONCEPTS.map((item, index) => (
-            <Reveal key={item.id} delay={index * 30}>
-              <article className="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-sm">
-                <img src={item.image} alt="" className="h-48 w-full object-cover" />
-                <div className="flex flex-1 flex-col p-4">
-                  <p className="text-xs font-bold text-manjoor-brass">{CONCEPT_LABEL}</p>
-                  <h2 className="mt-2 text-lg font-extrabold text-manjoor-walnut">{item.title}</h2>
-                  <p className="mt-2 text-sm leading-6">{item.summary}</p>
-                  <p className="mt-2 text-xs leading-5 text-manjoor-charcoal/70">{item.imageNote}</p>
-                  <Link
-                    to={conceptInquiryPath(item.id)}
-                    className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-manjoor-walnut px-4 py-2 text-center text-sm font-bold text-manjoor-sand"
-                    onClick={() => trackEvent("concept_inquiry_click", { concept_id: item.id })}
-                  >
-                    اطلب تصنيع تصميم مشابه
-                  </Link>
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+        {CONCEPT_GROUPS.map((group) => (
+          <section key={group.id} className="mt-10">
+            <h2 className="text-xl font-extrabold text-manjoor-walnut">{group.title}</h2>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {MANUFACTURING_CONCEPTS.filter((item) => item.group === group.id).map((item, index) => (
+                <Reveal key={item.id} delay={index * 30}>
+                  <ConceptCard item={item} />
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        ))}
 
         <form id="custom-inquiry" className="mx-auto mt-12 max-w-3xl space-y-4 rounded-3xl bg-white p-6" onSubmit={submit} noValidate>
           <h2 className="text-2xl font-extrabold text-manjoor-walnut">طلب دراسة تصنيع</h2>
@@ -153,7 +148,6 @@ export default function CustomOrderPage() {
           {status === "error" && <p role="alert">{errors.form}</p>}
           {status === "saved" && <p role="status">وصل الاستفسار برقم {reference}. ليس التزاماً بالتصنيع.</p>}
         </form>
-        <div className="mt-6"><WhatsAppCta topic="custom" label="واتساب للتصنيع الخاص" /></div>
       </div>
     </MarketingShell>
   );

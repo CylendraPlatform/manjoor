@@ -9,8 +9,12 @@ Optimized JPEGs in `public/concepts/` from the ZIP, labeled conceptual:
 - `vases-ornaments.jpg` from `02-decorative-vases-and-ornaments.png`
 - `lamp-bases.jpg` from `03-lamp-bases.png`
 - `furniture-components.jpg` from `05-furniture-components-and-finials.png`
+- `hero-woodturning.jpg` — homepage hero, same candlestick illustration, labeled conceptual
+- `crops/*.jpg` — detail crops of the collection files. Crops emphasize a form; they are not independent SKU photographs.
 
 Not published: `04` (generated logo lockup), `06` (generated hero with invented branding), `07` and `08` (generated homepage mockups).
+
+Cards use the short badge `تصميم تصوري`. The full disclaimer appears once on the gallery and once on the homepage closing block.
 
 ## Workshop approval
 The ZIP says each idea must be maker-approved before presenting as orderable. This gallery presents them as **study requests**, not as confirmed capacity. If the workshop later rejects an idea, remove that card from `MANUFACTURING_CONCEPTS`.

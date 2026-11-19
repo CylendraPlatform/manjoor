@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildWhatsAppMessage, buildWhatsAppUrl, toWaNumber } from "./whatsapp";
+import { buildWhatsAppMessage, buildWhatsAppUrl, isWhatsAppConfigured, toWaNumber } from "./whatsapp";
 
 describe("WhatsApp link builder", () => {
   it("builds a product-context message with quantity", () => {
@@ -15,6 +15,7 @@ describe("WhatsApp link builder", () => {
   });
   it("returns null when no business number is configured (never invents one)", () => {
     // brand.contact.whatsapp is an empty placeholder by default.
+    expect(isWhatsAppConfigured()).toBe(false);
     expect(buildWhatsAppUrl({ topic: "general" })).toBeNull();
   });
 });

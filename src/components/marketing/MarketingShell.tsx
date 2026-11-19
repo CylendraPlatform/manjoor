@@ -6,6 +6,7 @@ import { useQuoteStore } from "@/lib/quote-store";
 import { captureAttribution, trackEvent } from "@/lib/analytics";
 import BrandMark from "@/components/marketing/BrandMark";
 import WhatsAppCta from "@/components/WhatsAppCta";
+import { isWhatsAppConfigured } from "@/lib/whatsapp";
 
 const LINKS = [
   { href: "/products", label: "المنتجات" },
@@ -77,9 +78,11 @@ export default function MarketingShell({ children }: { children: ReactNode }) {
           </p>
         </div>
       </footer>
-      <div className="fixed bottom-4 left-4 z-40">
-        <WhatsAppCta label="واتساب" />
-      </div>
+      {isWhatsAppConfigured() && (
+        <div className="fixed bottom-4 left-4 z-40">
+          <WhatsAppCta label="واتساب" />
+        </div>
+      )}
     </div>
   );
 }
