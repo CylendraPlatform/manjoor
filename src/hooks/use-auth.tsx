@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Tables } from "@/integrations/supabase/types";
+import type { User } from "@supabase/supabase-js";
+import type { Profile as ProfileRow } from "@/integrations/supabase/overrides";
 
-export type Profile = Tables<"profiles">;
+export type Profile = ProfileRow;
 
 export function useAuth() {
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -43,7 +44,7 @@ export function useAuth() {
                 .single();
 
             if (error) throw error;
-            setProfile(data);
+            setProfile(data as Profile);
         } catch (error) {
             console.error("Error fetching profile:", error);
         } finally {

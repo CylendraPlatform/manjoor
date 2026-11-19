@@ -199,7 +199,7 @@ const ProductDetail = () => {
               )}
 
               {/* Loyalty Points Info */}
-              {(product as any).loyalty_points_enabled !== false && !isOutOfStock && (
+              {(product as { loyalty_points_enabled?: boolean | null }).loyalty_points_enabled !== false && !isOutOfStock && (
                 <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-between shadow-sm">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-md">

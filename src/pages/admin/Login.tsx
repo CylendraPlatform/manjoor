@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/utils";
 
 export default function AdminLogin() {
     const [email, setEmail] = useState("");
@@ -39,8 +40,8 @@ export default function AdminLogin() {
 
             toast.success("تم تسجيل الدخول بنجاح");
             navigate("/admin");
-        } catch (error: any) {
-            toast.error(error.message || "حدث خطأ أثناء تسجيل الدخول");
+        } catch (error) {
+            toast.error(getErrorMessage(error));
         } finally {
             setLoading(false);
         }

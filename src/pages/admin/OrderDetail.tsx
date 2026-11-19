@@ -10,6 +10,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { ArrowRight, Phone, MapPin, ClipboardList, Info, Printer, MessageCircle, Truck, Eye, Edit } from "lucide-react";
+import type { Order } from "@/integrations/supabase/overrides";
+import { db } from "@/integrations/supabase/db";
+
+interface OrderItemRow {
+    id: string;
+    product_id: string | null;
+    product_name: string | null;
+    price: number;
+    quantity: number;
+    products: { slug: string } | null;
+}
+
+type OrderDetailData = Order & {
+    governorates: { name: string } | null;
+    order_items: OrderItemRow[];
+    subtotal: number | null;
+    delivery_cost: number | null;
+    discount: number | null;
+    notes: string | null;
+};
 
 
 const statusMap: Record<string, { label: string, color: string }> = {
@@ -44,7 +64,9 @@ export default function AdminOrderDetail() {
                 .single();
 
             if (error) throw error;
-            return data;
+            // The embedded select mixes relations and columns absent from the
+            // stale generated types; cast to the explicit contract.
+            return data as unknown as OrderDetailData;
         }
     });
 
@@ -62,9 +84,9 @@ export default function AdminOrderDetail() {
 
     const updateAgent = useMutation({
         mutationFn: async (agentId: string | null) => {
-            const { error } = await supabase
+            const { error } = await db
                 .from("orders")
-                .update({ agent_id: agentId } as any)
+                .update({ agent_id: agentId })
                 .eq("id", id);
             if (error) throw error;
         },
@@ -92,9 +114,9 @@ export default function AdminOrderDetail() {
 
     const updateNotes = useMutation({
         mutationFn: async (notes: string) => {
-            const { error } = await supabase
+            const { error } = await db
                 .from("orders")
-                .update({ admin_notes: notes } as any)
+                .update({ admin_notes: notes })
                 .eq("id", id);
             if (error) throw error;
         },
@@ -198,7 +220,7 @@ export default function AdminOrderDetail() {
                         </tr>
                     </thead>
                     <tbody>
-                        {order.order_items.map((item: any) => (
+                        {order.order_items.map((item: OrderItemRow) => (
                             <tr key={item.id}>
                                 <td className="border p-2">{item.product_name}</td>
                                 <td className="border p-2 text-center">{formatPrice(item.price)}</td>
@@ -222,16 +244,16 @@ export default function AdminOrderDetail() {
                                 <td className="border p-2 text-left text-green-600">-{formatPrice(order.discount)}</td>
                             </tr>
                         )}
-                        {(order as any).points_discount > 0 && (
+                        {order.points_discount > 0 && (
                             <tr>
-                                <td colSpan={3} className="border p-2 text-left font-bold text-amber-600">خصم النقاط ({(order as any).points_spent} نقطة)</td>
-                                <td className="border p-2 text-left text-amber-600">-{formatPrice((order as any).points_discount)}</td>
+                                <td colSpan={3} className="border p-2 text-left font-bold text-amber-600">خصم النقاط ({order.points_spent} نقطة)</td>
+                                <td className="border p-2 text-left text-amber-600">-{formatPrice(order.points_discount)}</td>
                             </tr>
                         )}
-                        {(order as any).points_earned > 0 && (
+                        {order.points_earned > 0 && (
                             <tr>
                                 <td colSpan={3} className="border p-2 text-left font-bold text-blue-600 italic">النقاط المكتسبة من الطلب</td>
-                                <td className="border p-2 text-left text-blue-600 italic">+{(order as any).points_earned} نقطة</td>
+                                <td className="border p-2 text-left text-blue-600 italic">+{order.points_earned} نقطة</td>
                             </tr>
                         )}
                         <tr className="bg-muted/50 font-bold">
@@ -259,7 +281,7 @@ export default function AdminOrderDetail() {
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="divide-y divide-border">
-                                {order.order_items.map((item: any) => (
+                                {order.order_items.map((item: OrderItemRow) => (
                                     <div key={item.id} className="p-4 flex justify-between items-center">
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2 group">
@@ -310,16 +332,16 @@ export default function AdminOrderDetail() {
                                         <span>-{formatPrice(order.discount)}</span>
                                     </div>
                                 )}
-                                {(order as any).points_discount > 0 && (
+                                {order.points_discount > 0 && (
                                     <div className="flex justify-between text-sm text-amber-600 font-bold">
-                                        <span>خصم النقاط ({(order as any).points_spent} نقطة)</span>
-                                        <span>-{formatPrice((order as any).points_discount)}</span>
+                                        <span>خصم النقاط ({order.points_spent} نقطة)</span>
+                                        <span>-{formatPrice(order.points_discount)}</span>
                                     </div>
                                 )}
-                                {(order as any).points_earned > 0 && (
+                                {order.points_earned > 0 && (
                                     <div className="flex justify-between text-sm text-blue-600 italic">
                                         <span>النقاط المكتسبة من الطلب</span>
-                                        <span>+{(order as any).points_earned} نقطة</span>
+                                        <span>+{order.points_earned} نقطة</span>
                                     </div>
                                 )}
                                 <Separator className="my-2" />
@@ -452,7 +474,7 @@ export default function AdminOrderDetail() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <Select
-                                value={(order as any).agent_id || "unassigned"}
+                                value={order.agent_id || "unassigned"}
                                 onValueChange={(val) => updateAgent.mutate(val === "unassigned" ? null : val)}
                             >
                                 <SelectTrigger>
@@ -545,7 +567,7 @@ export default function AdminOrderDetail() {
                             <textarea
                                 className="w-full min-h-[100px] p-2 text-sm border rounded bg-background"
                                 placeholder="أضف ملاحظات داخلية هنا..."
-                                defaultValue={(order as any).admin_notes || ""}
+                                defaultValue={order.admin_notes || ""}
                                 onBlur={(e) => updateNotes.mutate(e.target.value)}
                             />
                             <p className="text-[10px] text-muted-foreground">يتم الحفظ تلقائياً عند الابتعاد عن الحقل</p>

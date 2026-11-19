@@ -149,7 +149,7 @@ export default function AdminInventory() {
                                         <div className="font-medium">{product.name}</div>
                                         <div className="text-xs text-muted-foreground">{product.slug}</div>
                                     </TableCell>
-                                    <TableCell>{(product.categories as any)?.name}</TableCell>
+                                    <TableCell>{(product.categories as { name: string } | null)?.name}</TableCell>
                                     <TableCell className="text-center font-bold text-primary">
                                         {product.sold_count || 0}
                                     </TableCell>

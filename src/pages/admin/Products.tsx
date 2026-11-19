@@ -99,7 +99,7 @@ export default function AdminProducts() {
                                         <div className="font-medium">{product.name}</div>
                                     </div>
                                 </TableCell>
-                                <TableCell>{(product.categories as any)?.name}</TableCell>
+                                <TableCell>{(product.categories as { name: string } | null)?.name}</TableCell>
                                 <TableCell>
                                     {product.discount_price ? (
                                         <div className="flex flex-col">

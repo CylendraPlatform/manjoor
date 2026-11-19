@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { ArrowRight, Save, Upload, X } from "lucide-react";
+import type { Product } from "@/integrations/supabase/overrides";
+import { getErrorMessage } from "@/lib/utils";
 
 export default function AdminProductForm() {
     const { id } = useParams();
@@ -51,7 +53,7 @@ export default function AdminProductForm() {
         queryFn: async () => {
             if (!id) return null;
             const { data } = await supabase.from("products").select("*").eq("id", id).single();
-            return data;
+            return data as Product | null;
         },
         enabled: isEdit,
     });
@@ -66,14 +68,14 @@ export default function AdminProductForm() {
                 discount_price: product.discount_price?.toString() || "",
                 category_id: product.category_id || "",
                 stock: product.stock?.toString() || "0",
-                purchase_price: (product as any).purchase_price?.toString() || "0",
-                low_stock_threshold: (product as any).low_stock_threshold?.toString() || "5",
-                is_active: (product as any).is_active ?? true,
-                is_featured: (product as any).is_featured ?? false,
-                is_new: (product as any).is_new ?? false,
-                is_best_seller: (product as any).is_best_seller ?? false,
-                offer_ends_at: (product as any).offer_ends_at ? new Date((product as any).offer_ends_at).toISOString().slice(0, 16) : "",
-                loyalty_points_enabled: (product as any).loyalty_points_enabled ?? true,
+                purchase_price: product.purchase_price?.toString() || "0",
+                low_stock_threshold: product.low_stock_threshold?.toString() || "5",
+                is_active: product.is_active ?? true,
+                is_featured: product.is_featured ?? false,
+                is_new: product.is_new ?? false,
+                is_best_seller: product.is_best_seller ?? false,
+                offer_ends_at: product.offer_ends_at ? new Date(product.offer_ends_at).toISOString().slice(0, 16) : "",
+                loyalty_points_enabled: product.loyalty_points_enabled ?? true,
             });
             setImages(product.images || []);
         }
@@ -117,8 +119,8 @@ export default function AdminProductForm() {
 
             setImages(prev => [...prev, publicUrl]);
             toast.success("تم رفع الصورة بنجاح");
-        } catch (error: any) {
-            toast.error(error.message || "خطأ أثناء الرفع");
+        } catch (error) {
+            toast.error(getErrorMessage(error));
         } finally {
             setLoading(false);
         }
@@ -164,8 +166,8 @@ export default function AdminProductForm() {
             toast.success(isEdit ? "تم تحديث المنتج" : "تمت إضافة المنتج");
             queryClient.invalidateQueries({ queryKey: ["admin-products"] });
             navigate("/admin/products");
-        } catch (error: any) {
-            toast.error(error.message || "حدث خطأ");
+        } catch (error) {
+            toast.error(getErrorMessage(error));
         } finally {
             setLoading(false);
         }

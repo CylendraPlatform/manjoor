@@ -117,8 +117,8 @@ export default function AdminUsers() {
                                 <TableCell>
                                     <div className="flex items-center gap-2">
                                         <Coins size={16} className="text-amber-500" />
-                                        <span className="font-bold">{(user as any).points || 0}</span>
-                                        <span className="text-[10px] text-muted-foreground">({formatPrice(((user as any).points || 0) * 10)})</span>
+                                        <span className="font-bold">{(user as { points?: number | null }).points || 0}</span>
+                                        <span className="text-[10px] text-muted-foreground">({formatPrice(((user as { points?: number | null }).points || 0) * 10)})</span>
                                     </div>
                                 </TableCell>
                                 <TableCell className="text-xs">

@@ -135,7 +135,7 @@ export default function AdminOrders() {
             `${o.area || ''} - ${o.nearest_landmark || ''}`,
             o.total,
             o.notes || '',
-            (o.delivery_companies as any)?.name || 'غير محدد'
+            (o.delivery_companies as { name: string } | null)?.name || 'غير محدد'
         ]);
 
         // Add BOM for Excel compatibility (UTF-8)

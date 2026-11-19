@@ -8,6 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Save, RefreshCcw, Coins, Settings2, Info } from "lucide-react";
+import { db } from "@/integrations/supabase/db";
+import type { LoyaltySettings } from "@/integrations/supabase/overrides";
+import { getErrorMessage } from "@/lib/utils";
 
 export default function AdminLoyalty() {
     const queryClient = useQueryClient();
@@ -16,28 +19,29 @@ export default function AdminLoyalty() {
     const { data: settings, isLoading } = useQuery({
         queryKey: ["admin-loyalty-settings"],
         queryFn: async () => {
-            const { data, error } = await (supabase as any)
+            const { data, error } = await db
                 .from("loyalty_settings")
                 .select("*")
                 .single();
             if (error) throw error;
-            return data as any;
+            return data as LoyaltySettings;
         }
     });
 
     const updateMutation = useMutation({
-        mutationFn: async (payload: any) => {
-            const { error } = await (supabase as any)
+        mutationFn: async (payload: Partial<LoyaltySettings>) => {
+            if (!settings) return;
+            const { error } = await db
                 .from("loyalty_settings")
                 .update(payload)
-                .eq("id", (settings as any).id);
+                .eq("id", settings.id);
             if (error) throw error;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["admin-loyalty-settings"] });
             toast.success("تم تحديث إعدادات الولاء بنجاح");
         },
-        onError: (err: any) => toast.error(err.message || "حدث خطأ أثناء التحديث")
+        onError: (err: unknown) => toast.error(getErrorMessage(err))
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,7 +53,7 @@ export default function AdminLoyalty() {
             dinar_per_point: parseFloat(formData.get("dinar_per_point") as string),
             min_spend_to_redeem: parseFloat(formData.get("min_spend_to_redeem") as string),
             points_expiry_days: parseInt(formData.get("points_expiry_days") as string),
-            is_active: (settings as any).is_active
+            is_active: settings?.is_active
         });
     };
 
@@ -71,7 +75,7 @@ export default function AdminLoyalty() {
                     <Label htmlFor="loyalty-active" className="text-sm font-medium">حالة النظام:</Label>
                     <Switch
                         id="loyalty-active"
-                        checked={(settings as any)?.is_active}
+                        checked={settings?.is_active}
                         onCheckedChange={(val) => updateMutation.mutate({ is_active: val })}
                     />
                 </div>
@@ -95,7 +99,7 @@ export default function AdminLoyalty() {
                                     name="points_per_dinar"
                                     type="number"
                                     step="0.1"
-                                    defaultValue={(settings as any)?.points_per_dinar}
+                                    defaultValue={settings?.points_per_dinar}
                                     dir="ltr"
                                 />
                                 <p className="text-[11px] text-muted-foreground">مثال: إذا وضعت 1، سيحصل الزبون على 25 نقطة عند شراء منتج بقيمة 25,000 د.ع</p>
@@ -105,7 +109,7 @@ export default function AdminLoyalty() {
                                 <Input
                                     name="points_expiry_days"
                                     type="number"
-                                    defaultValue={(settings as any)?.points_expiry_days}
+                                    defaultValue={settings?.points_expiry_days}
                                     dir="ltr"
                                 />
                                 <p className="text-[11px] text-muted-foreground">عدد الأيام قبل أن تنتهي صلاحية النقاط المكتسبة</p>
@@ -129,7 +133,7 @@ export default function AdminLoyalty() {
                                     name="dinar_per_point"
                                     type="number"
                                     step="0.01"
-                                    defaultValue={(settings as any)?.dinar_per_point}
+                                    defaultValue={settings?.dinar_per_point}
                                     dir="ltr"
                                 />
                                 <p className="text-[11px] text-muted-foreground">مثال: إذا وضعت 0.05، فإن الـ 1000 نقطة تساوي 50 دينار خصم</p>
@@ -139,7 +143,7 @@ export default function AdminLoyalty() {
                                 <Input
                                     name="min_spend_to_redeem"
                                     type="number"
-                                    defaultValue={(settings as any)?.min_spend_to_redeem}
+                                    defaultValue={settings?.min_spend_to_redeem}
                                     dir="ltr"
                                 />
                                 <p className="text-[11px] text-muted-foreground">أقل مبلغ للطلب يسمح بعده للزبون باستخدام نقاطه</p>
