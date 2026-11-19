@@ -28,20 +28,6 @@ export default function Profile() {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
 
-    useEffect(() => {
-        if (!authLoading && !user) {
-            navigate("/auth");
-            return;
-        }
-
-        if (profile) {
-            setFullName(profile.full_name || "");
-            setPhone(profile.phone || "");
-            setAddress(profile.address || "");
-            fetchOrders();
-        }
-    }, [user, profile, authLoading, navigate, fetchOrders]);
-
     const fetchOrders = useCallback(async () => {
         try {
             const { data, error } = await supabase
@@ -58,6 +44,20 @@ export default function Profile() {
             setLoading(false);
         }
     }, [user?.id]);
+
+    useEffect(() => {
+        if (!authLoading && !user) {
+            navigate("/auth");
+            return;
+        }
+
+        if (profile) {
+            setFullName(profile.full_name || "");
+            setPhone(profile.phone || "");
+            setAddress(profile.address || "");
+            fetchOrders();
+        }
+    }, [user, profile, authLoading, navigate, fetchOrders]);
 
     const handleUpdateProfile = async (e: React.FormEvent) => {
         e.preventDefault();
