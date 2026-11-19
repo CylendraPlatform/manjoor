@@ -16,6 +16,9 @@ import { toast } from "sonner";
 import { Trash2, Ticket, X, Loader2, MapPin, CheckCircle, Coins } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Badge } from "@/components/ui/badge";
+import { asJsonRecord, asString, asNumber, asBoolean } from "@/lib/json";
+import type { Coupon } from "@/lib/cart-store";
+import type { Product } from "@/integrations/supabase/overrides";
 
 const Checkout = () => {
   const { items, getSubtotal, getDiscountAmount, coupon, applyCoupon, removeCoupon, clearCart, removeItem } = useCartStore();
@@ -46,9 +49,9 @@ const Checkout = () => {
         name: profile.full_name || prev.name,
         phone: profile.phone || prev.phone,
         area: profile.address || prev.area,
-        latitude: (profile as any).latitude || null,
-        longitude: (profile as any).longitude || null,
-        map_url: (profile as any).map_url || null,
+        latitude: profile?.latitude || null,
+        longitude: profile?.longitude || null,
+        map_url: profile?.map_url || null,
       }));
     }
   }, [profile]);
@@ -82,10 +85,10 @@ const Checkout = () => {
   const discount = getDiscountAmount();
 
   // Loyalty Points Calculations
-  const availablePoints = (profile as any)?.points || 0;
+  const availablePoints = profile?.points || 0;
   // Calculate points only for products that have loyalty points enabled
   const earnedPoints = items.reduce((sum, item) => {
-    if ((item.product as any).loyalty_points_enabled !== false) {
+    if ((item.product as Product).loyalty_points_enabled !== false) {
       const price = item.product.discount_price ?? item.product.price;
       return sum + Math.floor((price * item.quantity) / 100);
     }
@@ -158,18 +161,21 @@ const Checkout = () => {
 
       if (error) throw error;
 
-      const couponData = data as any;
-      if (couponData.valid) {
-        applyCoupon({
-          id: couponData.id,
-          code: couponData.code,
-          type: couponData.discount_type,
-          value: couponData.value
-        });
-        toast.success(`تم تطبيق الكوبون - خصم ${couponData.discount_type === 'percentage' ? '%' + couponData.value : formatPrice(couponData.value)}`);
+      const couponData = asJsonRecord(data);
+      if (asBoolean(couponData.valid)) {
+        const discountType = asString(couponData.discount_type) === 'percentage' ? 'percentage' : 'fixed';
+        const value = asNumber(couponData.value);
+        const coupon: Coupon = {
+          id: asString(couponData.id),
+          code: asString(couponData.code),
+          type: discountType,
+          value,
+        };
+        applyCoupon(coupon);
+        toast.success(`تم تطبيق الكوبون - خصم ${discountType === 'percentage' ? '%' + value : formatPrice(value)}`);
         setCouponInput("");
       } else {
-        toast.error(couponData.message || "الكوبون غير صالح");
+        toast.error(asString(couponData.message) || "الكوبون غير صالح");
       }
     } catch (error) {
       console.error(error);
@@ -354,7 +360,7 @@ const Checkout = () => {
                         <SelectValue placeholder="اختر المنطقة" />
                       </SelectTrigger>
                       <SelectContent>
-                        {regions.map((region: any) => (
+                        {regions.map((region) => (
                           <SelectItem key={region.id} value={region.name}>
                             {region.name}
                           </SelectItem>

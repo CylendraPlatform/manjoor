@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import { playNotificationSound } from "@/lib/notifications";
@@ -12,7 +13,7 @@ export function NotificationHub() {
     useEffect(() => {
         if (!user) return;
 
-        const channels: any[] = [];
+        const channels: RealtimeChannel[] = [];
 
         // 1. Admin Notifications Listener
         if (isAdmin) {

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/integrations/supabase/db";
+import type { Category } from "@/integrations/supabase/overrides";
+import { getErrorMessage } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -35,7 +38,7 @@ export default function AdminCategories() {
 
     const saveMutation = useMutation({
         mutationFn: async () => {
-            const payload: any = {
+            const payload = {
                 name,
                 slug,
                 sort_order: parseInt(sortOrder),
@@ -43,10 +46,10 @@ export default function AdminCategories() {
             };
 
             if (editingId) {
-                const { error } = await supabase.from("categories").update(payload).eq("id", editingId);
+                const { error } = await db.from("categories").update(payload).eq("id", editingId);
                 if (error) throw error;
             } else {
-                const { error } = await supabase.from("categories").insert(payload);
+                const { error } = await db.from("categories").insert(payload);
                 if (error) throw error;
             }
         },
@@ -55,7 +58,7 @@ export default function AdminCategories() {
             toast.success(editingId ? "تم التحديث" : "تمت الإضافة");
             resetForm();
         },
-        onError: (err: any) => toast.error(err.message || "حدث خطأ"),
+        onError: (err: unknown) => toast.error(getErrorMessage(err)),
     });
 
     const deleteMutation = useMutation({
@@ -67,7 +70,7 @@ export default function AdminCategories() {
             queryClient.invalidateQueries({ queryKey: ["admin-categories"] });
             toast.success("تم الحذف");
         },
-        onError: (err: any) => toast.error("لا يمكن حذف قسم يحتوي على منتجات أو أقسام فرعية"),
+        onError: () => toast.error("لا يمكن حذف قسم يحتوي على منتجات أو أقسام فرعية"),
     });
 
     const resetForm = () => {
@@ -78,7 +81,7 @@ export default function AdminCategories() {
         setParentId("root");
     };
 
-    const handleEdit = (cat: any) => {
+    const handleEdit = (cat: Category) => {
         setEditingId(cat.id);
         setName(cat.name);
         setSlug(cat.slug);

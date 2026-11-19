@@ -1,7 +1,18 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/integrations/supabase/db";
+import type { Tables } from "@/integrations/supabase/types";
+import { getErrorMessage } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+
+// The generated coupons type is stale: runtime uses `value` + `min_order_amount`
+// (per migration), not `discount_value`.
+type CouponRow = Tables<"coupons"> & {
+    discount_value?: number | null;
+    value?: number | null;
+    min_order_amount?: number | null;
+};
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,7 +48,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function AdminCoupons() {
     const [isOpen, setIsOpen] = useState(false);
-    const [editingCoupon, setEditingCoupon] = useState<any>(null);
+    const [editingCoupon, setEditingCoupon] = useState<CouponRow | null>(null);
 
     // Controlled form state
     const [formData, setFormData] = useState({
@@ -55,9 +66,9 @@ export default function AdminCoupons() {
     const { data: coupons, isLoading } = useQuery({
         queryKey: ["admin-coupons"],
         queryFn: async () => {
-            const { data, error } = await supabase.from("coupons").select("*").order("created_at", { ascending: false });
+            const { data, error } = await db.from("coupons").select("*").order("created_at", { ascending: false });
             if (error) throw error;
-            return data;
+            return (data ?? []) as CouponRow[];
         },
     });
 
@@ -95,15 +106,15 @@ export default function AdminCoupons() {
             queryClient.invalidateQueries({ queryKey: ["admin-coupons"] });
             toast.success("تم حذف الكوبون");
         },
-        onError: (error: any) => {
-            toast.error("فشل الحذف: " + error.message);
+        onError: (error: unknown) => {
+            toast.error("فشل الحذف: " + getErrorMessage(error));
         }
     });
 
     const saveMutation = useMutation({
-        mutationFn: async (data: any) => {
+        mutationFn: async (data: typeof formData) => {
             // Prepare payload
-            const payload: any = {
+            const payload = {
                 code: data.code.toUpperCase().trim(),
                 discount_type: data.discount_type,
                 value: parseFloat(data.value), // Reverting to 'value' as per migration
@@ -114,10 +125,10 @@ export default function AdminCoupons() {
             };
 
             if (editingCoupon) {
-                const { error } = await supabase.from("coupons").update(payload).eq("id", editingCoupon.id);
+                const { error } = await db.from("coupons").update(payload).eq("id", editingCoupon.id);
                 if (error) throw error;
             } else {
-                const { error } = await supabase.from("coupons").insert(payload);
+                const { error } = await db.from("coupons").insert(payload);
                 if (error) throw error;
             }
         },
@@ -127,9 +138,9 @@ export default function AdminCoupons() {
             setEditingCoupon(null);
             toast.success(editingCoupon ? "تم تحديث الكوبون" : "تمت إضافة الكوبون");
         },
-        onError: (error: any) => {
+        onError: (error: unknown) => {
             console.error("Coupon save error:", error);
-            toast.error("حدث خطأ: " + (error.message || "تأكد من صحة البيانات (الكود يجب أن يكون فريداً)"));
+            toast.error("حدث خطأ: " + (getErrorMessage(error) || "تأكد من صحة البيانات (الكود يجب أن يكون فريداً)"));
         }
     });
 
@@ -273,7 +284,7 @@ export default function AdminCoupons() {
                                     <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">لا توجد كوبونات</TableCell>
                                 </TableRow>
                             ) : (
-                                coupons?.map((coupon: any) => (
+                                coupons?.map((coupon) => (
                                     <TableRow key={coupon.id}>
                                         <TableCell className="font-bold font-mono text-primary">{coupon.code}</TableCell>
                                         <TableCell>

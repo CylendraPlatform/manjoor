@@ -14,6 +14,18 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import type { Tables } from "@/integrations/supabase/types";
+import { getErrorMessage } from "@/lib/utils";
+
+interface AgentAssignedOrder {
+    id: string;
+    status: string;
+    total: number | null;
+}
+type AgentRow = Tables<"profiles"> & { assigned_orders: AgentAssignedOrder[] };
+interface FunctionErrorContext {
+    context?: { json: () => Promise<{ error?: string; message?: string }> };
+}
 
 const agentSchema = z.object({
     email: z.string().email("بريد إلكتروني غير صالح"),
@@ -53,14 +65,14 @@ export default function AdminAgents() {
             if (error) throw error;
 
             // Transform data to include counts
-            return (data as any[]).map(agent => {
-                const orders = (agent as any).assigned_orders || [];
-                const deliveredOrders = orders.filter((o: any) => o.status === 'delivered');
+            return (data as unknown as AgentRow[]).map(agent => {
+                const orders = agent.assigned_orders || [];
+                const deliveredOrders = orders.filter((o) => o.status === 'delivered');
                 return {
                     ...agent,
                     total_orders: orders.length,
                     delivered_orders: deliveredOrders.length,
-                    total_collected: deliveredOrders.reduce((sum: number, o: any) => sum + (o.total || 0), 0)
+                    total_collected: deliveredOrders.reduce((sum, o) => sum + (o.total || 0), 0)
                 };
             });
         },
@@ -78,9 +90,10 @@ export default function AdminAgents() {
                 let message = error.message;
 
                 // For FunctionsHttpError, the context is the Response object
-                if ((error as any).context) {
+                const ctxError = error as FunctionErrorContext;
+                if (ctxError.context) {
                     try {
-                        const errorBody = await (error as any).context.json();
+                        const errorBody = await ctxError.context.json();
                         console.error("Function error body:", errorBody);
                         message = errorBody.error || errorBody.message || message;
                     } catch (e) {
@@ -99,9 +112,9 @@ export default function AdminAgents() {
             setOpen(false);
             form.reset();
         },
-        onError: (error: any) => {
+        onError: (error: unknown) => {
             console.error("Full mutation error:", error);
-            toast.error(`فشل إضافة الوكيل: ${error.message}`);
+            toast.error(`فشل إضافة الوكيل: ${getErrorMessage(error)}`);
         },
     });
 

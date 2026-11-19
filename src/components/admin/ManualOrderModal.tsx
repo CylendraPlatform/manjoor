@@ -1,7 +1,16 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { Tables, Json } from "@/integrations/supabase/types";
+import { getErrorMessage } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+
+interface SelectedItem {
+    product_id: string;
+    product_name: string;
+    price: number;
+    quantity: number;
+}
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,7 +38,7 @@ export default function ManualOrderModal({ open, onOpenChange }: ManualOrderModa
     const [landmark, setLandmark] = useState("");
     const [notes, setNotes] = useState("");
     const [deliveryCost, setDeliveryCost] = useState("5000");
-    const [selectedItems, setSelectedItems] = useState<any[]>([]);
+    const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
 
     // Fetch Products
     const { data: products } = useQuery({
@@ -55,7 +64,7 @@ export default function ManualOrderModal({ open, onOpenChange }: ManualOrderModa
         }
     });
 
-    const addItem = (product: any) => {
+    const addItem = (product: Tables<"products">) => {
         const existing = selectedItems.find(i => i.product_id === product.id);
         if (existing) {
             setSelectedItems(selectedItems.map(i =>
@@ -98,7 +107,7 @@ export default function ManualOrderModal({ open, onOpenChange }: ManualOrderModa
                 p_discount: 0,
                 p_total: total,
                 p_coupon_id: null,
-                p_items: selectedItems
+                p_items: selectedItems as unknown as Json
             });
 
             if (error) throw error;
@@ -114,8 +123,8 @@ export default function ManualOrderModal({ open, onOpenChange }: ManualOrderModa
             setArea("");
             setLandmark("");
             setNotes("");
-        } catch (error: any) {
-            toast.error(error.message || "حدث خطأ أثناء إنشاء الطلب");
+        } catch (error) {
+            toast.error(getErrorMessage(error));
         } finally {
             setLoading(false);
         }

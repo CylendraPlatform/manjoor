@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getErrorMessage } from "@/lib/utils";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +19,7 @@ export default function Auth() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = (location.state as any)?.from?.pathname || "/";
+    const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || "/";
 
     const formatToE164 = (phone: string) => {
         let cleaned = phone.replace(/\D/g, '');
@@ -42,19 +43,19 @@ export default function Auth() {
 
         try {
             if (mode === "login") {
-                const { error } = await supabase.auth.signInWithPassword(authData as any);
+                const { error } = await supabase.auth.signInWithPassword(authData);
                 if (error) throw error;
                 toast.success("تم تسجيل الدخول بنجاح");
             } else {
-                const { error } = await supabase.auth.signUp(authData as any);
+                const { error } = await supabase.auth.signUp(authData);
                 if (error) throw error;
                 toast.success(isEmail
                     ? "تم إنشاء الحساب بنجاح. يرجى تفعيل البريد الإلكتروني إذا تطلب الأمر"
                     : "تم إنشاء الحساب بنجاح.");
             }
             navigate(from, { replace: true });
-        } catch (error: any) {
-            toast.error(error.message || "حدث خطأ أثناء العملية");
+        } catch (error) {
+            toast.error(getErrorMessage(error));
         } finally {
             setLoading(false);
         }
@@ -73,7 +74,7 @@ export default function Auth() {
                         <CardDescription>سجل دخولك أو أنشئ حساباً جديداً للمتابعة</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Tabs value={mode} onValueChange={(v) => setMode(v as any)} className="w-full">
+                        <Tabs value={mode} onValueChange={(v) => setMode(v as "login" | "register")} className="w-full">
                             <TabsList className="grid w-full grid-cols-2 mb-6">
                                 <TabsTrigger value="login">تسجيل دخول</TabsTrigger>
                                 <TabsTrigger value="register">إنشاء حساب</TabsTrigger>

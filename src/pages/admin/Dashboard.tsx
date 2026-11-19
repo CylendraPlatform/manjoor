@@ -94,7 +94,7 @@ export default function AdminDashboard() {
             // 3. Profit Calculation (Revenue - Purchase Price)
             let totalProfit = 0;
             orderItems?.forEach(item => {
-                const pPrice = Number((item.products as any)?.purchase_price || 0);
+                const pPrice = Number((item.products as { purchase_price?: number | null } | null)?.purchase_price || 0);
                 const sPrice = Number(item.price);
                 totalProfit += (sPrice - pPrice) * item.quantity;
             });
@@ -115,7 +115,7 @@ export default function AdminDashboard() {
             // 5. Top Governorates (by revenue)
             const govSales: Record<string, { name: string, revenue: number, count: number }> = {};
             orders.forEach(o => {
-                const name = (o.governorates as any)?.name || 'غير معروف';
+                const name = (o.governorates as { name: string } | null)?.name || 'غير معروف';
                 if (!govSales[name]) govSales[name] = { name, revenue: 0, count: 0 };
                 govSales[name].revenue += Number(o.total);
                 govSales[name].count += 1;
@@ -184,10 +184,10 @@ export default function AdminDashboard() {
 
             // Add profit to monthly stats
             orderItems?.forEach(item => {
-                const d = parseISO((item as any).created_at || (orders.find(o => o.id === item.order_id)?.created_at));
+                const d = parseISO((item as { created_at?: string }).created_at || (orders.find(o => o.id === item.order_id)?.created_at));
                 if (d && d.getFullYear() === now.getFullYear()) {
                     const m = d.getMonth();
-                    const pPrice = Number((item.products as any)?.purchase_price || 0);
+                    const pPrice = Number((item.products as { purchase_price?: number | null } | null)?.purchase_price || 0);
                     const sPrice = Number(item.price);
                     monthlyStats[m].profit += (sPrice - pPrice) * item.quantity;
                 }
@@ -346,7 +346,7 @@ export default function AdminDashboard() {
                                 <YAxis hide />
                                 <Tooltip
                                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                                    formatter={(value: any) => [formatPrice(value), "المبيعات"]}
+                                    formatter={(value: number) => [formatPrice(value), "المبيعات"]}
                                 />
                                 <Line
                                     type="monotone"
@@ -417,7 +417,7 @@ export default function AdminDashboard() {
                                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11 }} />
                                 <Tooltip
                                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', direction: 'rtl' }}
-                                    formatter={(value: any) => [formatPrice(value)]}
+                                    formatter={(value: number) => [formatPrice(value)]}
                                 />
                                 <Bar dataKey="revenue" name="المبيعات" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
                                 <Bar dataKey="profit" name="الأرباح" fill="#10b981" radius={[4, 4, 0, 0]} />
@@ -481,7 +481,7 @@ export default function AdminDashboard() {
                                 />
                                 <Tooltip
                                     cursor={{ fill: '#f8f9fa' }}
-                                    formatter={(v: any) => [formatPrice(v), "إجمالي المبيعات"]}
+                                    formatter={(v: number) => [formatPrice(v), "إجمالي المبيعات"]}
                                     contentStyle={{ borderRadius: '12px', border: 'none' }}
                                 />
                                 <Bar dataKey="revenue" radius={[0, 10, 10, 0]} barSize={20}>

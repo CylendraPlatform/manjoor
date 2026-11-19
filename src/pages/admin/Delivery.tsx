@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,7 +28,7 @@ import { formatPrice } from "@/lib/format";
 
 export default function AdminDelivery() {
     const [isAddOpen, setIsAddOpen] = useState(false);
-    const [editingCompany, setEditingCompany] = useState<any>(null);
+    const [editingCompany, setEditingCompany] = useState<Tables<"delivery_companies"> | null>(null);
     const [isPriceOpen, setIsPriceOpen] = useState(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
     const queryClient = useQueryClient();
@@ -141,11 +142,15 @@ export default function AdminDelivery() {
                         <DialogHeader>
                             <DialogTitle>إضافة شركة توصيل جديدة</DialogTitle>
                         </DialogHeader>
-                        <form onSubmit={(e: any) => {
+                        <form onSubmit={(e: React.FormEvent) => {
                             e.preventDefault();
+                            const target = e.target as EventTarget & {
+                                name: { value: string };
+                                phone: { value: string };
+                            };
                             createCompany.mutate({
-                                name: e.target.name.value,
-                                phone: e.target.phone.value
+                                name: target.name.value,
+                                phone: target.phone.value
                             });
                         }} className="space-y-4 py-4">
                             <div className="space-y-2">
