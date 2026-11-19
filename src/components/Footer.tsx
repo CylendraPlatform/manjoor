@@ -15,7 +15,7 @@ const Footer = () => {
               aria-label={`${storeConfig.brand.ar} ${storeConfig.brand.en}`}
             >
               <img
-                src="/dukany-icon-only.png"
+                src="/brand/manjoor-icon.png"
                 alt=""
                 className="h-12 w-12 md:h-14 md:w-14 object-contain shrink-0 select-none"
                 draggable={false}

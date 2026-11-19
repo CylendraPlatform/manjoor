@@ -67,7 +67,7 @@ export default function Auth() {
                 <Card className="w-full max-w-md shadow-lg border-2 border-primary/10">
                     <CardHeader className="text-center pb-2">
                         <div className="flex justify-center mb-6">
-                            <img src="/dukany-logo.png" alt="متجر دكاني" className="h-28 w-auto object-contain" />
+                            <img src="/brand/manjoor-logo-horizontal.png" alt="منجور MANJOOR" className="h-28 w-auto object-contain" />
                         </div>
                         <CardTitle className="text-2xl font-bold">مرحباً بك</CardTitle>
                         <CardDescription>سجل دخولك أو أنشئ حساباً جديداً للمتابعة</CardDescription>

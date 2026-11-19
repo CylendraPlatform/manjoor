@@ -39,7 +39,7 @@ export default function Offers() {
                     </Badge>
                     <h1 className="text-4xl md:text-5xl font-black text-destructive italic tracking-tight">عروض التوفير</h1>
                     <p className="text-muted-foreground max-w-xl mx-auto font-medium">
-                        اكتشف أفضل الخصومات والعروض الحصرية على منتجاتنا المختارة بعناية. وفر أكثر مع متجر دكاني.
+                        اكتشف أفضل الخصومات والعروض الحصرية على منتجاتنا المختارة بعناية. وفر أكثر مع منجور.
                     </p>
                 </div>
             </div>

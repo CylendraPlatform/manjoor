@@ -9,7 +9,9 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 // import { supabase } from "@/integrations/supabase/client";
 
 if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY || SUPABASE_URL.includes("YOUR-NEW-PROJECT")) {
-  throw new Error("Bounty staging requires a NEW Supabase URL and publishable key in .env.local");
+  throw new Error(
+    "MANJOOR staging is not configured. Copy .env.example to .env.local and set a NEW isolated Supabase project's VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY. Never use the original Dukany credentials.",
+  );
 }
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {

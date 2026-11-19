@@ -157,7 +157,7 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-              <p className="text-3xl md:text-5xl font-black text-amber-500 mb-[-8px] tracking-wide drop-shadow-md">متجر دكاني</p>
+              <p className="text-3xl md:text-5xl font-black text-amber-500 mb-[-8px] tracking-wide drop-shadow-md">منجور</p>
               <h1 className="text-3xl md:text-6xl font-black leading-tight tracking-tight">
                 أكبر تشكيلة منتجات <br />
                 <span className="text-amber-400 italic">في العراق</span>
@@ -188,7 +188,7 @@ const Index = () => {
                     <div className="flex-[0_0_100%] min-w-0" key={i}>
                       <img
                         src={src}
-                        alt={`dukany Product ${i + 1}`}
+                        alt={`MANJOOR Product ${i + 1}`}
                         className="relative z-10 w-full aspect-[4/3] object-cover rounded-2xl shadow-2xl transition-transform duration-700 hover:scale-110"
                       />
                     </div>

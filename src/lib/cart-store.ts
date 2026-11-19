@@ -95,7 +95,7 @@ export const useCartStore = create<CartStore>()(
       },
     }),
     {
-      name: "dukany-cart-storage",
+      name: "manjoor-cart-storage",
     }
   )
 );

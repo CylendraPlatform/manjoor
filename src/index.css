@@ -36,8 +36,12 @@
 
     --radius: 0.5rem;
 
-    --dukany-gold: 38 60% 55%;
-    --dukany-beige-dark: 35 20% 82%;
+    /* MANJOOR warm woodcraft palette (centralized design tokens).
+       Walnut #5B3A27 · Warm Sand #DCC6A3 · Brass Gold #B88946 · Charcoal #2E2B28 */
+    --manjoor-walnut: 22 40% 25%;
+    --manjoor-sand: 37 45% 75%;
+    --manjoor-brass: 35 45% 50%;
+    --manjoor-charcoal: 30 7% 17%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;

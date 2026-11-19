@@ -163,8 +163,8 @@ export default function AdminOrderDetail() {
             <div id="printable-area" className="hidden print:block text-right" dir="rtl">
                 <div className="flex justify-between items-start mb-8 border-b pb-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-primary">متجر دكاني</h1>
-                        <p className="text-sm text-muted-foreground">متجر دكاني</p>
+                        <h1 className="text-2xl font-bold text-primary">منجور</h1>
+                        <p className="text-sm text-muted-foreground">منجور</p>
                     </div>
                     <div className="text-left">
                         <h2 className="text-xl font-bold">فاتورة طلب</h2>
@@ -242,7 +242,7 @@ export default function AdminOrderDetail() {
                 </table>
 
                 <div className="text-center mt-12 pt-8 border-t text-sm text-muted-foreground">
-                    شكراً لشرائكم من متجر دكاني
+                    شكراً لشرائكم من منجور
                 </div>
             </div>
 
@@ -502,7 +502,7 @@ export default function AdminOrderDetail() {
                                 variant="outline"
                                 className="w-full text-xs justify-start gap-2 border-green-200 hover:bg-green-50"
                                 onClick={() => {
-                                    const msg = `أهلاً ${order.customer_name}، شكراً لطلبك من متجر دكاني. تم تأكيد طلبك رقم (#${order.order_number}) وجاري التجهيز.`;
+                                    const msg = `أهلاً ${order.customer_name}، شكراً لطلبك من منجور. تم تأكيد طلبك رقم (#${order.order_number}) وجاري التجهيز.`;
                                     window.open(`https://wa.me/${order.customer_phone?.replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
                                 }}
                             >
@@ -526,7 +526,7 @@ export default function AdminOrderDetail() {
                                 variant="outline"
                                 className="w-full text-xs justify-start gap-2 border-green-200 hover:bg-green-50"
                                 onClick={() => {
-                                    const msg = `تم توصيل طلبك رقم (#${order.order_number}) بنجاح. شكراً لثقتك بمتجر دكاني. نتمنى لك تجربة سعيدة!`;
+                                    const msg = `تم توصيل طلبك رقم (#${order.order_number}) بنجاح. شكراً لثقتك بمنجور. نتمنى لك تجربة سعيدة!`;
                                     window.open(`https://wa.me/${order.customer_phone?.replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
                                 }}
                             >

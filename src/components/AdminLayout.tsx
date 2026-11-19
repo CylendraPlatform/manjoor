@@ -60,7 +60,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 flex flex-col
             `}>
                 <div className="p-6 flex items-center justify-between border-b border-border">
-                    {(sidebarOpen || mobileOpen) && <span className="font-bold text-xl">باونتي | إدارة المعمل</span>}
+                    {(sidebarOpen || mobileOpen) && <span className="font-bold text-xl">منجور | نظام إدارة التصنيع</span>}
                     <Button
                         variant="ghost"
                         size="icon"

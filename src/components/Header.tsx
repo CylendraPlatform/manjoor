@@ -23,6 +23,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
+import type { Category } from "@/integrations/supabase/overrides";
+
+type CategoryNode = Category & { children: Category[] };
 
 const Header = () => {
   const { items, getItemCount, getTotal, removeItem, updateQuantity } = useCartStore();
@@ -74,14 +77,16 @@ const Header = () => {
         .select("*")
         .order("sort_order", { ascending: true });
       if (error) throw error;
-      return data ?? [];
+      return (data ?? []) as Category[];
     },
   });
 
-  const categoryTree = categories?.filter((cat: any) => !cat.parent_id).map((parent: any) => ({
-    ...parent,
-    children: categories.filter((child: any) => child.parent_id === parent.id)
-  })) || [];
+  const categoryTree: CategoryNode[] = (categories ?? [])
+    .filter((cat) => !cat.parent_id)
+    .map((parent) => ({
+      ...parent,
+      children: (categories ?? []).filter((child) => child.parent_id === parent.id),
+    }));
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,7 +121,7 @@ const Header = () => {
 
         {/* Logo - Hidden on mobile when collapsed */}
         <Link to="/" className={`flex items-center flex-shrink-0 transition-all duration-300 ${isCollapsed ? 'md:flex hidden scale-0 w-0' : 'scale-100'}`}>
-          <img src="/dukany-logo.png" alt="متجر دكاني" className="h-10 md:h-14 w-auto object-contain py-1" />
+          <img src="/brand/manjoor-logo-horizontal.png" alt="منجور MANJOOR" className="h-10 md:h-14 w-auto object-contain py-1" />
         </Link>
 
         {/* Search Bar - Visible in main row on mobile when collapsed */}
@@ -145,7 +150,7 @@ const Header = () => {
               <ChevronDown size={14} className="text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 max-h-[80vh] overflow-y-auto">
-              {categoryTree.map((cat: any) => (
+              {categoryTree.map((cat) => (
                 <div key={cat.id}>
                   {cat.children && cat.children.length > 0 ? (
                     <DropdownMenuSub>
@@ -154,7 +159,7 @@ const Header = () => {
                       </DropdownMenuSubTrigger>
                       <DropdownMenuPortal>
                         <DropdownMenuSubContent className="w-56" sideOffset={8}>
-                          {cat.children.map((child: any) => (
+                          {cat.children.map((child) => (
                             <DropdownMenuItem key={child.id} asChild className="cursor-pointer">
                               <Link to={`/category/${child.slug}`} className="w-full text-right py-1">
                                 {child.name}
@@ -313,7 +318,7 @@ const Header = () => {
             <div className="pt-4 border-t border-border">
               <p className="text-xs font-bold text-muted-foreground mb-3 px-1">الأقسام</p>
               <div className="space-y-4">
-                {categoryTree.map((cat: any) => (
+                {categoryTree.map((cat) => (
                   <div key={cat.id} className="space-y-2">
                     <Link
                       to={`/category/${cat.slug}`}
@@ -324,7 +329,7 @@ const Header = () => {
                     </Link>
                     {cat.children && cat.children.length > 0 && (
                       <div className="grid grid-cols-1 gap-1 mr-4 border-r border-border pr-3">
-                        {cat.children.map((child: any) => (
+                        {cat.children.map((child) => (
                           <Link
                             key={child.id}
                             to={`/category/${child.slug}`}

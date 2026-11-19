@@ -51,9 +51,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        dukany: {
-          gold: "hsl(var(--dukany-gold))",
-          "beige-dark": "hsl(var(--dukany-beige-dark))",
+        manjoor: {
+          walnut: "hsl(var(--manjoor-walnut))",
+          sand: "hsl(var(--manjoor-sand))",
+          brass: "hsl(var(--manjoor-brass))",
+          charcoal: "hsl(var(--manjoor-charcoal))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

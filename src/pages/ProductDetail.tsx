@@ -94,7 +94,7 @@ const ProductDetail = () => {
 
   const productUrl = `${window.location.origin}/product/${product.slug}`;
   const quickOrderMsg = encodeURIComponent(
-    `مرحباً متجر دكاني، أود طلب هذا المنتج فوراً:\n\n` +
+    `مرحباً منجور، أود طلب هذا المنتج فوراً:\n\n` +
     `📦 المنتج: ${product.name}\n` +
     `💰 السعر: ${formatPrice(hasDiscount ? product.discount_price! : product.price)}\n` +
     `🔗 الرابط: ${productUrl}\n\n` +
