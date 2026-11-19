@@ -7,11 +7,12 @@ export interface HeroSlide {
   id: string;
   theme: "production" | "craft" | "custom";
   kind: "workshop" | "conceptual";
-  tone: "cream" | "charcoal" | "linen";
   image: string;
   imageMobile: string;
   imageWidth: number;
   imageHeight: number;
+  objectPosition: string;
+  objectPositionMobile: string;
   kicker: string;
   title: string;
   body: string;
@@ -26,39 +27,40 @@ export const CAPABILITIES = [
   { title: "تصنيع حسب الطلب", body: "أفكار ديكور ومكونات أثاث تُدرس كطلبات تصنيع، وليست مخزوناً.", href: "/custom-orders", cta: "اطلب تصنيع خاص" },
 ] as const;
 
-/** Alias used by older tests and inquiry links. */
 export const INQUIRY_PATHS = CAPABILITIES;
 
 const PUBLIC_SLIDES: HeroSlide[] = [
   {
     id: "production",
     theme: "production",
-    kind: "workshop",
-    tone: "cream",
-    image: "/workshop/hero/production.jpg",
-    imageMobile: "/workshop/hero/production-mobile.jpg",
-    imageWidth: 1200,
-    imageHeight: 1500,
+    kind: "conceptual",
+    image: "/hero/production-desktop.webp",
+    imageMobile: "/hero/production-mobile.webp",
+    imageWidth: 1920,
+    imageHeight: 1080,
+    objectPosition: "center",
+    objectPositionMobile: "center",
     kicker: "منجور · كربلاء",
-    title: "إنتاج خشبي قائم… من الورشة",
-    body: "بكّارات خشبية مخرطة من إنتاج منجور. الصورة منتج حقيقي داخل إطار تحريري، وليست خلفيّة مكبّرة.",
-    primary: { label: "استعرض الإنتاج", href: "/products" },
+    title: "بكّارات خشبية من إنتاج منجور",
+    body: "الإنتاج القائم للورشة: خراطة بكّارات خشبية. المشهد خلف العنوان تصور بصري، والنماذج الحقيقية في كتالوج البكّارات.",
+    primary: { label: "استعرض البكّارات", href: "/products" },
     secondary: { label: "اطلب عرض سعر", href: "/wholesale" },
-    caption: "صورة حقيقية من إنتاج الورشة، داخل تكوين استوديو.",
+    caption: "خلفية تصورية — ليست صورة مخزون معتمد ولا لقطة من داخل المعمل.",
   },
   {
     id: "craft",
     theme: "craft",
     kind: "conceptual",
-    tone: "charcoal",
-    image: "/workshop/hero/craft.jpg",
-    imageMobile: "/workshop/hero/craft.jpg",
-    imageWidth: 1200,
-    imageHeight: 1500,
+    image: "/hero/craft-desktop.webp",
+    imageMobile: "/hero/craft-mobile.webp",
+    imageWidth: 1920,
+    imageHeight: 1080,
+    objectPosition: "left center",
+    objectPositionMobile: "center",
     kicker: "الحرفة",
-    title: "خراطة خشب… مهارة وصنعة",
-    body: "نعمل بالخراطة والتشكيل الخشبي. هذا المشهد تصور لمهارة الخراطة، وليس تصويراً داخل معمل منجور.",
-    primary: { label: "اقرأ عن الورشة", href: "/about" },
+    title: "خراطة خشبية دقيقة وصناعة متقنة",
+    body: "مهارة الخراطة والتشكيل. هذا المشهد يوضح الحرفة ولا يصوّر معمل منجور.",
+    primary: { label: "تعرّف على الحرفة", href: "/about" },
     secondary: { label: "اطلب تصنيع خاص", href: "/custom-orders" },
     caption: "تصور تصميمي لعملية الخراطة — ليست لقطة وثائقية للمعمل.",
   },
@@ -66,17 +68,18 @@ const PUBLIC_SLIDES: HeroSlide[] = [
     id: "custom",
     theme: "custom",
     kind: "conceptual",
-    tone: "linen",
-    image: "/workshop/hero/custom.jpg",
-    imageMobile: "/workshop/hero/custom.jpg",
-    imageWidth: 1200,
-    imageHeight: 1500,
+    image: "/hero/custom-desktop.webp",
+    imageMobile: "/hero/custom-mobile.webp",
+    imageWidth: 1920,
+    imageHeight: 1080,
+    objectPosition: "left center",
+    objectPositionMobile: "center",
     kicker: "تصنيع حسب الطلب",
-    title: "من المخرطة إلى المشروع",
-    body: "مكونات أثاث وقطع ديكور وأعمال حسب التصميم. الصور التصورية ليست مخزوناً جاهزاً.",
-    primary: { label: "استعرض الأفكار", href: "/custom-orders" },
-    secondary: { label: "أرسل مواصفاتك", href: "/custom-orders#custom-inquiry" },
-    caption: "تصور تطبيقي في بيئة استخدام — ليس منتجاً جاهزاً من منجور.",
+    title: "من فكرتك... نصنع قطعة مميزة",
+    body: "مكونات أثاث وقطع ديكور حسب التصميم. الصور التصورية ليست مخزوناً جاهزاً.",
+    primary: { label: "اطلب تصنيعاً خاصاً", href: "/custom-orders" },
+    secondary: { label: "استعرض الأفكار", href: "/custom-orders" },
+    caption: "تصور تطبيقي — ليس منتجات جاهزة من مخزون منجور.",
   },
 ];
 
