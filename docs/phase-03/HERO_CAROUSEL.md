@@ -6,9 +6,9 @@ Stacked on PR #5 (`feat/manjoor-visual-excellence`).
 
 | Slide | Theme | Asset | Kind | Primary CTA |
 |---|---|---|---|---|
-| A | Bakarat | `/workshop/hero/bakarat.jpg` from `photo/manjoor (21).jpg` | Real workshop | استعرض البكّارات |
-| B | Custom | `/workshop/hero/custom.jpg` from `photo/manjoor (23).jpg` | Real workshop | اطلب تصنيع خاص |
-| C | Wholesale | `/workshop/hero/wholesale.jpg` from `photo/manjoor (24).jpg` | Real workshop | اطلب عرض سعر جملة |
+| A | Production | `/workshop/hero/production.jpg` from `photo/manjoor (3).jpg` in a studio frame | Workshop photo | استعرض الإنتاج |
+| B | Craft | `/workshop/hero/craft.jpg` | Conceptual lathe | اقرأ عن الورشة |
+| C | Custom | `/workshop/hero/custom.jpg` | Conceptual interior | استعرض الأفكار |
 
 Slide A is the commercial lead. Originals stay in gitignored `photo/`; published frames are processed copies under `public/workshop/`.
 
