@@ -6,6 +6,7 @@ import MarketingShell from "@/components/marketing/MarketingShell";
 import PlaceholderVisual from "@/components/marketing/PlaceholderVisual";
 import QuoteButton from "@/components/QuoteButton";
 import { OFFERING_DIRECTIONS } from "@/content/offerings";
+import { STEM_MODELS, stemInquiryPath } from "@/content/stems";
 import { filterCatalog, loadPublicCatalog } from "@/lib/public-catalog";
 
 export default function CatalogPage() {
@@ -20,12 +21,19 @@ export default function CatalogPage() {
     [catalog.data, search, category, sort],
   );
 
+  const stems = useMemo(() => {
+    const q = search.trim();
+    return STEM_MODELS.filter((item) => !q || `${item.title} ${item.descriptor}`.includes(q));
+  }, [search]);
+
   return (
     <MarketingShell>
-      <Seo title="المنتجات" description="كتالوج قطع الخشب المعتمدة من منجور في كربلاء. المنتجات غير المعتمدة لا تظهر." path="/products" />
+      <Seo title="البكّارات الخشبية" description="نماذج بكّارات خشبية حقيقية من ورشة منجور في كربلاء. السعر والتوفر بعد التأكيد." path="/products" />
       <div className="container py-10">
-        <h1 className="text-3xl font-extrabold text-manjoor-walnut">المنتجات</h1>
-        <p className="mt-2 max-w-2xl text-sm leading-7">يظهر هنا فقط ما اعتُمد للعرض العام. لا خصومات مصطنعة ولا ادعاء بنفاد الكمية.</p>
+        <h1 className="text-3xl font-extrabold text-manjoor-walnut">البكّارات الخشبية</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-7">
+          الإنتاج الحالي للورشة. الأسماء مؤقتة. لا خصومات مصطنعة ولا ادّعاء مخزون.
+        </p>
         <form className="mt-6 flex flex-col gap-3 sm:flex-row" onSubmit={(event) => event.preventDefault()}>
           <label className="flex-1 text-sm">
             بحث
@@ -48,12 +56,31 @@ export default function CatalogPage() {
             </select>
           </label>
         </form>
-        <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
+
+        {stems.length > 0 && (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {stems.map((item) => (
+              <article key={item.slug} className="flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm">
+                <Link to={`/products/${item.slug}`}>
+                  <img src={item.image} alt={item.title} className="aspect-[4/5] w-full object-cover" />
+                  <h2 className="px-4 pt-4 font-bold">{item.title}</h2>
+                </Link>
+                <p className="px-4 pt-2 text-sm leading-7 text-manjoor-charcoal/75">{item.descriptor}</p>
+                <p className="px-4 text-sm">السعر بعد التأكيد</p>
+                <Link to={stemInquiryPath(item.slug)} className="m-4 mt-auto rounded-full bg-manjoor-walnut px-4 py-3 text-center text-sm font-bold text-manjoor-sand">
+                  استفسر عن هذا الموديل
+                </Link>
+              </article>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-10 flex gap-2 overflow-x-auto pb-2">
           <button type="button" className={`shrink-0 rounded-full px-4 py-2 text-sm ${category === "" ? "bg-manjoor-walnut text-manjoor-sand" : "bg-white"}`} onClick={() => {
             const next = new URLSearchParams(params);
             next.delete("category");
             setParams(next);
-          }}>الكل</button>
+          }}>منتجات معتمدة أخرى</button>
           {OFFERING_DIRECTIONS.filter((item) => item.slug !== "custom").map((item) => (
             <button key={item.slug} type="button" className={`shrink-0 rounded-full px-4 py-2 text-sm ${category === item.slug ? "bg-manjoor-walnut text-manjoor-sand" : "bg-white"}`} onClick={() => {
               const next = new URLSearchParams(params);
@@ -63,14 +90,9 @@ export default function CatalogPage() {
           ))}
         </div>
         {catalog.isLoading && <p className="mt-8">جارٍ التحميل…</p>}
-        {catalog.data?.state === "unavailable" && <p className="mt-8" role="alert">الكتالوج غير متاح حالياً: {catalog.data.message}</p>}
+        {catalog.data?.state === "unavailable" && <p className="mt-8" role="alert">الكتالوج الإضافي غير متاح حالياً: {catalog.data.message}</p>}
         {catalog.data && catalog.data.state !== "unavailable" && products.length === 0 && (
-          <div className="mt-8 rounded-2xl bg-white p-6 leading-7">
-            <p>{catalog.data.message || "لا توجد منتجات مطابقة ضمن المعتمد للعرض."}</p>
-            <Link to="/custom-orders" className="mt-3 inline-block font-bold text-manjoor-walnut underline-offset-4 hover:underline">
-              استعرض أفكار التصنيع حسب الطلب
-            </Link>
-          </div>
+          <p className="mt-6 text-sm leading-7">لا توجد منتجات إضافية معتمدة من قاعدة البيانات بعد.</p>
         )}
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (

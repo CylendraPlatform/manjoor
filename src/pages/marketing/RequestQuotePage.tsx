@@ -63,7 +63,7 @@ export default function RequestQuotePage() {
         <p className="mt-2 text-sm leading-7">قائمة استفسار بالكميات. لا تُنشئ طلباً مدفوعاً ولا تخصم مخزوناً.</p>
         {items.length === 0 ? (
           <p className="mt-6 rounded-2xl bg-white p-6">
-            لا توجد منتجات في الطلب. <Link to="/products" className="font-bold text-manjoor-walnut underline">استعرض المنتجات المعتمدة</Link>
+            لا توجد منتجات في الطلب. <Link to="/products" className="font-bold text-manjoor-walnut underline">استعرض البكّارات</Link>
           </p>
         ) : (
           <ul className="mt-6 space-y-3">

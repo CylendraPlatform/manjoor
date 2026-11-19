@@ -6,11 +6,11 @@ Stacked on PR #5 (`feat/manjoor-visual-excellence`).
 
 | Slide | Theme | Asset | Kind | Primary CTA |
 |---|---|---|---|---|
-| A | Craft | `/concepts/hero/craftsmanship.jpg` — conceptual lathe-process illustration | Conceptual | تقييم تصنيع |
-| B | Custom | `/concepts/hero/custom-woodwork.jpg` — one lamp base from `lamp-bases.jpg` | Conceptual | دراسة حسب المقاسات |
-| C | Décor | `/concepts/hero/decor-concepts.jpg` — conceptual interior-use scene | Conceptual | معرض الأفكار |
+| A | Bakarat | `/workshop/hero/bakarat.jpg` from `photo/manjoor (21).jpg` | Real workshop | استعرض البكّارات |
+| B | Custom | `/workshop/hero/custom.jpg` from `photo/manjoor (23).jpg` | Real workshop | اطلب تصنيع خاص |
+| C | Wholesale | `/workshop/hero/wholesale.jpg` from `photo/manjoor (24).jpg` | Real workshop | اطلب عرض سعر جملة |
 
-Public slide C is decorative concepts, not workshop merchandise. `photo/` and `VITE_ENABLE_WORKSHOP_PRODUCT_PROMO` stay unpublished/off. The hookah-stem mockup headline is design reference only.
+Slide A is the commercial lead. Originals stay in gitignored `photo/`; published frames are processed copies under `public/workshop/`.
 
 ## Carousel behaviour
 
@@ -22,7 +22,7 @@ Public slide C is decorative concepts, not workshop merchandise. `photo/` and `V
 
 ## Homepage below the hero
 
-Typography inquiry paths (no repeated photo grid). Gallery remains `/custom-orders`.
+Bakarat product cards first. Custom-order concept gallery is secondary at `/custom-orders`.
 
 ## Image processing
 

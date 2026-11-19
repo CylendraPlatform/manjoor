@@ -19,6 +19,6 @@ export const features = {
   leadSubmission: flag(import.meta.env.VITE_ENABLE_LEAD_SUBMISSION),
   // Inherited P0 flag — do not change its default meaning.
   directCheckout: flag(import.meta.env.VITE_ENABLE_PUBLIC_SALES),
-  // Real workshop-product promo (including hookah photography). Off until legal review.
+  // Legacy env gate. Public bakarat now live as a static workshop catalog, not this flag.
   workshopProductPromo: flag(import.meta.env.VITE_ENABLE_WORKSHOP_PRODUCT_PROMO),
 } as const;

@@ -1,12 +1,10 @@
 # Launch blockers (public site)
 
-- Legal/platform review before any public hookah/tobacco-accessory promotion or `photo/` use.
-- `VITE_ENABLE_WORKSHOP_PRODUCT_PROMO` stays false; no public workshop-product slide.
 - Direct checkout (`VITE_ENABLE_PUBLIC_SALES`) stays false.
 - Search indexing (`VITE_ALLOW_INDEXING`) stays false.
 - WhatsApp number unset — controls hidden, not invented.
-- No `public_approved` product rows for a non-regulated catalog.
-- Décor concepts still need maker approval as production capacity.
-- No authentic lathe/process photograph; craft slide is conceptual and labeled as such.
+- Quote-request RPC still requires DB `public_approved` products; bakarat inquiries therefore use the existing wholesale lead form (`/wholesale?model=`), not `quote_request` line items.
+- DB catalog still filters tobacco/hookah **legacy Dukany rows**. Public bakarat are the static workshop catalog only.
+- Official SKU names, prices, and stock are unconfirmed.
 - Workshop address and phone not approved for the footer.
-- Admin one-time credentials / DB password rotation remain an ops task, not a public-site task.
+- Admin credential / DB password rotation remain ops tasks.

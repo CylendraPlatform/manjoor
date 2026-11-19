@@ -1,28 +1,19 @@
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import Seo from "@/components/Seo";
 import MarketingShell from "@/components/marketing/MarketingShell";
 import HeroCarousel from "@/components/marketing/HeroCarousel";
 import { brand } from "@/config/brand";
 import { INQUIRY_PATHS, publicHeroSlides } from "@/content/hero";
-import { loadPublicCatalog } from "@/lib/public-catalog";
-
-const STEPS = [
-  { title: "أرسل الفكرة أو المقاس", body: "من النموذج أو من معرض الأفكار التصورية." },
-  { title: "نراجع في الورشة", body: "الإمكانية والخامة قبل أي التزام." },
-  { title: "نؤكد السعر والمدة", body: "بعد المراجعة فقط." },
-];
+import { STEM_MODELS, stemInquiryPath } from "@/content/stems";
 
 export default function HomePage() {
-  const catalog = useQuery({ queryKey: ["public-catalog"], queryFn: loadPublicCatalog });
-  const featured = (catalog.data?.products ?? []).slice(0, 6);
   const slides = publicHeroSlides();
 
   return (
     <MarketingShell>
       <Seo
-        title="فنّ الخشب العراقي"
-        description="خراطة وتصنيع قطع خشبية حسب التصميم والمواصفات والكميات المطلوبة. ورشة منجور في كربلاء."
+        title="بكّارات خشبية"
+        description="ورشة منجور في كربلاء تنتج بكّارات خشبية حقيقية، وتراجع طلبات التصنيع الخاص والجملة."
         path="/"
       />
 
@@ -32,12 +23,41 @@ export default function HomePage() {
         <div className="container py-10 md:py-12">
           <p className="text-sm font-bold tracking-wide text-manjoor-brass">{brand.originAr}</p>
           <h2 className="mt-2 max-w-3xl text-2xl font-extrabold leading-snug text-manjoor-walnut md:text-3xl">
-            خراطة وتصنيع قطع خشبية حسب التصميم والمواصفات والكميات المطلوبة.
+            بكّارات خشبية من إنتاج الورشة، مع إمكانية التصنيع حسب الطلب وتجهيز الجملة.
           </h2>
         </div>
       </section>
 
-      <section className="container grid gap-4 py-10 md:grid-cols-3">
+      <section id="bakarat" className="container py-10">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-extrabold text-manjoor-walnut">البكّارات الخشبية</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-manjoor-charcoal/80">
+              نماذج من الإنتاج الحالي. الأسماء مؤقتة حتى اعتماد التسمية الرسمية. لا أسعار معلنة ولا ادّعاء توفر.
+            </p>
+          </div>
+          <Link to="/products" className="font-bold text-manjoor-brass">كل النماذج</Link>
+        </div>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {STEM_MODELS.slice(0, 8).map((item) => (
+            <article key={item.slug} className="flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm">
+              <Link to={`/products/${item.slug}`} className="block">
+                <img src={item.image} alt={item.title} className="aspect-[4/5] w-full object-cover" />
+                <h3 className="px-4 pt-4 font-extrabold text-manjoor-walnut">{item.title}</h3>
+                <p className="px-4 pt-2 text-sm leading-7 text-manjoor-charcoal/75">{item.descriptor}</p>
+              </Link>
+              <Link
+                to={stemInquiryPath(item.slug)}
+                className="m-4 mt-auto rounded-full bg-manjoor-walnut px-4 py-3 text-center text-sm font-bold text-manjoor-sand"
+              >
+                اطلب هذا الموديل
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="container grid gap-4 py-6 md:grid-cols-3">
         {INQUIRY_PATHS.map((item) => (
           <Link
             key={item.title}
@@ -51,58 +71,24 @@ export default function HomePage() {
         ))}
       </section>
 
-      <section className="bg-white">
-        <div className="container py-10">
-          <h2 className="text-2xl font-extrabold text-manjoor-walnut">كيف نعمل</h2>
-          <ol className="mt-6 grid gap-4 md:grid-cols-3">
-            {STEPS.map((step, index) => (
-              <li key={step.title} className="border-t-2 border-manjoor-brass pt-4">
-                <p className="text-sm font-extrabold text-manjoor-brass">{String(index + 1).padStart(2, "0")}</p>
-                <p className="mt-2 font-bold text-manjoor-walnut">{step.title}</p>
-                <p className="mt-1 text-sm leading-7">{step.body}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {featured.length > 0 && (
-        <section className="container py-8">
-          <h2 className="text-2xl font-extrabold text-manjoor-walnut">منتجات معتمدة للعرض</h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((product) => (
-              <Link key={product.id} to={`/products/${product.slug}`} className="rounded-2xl bg-white p-4 shadow-sm">
-                {product.images[0] && (
-                  <img src={product.images[0]} alt={product.name} className="aspect-[4/3] w-full rounded-xl object-cover" />
-                )}
-                <h3 className="mt-3 font-bold">{product.name}</h3>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-      {catalog.data?.state === "unavailable" && (
-        <p className="container py-4" role="alert">تعذّر قراءة الكتالوج: {catalog.data.message}</p>
-      )}
-
       <section className="container py-10 pb-24 md:pb-10">
         <div className="grid gap-8 rounded-3xl bg-white p-6 md:grid-cols-2 md:p-10">
           <div>
-            <h2 className="text-2xl font-extrabold text-manjoor-walnut">للتجار وأصحاب المشاريع</h2>
+            <h2 className="text-2xl font-extrabold text-manjoor-walnut">تصنيع خاص</h2>
             <p className="mt-3 leading-8">
-              استفسار الجملة مراجعة للكميات والمواصفات. التسليم يُحدد بعد التأكيد، وليس تغطية معلنة مسبقاً.
+              إن كان طلبك خارج النماذج المعروضة، نراجع المقاس والكمية في الورشة. الأفكار التصورية تبقى في صفحة التصنيع الخاص وليست مخزوناً.
             </p>
-            <Link to="/wholesale" className="mt-6 inline-block rounded-full bg-manjoor-walnut px-6 py-3 font-bold text-manjoor-sand">
-              اطلب أسعار الجملة
+            <Link to="/custom-orders" className="mt-6 inline-block rounded-full bg-manjoor-walnut px-6 py-3 font-bold text-manjoor-sand">
+              اطلب تصنيع خاص
             </Link>
           </div>
           <div>
-            <h2 className="text-2xl font-extrabold text-manjoor-walnut">أفكار تصورية</h2>
+            <h2 className="text-2xl font-extrabold text-manjoor-walnut">أفكار إضافية</h2>
             <p className="mt-3 leading-8">
-              معرض الأفكار يعرض نماذج يمكن دراسة تنفيذها. ليست مخزوناً، والتنفيذ يحتاج موافقة المعمل.
+              معرض التصنيع حسب الطلب يعرض اتجاهات خراطة أخرى يمكن دراستها. ليس واجهة الموقع الرئيسية.
             </p>
             <Link to="/custom-orders" className="mt-6 inline-block rounded-full border border-manjoor-walnut px-6 py-3 font-bold text-manjoor-walnut">
-              استعرض المعرض الكامل
+              استعرض الأفكار التصورية
             </Link>
           </div>
         </div>
@@ -110,10 +96,10 @@ export default function HomePage() {
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-manjoor-sand/80 bg-[#f7f1e8]/95 p-3 backdrop-blur md:hidden">
         <div className="grid grid-cols-2 gap-2">
-          <Link to="/custom-orders" className="rounded-full bg-manjoor-walnut px-3 py-3 text-center text-sm font-bold text-manjoor-sand">
-            دراسة تصنيع
+          <Link to="/products" className="rounded-full bg-manjoor-walnut px-3 py-3 text-center text-sm font-bold text-manjoor-sand">
+            البكّارات
           </Link>
-          <Link to="/request-quote" className="rounded-full border border-manjoor-walnut px-3 py-3 text-center text-sm font-bold text-manjoor-walnut">
+          <Link to="/wholesale" className="rounded-full border border-manjoor-walnut px-3 py-3 text-center text-sm font-bold text-manjoor-walnut">
             عرض سعر
           </Link>
         </div>

@@ -14,9 +14,9 @@ Premium B2B wood manufacturer: light sand ground, walnut type, brass for actions
 
 Public narrative in three beats:
 
-1. **Craft** — «فنّ الخشب العراقي». Conceptual lathe-process illustration. Labeled as not a MANJOOR workshop photograph.
-2. **Custom turning** — one object, one request: دراسة تصنيع حسب المقاسات.
-3. **Decorative applications** — a different still-life language. Labeled conceptual, not inventory.
+1. **Bakarat** — real wooden hookah stems from `photo/`.
+2. **Custom turning** — special manufacturing requests.
+3. **Wholesale** — quantity supply for merchants.
 
 Below the hero: typography and inquiry paths, not another brown photo grid. Full concept gallery remains `/custom-orders`.
 
@@ -24,8 +24,9 @@ Below the hero: typography and inquiry paths, not another brown photo grid. Full
 
 | Class | Public? |
 |---|---|
-| `photo/` hookah components | No until legal + platform review |
-| `public/concepts/hero/*` | Yes, as conceptual illustration |
+| `photo/` originals | Gitignored source |
+| `public/workshop/*` | Yes — processed real bakarat |
+| `public/concepts/*` | Secondary, `/custom-orders` only |
 | Official logo in `public/brand/` | Yes |
 
 Maker approval is still required before treating décor concepts as confirmed production capacity.

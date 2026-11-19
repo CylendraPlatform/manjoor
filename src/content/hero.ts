@@ -1,7 +1,3 @@
-import { features } from "@/config/features";
-
-export type HeroAssetKind = "conceptual" | "workshop";
-
 export interface HeroCta {
   label: string;
   href: string;
@@ -9,9 +5,8 @@ export interface HeroCta {
 
 export interface HeroSlide {
   id: string;
-  theme: "craftsmanship" | "custom-woodwork" | "decorative";
-  kind: HeroAssetKind;
-  restricted: boolean;
+  theme: "bakarat" | "custom" | "wholesale";
+  kind: "workshop" | "conceptual";
   image: string;
   imageWidth: number;
   imageHeight: number;
@@ -19,82 +14,65 @@ export interface HeroSlide {
   kicker: string;
   title: string;
   body: string;
-  chips: string[];
   primary: HeroCta;
   secondary: HeroCta;
   caption: string;
 }
 
-/**
- * Real workshop merchandise remains unpublished until legal review.
- * Do not attach `photo/` paths here.
- */
-const WORKSHOP_SLIDE_DISABLED = true;
-
 export const INQUIRY_PATHS = [
-  { title: "تقييم تصنيع", body: "أرسل الفكرة أو المقاس. نراجع الإمكانية في الورشة.", href: "/custom-orders", cta: "اطلب دراسة تصنيع" },
-  { title: "عرض سعر", body: "للكميات والمواصفات المتفق عليها. السعر يُؤكد بعد المراجعة.", href: "/request-quote", cta: "اطلب عرض سعر" },
-  { title: "أفكار تصميمية", body: "نماذج تصورية غير مخزونة. التنفيذ يخضع لموافقة المعمل.", href: "/custom-orders", cta: "استعرض الأفكار" },
+  { title: "البكّارات الخشبية", body: "الإنتاج الحالي للورشة: بكّارات خشبية بأشكال متعددة.", href: "/products", cta: "استعرض البكّارات" },
+  { title: "تصنيع خاص", body: "خراطة حسب التصميم والمقاس والكمية بعد مراجعة الورشة.", href: "/custom-orders", cta: "اطلب تصنيع خاص" },
+  { title: "تجهيز الجملة", body: "للتجار والمحلات. السعر والتسليم يُؤكدان بعد المراجعة.", href: "/wholesale", cta: "اطلب عرض سعر جملة" },
 ] as const;
 
 const PUBLIC_SLIDES: HeroSlide[] = [
   {
-    id: "craftsmanship",
-    theme: "craftsmanship",
-    kind: "conceptual",
-    restricted: false,
-    image: "/concepts/hero/craftsmanship.jpg",
+    id: "bakarat",
+    theme: "bakarat",
+    kind: "workshop",
+    image: "/workshop/hero/bakarat.jpg",
     imageWidth: 1920,
     imageHeight: 900,
     objectPosition: "center",
     kicker: "منجور · كربلاء",
-    title: "فنّ الخشب العراقي",
-    body: "خراطة وتشكيل خشبي في ورشة منجور بكربلاء. المشهد تصور لمهارة الخراطة، وليس تصويراً فوتوغرافياً للمعمل.",
-    chips: [],
-    primary: { label: "اطلب تقييم تصنيع", href: "/custom-orders" },
-    secondary: { label: "تعرّف على الورشة", href: "/about" },
-    caption: "تصور تصميمي لعملية الخراطة — ليست صورة من داخل معمل منجور.",
+    title: "بكّارات خشبية من ورشة منجور",
+    body: "إنتاج حقيقي لسيقان خشبية (بكّارات) بالخراطة. الصورة من الورشة، وليست تصوراً تصميمياً.",
+    primary: { label: "استعرض البكّارات", href: "/products" },
+    secondary: { label: "اطلب عرض سعر", href: "/wholesale" },
+    caption: "صورة حقيقية من إنتاج الورشة.",
   },
   {
-    id: "custom-woodwork",
-    theme: "custom-woodwork",
-    kind: "conceptual",
-    restricted: false,
-    image: "/concepts/hero/custom-woodwork.jpg",
-    imageWidth: 1920,
-    imageHeight: 900,
-    objectPosition: "center right",
-    kicker: "تصنيع حسب المواصفات",
-    title: "قطعة واضحة… حسب مقاسك",
-    body: "خراطة وتصنيع قطع خشبية حسب التصميم والمواصفات والكميات المطلوبة.",
-    chips: [],
-    primary: { label: "اطلب دراسة تصنيع حسب المقاسات", href: "/custom-orders" },
-    secondary: { label: "اطلب عرض سعر", href: "/request-quote" },
-    caption: "تصور تصميمي لقطعة واحدة، وليس منتجاً جاهزاً في المخزون.",
-  },
-  {
-    id: "decorative",
-    theme: "decorative",
-    kind: "conceptual",
-    restricted: false,
-    image: "/concepts/hero/decor-concepts.jpg",
+    id: "custom",
+    theme: "custom",
+    kind: "workshop",
+    image: "/workshop/hero/custom.jpg",
     imageWidth: 1920,
     imageHeight: 900,
     objectPosition: "center",
-    kicker: "تطبيقات ديكور",
-    title: "أفكار خشبية للمشاريع",
-    body: "اتجاه بصري لتطبيقات ديكور في بيئة استخدام. هذه الصور التصورية ليست منتجات مصنّعة معروضة للبيع.",
-    chips: [],
-    primary: { label: "استعرض أفكار التصنيع", href: "/custom-orders" },
-    secondary: { label: "تواصل معنا", href: "/contact" },
-    caption: "تصور تطبيقي في بيئة استخدام — ليس مخزوناً جاهزاً.",
+    kicker: "تصنيع خاص",
+    title: "خراطة حسب طلبك",
+    body: "نراجع الفكرة أو المقاس أو النموذج، ثم نؤكد إمكانية التصنيع قبل أي التزام.",
+    primary: { label: "اطلب تصنيع خاص", href: "/custom-orders" },
+    secondary: { label: "تعرّف على الورشة", href: "/about" },
+    caption: "تفصيل خراطة حقيقي من إنتاج الورشة.",
+  },
+  {
+    id: "wholesale",
+    theme: "wholesale",
+    kind: "workshop",
+    image: "/workshop/hero/wholesale.jpg",
+    imageWidth: 1920,
+    imageHeight: 900,
+    objectPosition: "center",
+    kicker: "للتاجر والمحل",
+    title: "كميات للتجار وأصحاب المحلات",
+    body: "استفسار الجملة للكميات والموديلات. لا سعر معلن ولا ادّعاء مخزون قبل التأكيد.",
+    primary: { label: "اطلب عرض سعر جملة", href: "/wholesale" },
+    secondary: { label: "استعرض البكّارات", href: "/products" },
+    caption: "دفعة بكّارات خشبية من الورشة.",
   },
 ];
 
 export function publicHeroSlides(): HeroSlide[] {
   return [...PUBLIC_SLIDES];
-}
-
-export function workshopPromoReady(): boolean {
-  return features.workshopProductPromo && !WORKSHOP_SLIDE_DISABLED;
 }

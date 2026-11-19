@@ -9,9 +9,9 @@ import WhatsAppCta from "@/components/WhatsAppCta";
 import { isWhatsAppConfigured } from "@/lib/whatsapp";
 
 const LINKS = [
-  { href: "/products", label: "المنتجات" },
+  { href: "/products", label: "البكّارات" },
   { href: "/wholesale", label: "الجملة" },
-  { href: "/custom-orders", label: "حسب الطلب" },
+  { href: "/custom-orders", label: "تصنيع خاص" },
   { href: "/about", label: "الورشة" },
   { href: "/contact", label: "تواصل" },
 ];
@@ -42,7 +42,7 @@ export default function MarketingShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <div className="flex items-center gap-2">
-            <Link to="/request-quote" className="rounded-full bg-manjoor-walnut px-4 py-2 text-sm font-bold text-manjoor-sand">
+            <Link to="/wholesale" className="rounded-full bg-manjoor-walnut px-4 py-2 text-sm font-bold text-manjoor-sand">
               اطلب عرض سعر{count > 0 ? ` (${count})` : ""}
             </Link>
             <button type="button" className="p-2 lg:hidden" aria-expanded={open} aria-label="القائمة" onClick={() => setOpen((v) => !v)}>

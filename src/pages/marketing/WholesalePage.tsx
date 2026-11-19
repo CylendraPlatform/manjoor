@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { ZodError } from "zod";
 import Seo from "@/components/Seo";
 import MarketingShell from "@/components/marketing/MarketingShell";
@@ -9,14 +9,22 @@ import { emptyContact, LeadSubmissionDisabledError, submitWholesaleLead, wholesa
 import { claimSubmission, releaseSubmission, submissionKey } from "@/lib/submission-guard";
 import { trackEvent } from "@/lib/analytics";
 import { getErrorMessage } from "@/lib/utils";
+import { stemBySlug } from "@/content/stems";
 
 export default function WholesalePage() {
+  const [params] = useSearchParams();
+  const stem = stemBySlug(params.get("model") ?? "");
   const [draft, setDraft] = useState<ContactDraft>(emptyContact());
   const [interest, setInterest] = useState("");
   const [quantity, setQuantity] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "disabled" | "duplicate" | "error" | "saved">("idle");
   const [reference, setReference] = useState("");
+
+  useEffect(() => {
+    if (!stem) return;
+    setInterest((current) => current.trim().length > 0 ? current : `استفسار عن ${stem.title}`);
+  }, [stem]);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();

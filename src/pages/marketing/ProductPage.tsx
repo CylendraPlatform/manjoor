@@ -8,6 +8,7 @@ import Lightbox from "@/components/marketing/Lightbox";
 import QuoteButton from "@/components/QuoteButton";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import { brand } from "@/config/brand";
+import { stemBySlug, stemInquiryPath } from "@/content/stems";
 import { loadPublicCatalog } from "@/lib/public-catalog";
 import { trackEvent } from "@/lib/analytics";
 
@@ -23,13 +24,15 @@ function Detail({ label, value }: { label: string; value: string }) {
 export default function ProductPage() {
   const { slug = "" } = useParams();
   const catalog = useQuery({ queryKey: ["public-catalog"], queryFn: loadPublicCatalog });
+  const stem = stemBySlug(slug);
   const product = catalog.data?.products.find((item) => item.slug === slug);
   const [active, setActive] = useState<string | null>(null);
   const [qty, setQty] = useState(1);
 
   useEffect(() => {
     if (product) trackEvent("product_view", { product_id: product.id });
-  }, [product]);
+    if (stem) trackEvent("product_view", { product_id: stem.slug });
+  }, [product, stem]);
 
   useEffect(() => {
     if (!product) return;
@@ -59,12 +62,25 @@ export default function ProductPage() {
 
   return (
     <MarketingShell>
-      <Seo title={product?.name ?? "المنتج"} description={product?.description ?? "تفاصيل منتج خشبي من منجور."} path={`/products/${slug}`} />
+      <Seo title={stem?.title ?? product?.name ?? "المنتج"} description={stem?.descriptor ?? product?.description ?? "تفاصيل منتج خشبي من منجور."} path={`/products/${slug}`} />
       <div className="container py-10">
-        <Link to="/products" className="text-sm text-manjoor-walnut">العودة للمنتجات</Link>
-        {catalog.isLoading && <p className="mt-6">جارٍ التحميل…</p>}
-        {catalog.data?.state === "unavailable" && <p className="mt-6" role="alert">تعذّر تحميل المنتج: {catalog.data.message}</p>}
-        {catalog.data && catalog.data.state !== "unavailable" && !product && (
+        <Link to="/products" className="text-sm text-manjoor-walnut">العودة للبكّارات</Link>
+        {stem && (
+          <div className="mt-6 grid gap-8 md:grid-cols-2">
+            <img src={stem.image} alt={stem.title} className="h-80 w-full rounded-3xl object-cover md:h-[28rem]" />
+            <div>
+              <h1 className="text-3xl font-extrabold text-manjoor-walnut">{stem.title}</h1>
+              <p className="mt-3 leading-8">{stem.descriptor}</p>
+              <p className="mt-4 text-sm">السعر والتوفر ومدة التجهيز تُؤكد بعد مراجعة الطلب. هذا استفسار وليس شراءً.</p>
+              <Link to={stemInquiryPath(stem.slug)} className="mt-6 inline-block rounded-full bg-manjoor-walnut px-6 py-3 font-bold text-manjoor-sand">
+                اطلب هذا الموديل
+              </Link>
+            </div>
+          </div>
+        )}
+        {!stem && catalog.isLoading && <p className="mt-6">جارٍ التحميل…</p>}
+        {!stem && catalog.data?.state === "unavailable" && <p className="mt-6" role="alert">تعذّر تحميل المنتج: {catalog.data.message}</p>}
+        {!stem && catalog.data && catalog.data.state !== "unavailable" && !product && (
           <p className="mt-6 rounded-2xl bg-white p-6">هذا المنتج غير متاح للعرض العام. قد يكون غير معتمد أو غير موجود.</p>
         )}
         {product && (
