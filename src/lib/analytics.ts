@@ -17,6 +17,8 @@ export type AnalyticsEvent =
   | "whatsapp_click"
   | "wholesale_form_success"
   | "custom_order_request"
+  | "concept_gallery_view"
+  | "concept_inquiry_click"
   | "lead_qualified"
   | "lead_won";
 

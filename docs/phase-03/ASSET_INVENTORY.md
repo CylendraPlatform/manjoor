@@ -11,4 +11,5 @@
 | `public/brand/manjoor-icon.png` | Official brand/logo, 512px production copy | Yes |
 | `public/brand/manjoor-favicon.png` | Official brand/logo, 32px tab icon | Yes |
 | `public/favicon.ico` | Official brand/logo, ICO | Yes |
-| Generated hero / category art | Generated marketing visual | Not created |
+| `public/concepts/*.jpg` | Generated marketing visual (conceptual woodturning, not inventory) | Yes, labeled conceptual |
+| `design-assets` ZIP images 06–08 | Generated UI mockups / hero with invented branding | No — design reference only |

@@ -6,6 +6,7 @@ import Reveal from "@/components/marketing/Reveal";
 import PlaceholderVisual from "@/components/marketing/PlaceholderVisual";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import { brand } from "@/config/brand";
+import { CONCEPT_DISCLAIMER, CONCEPT_LABEL, MANUFACTURING_CONCEPTS } from "@/content/concepts";
 import { OFFERING_DIRECTIONS } from "@/content/offerings";
 import { loadPublicCatalog } from "@/lib/public-catalog";
 
@@ -107,9 +108,21 @@ export default function HomePage() {
       </section>
 
       <section className="container py-12">
-        <h2 className="text-2xl font-extrabold text-manjoor-walnut">التصنيع حسب الطلب</h2>
-        <p className="mt-2 max-w-2xl leading-7">يمكن وصف الأبعاد والكمية والمحافظة وإرفاق صورة مرجعية. إرسال الطلب لا يعني قبول التصنيع.</p>
-        <Link to="/custom-orders" className="mt-4 inline-block font-bold text-manjoor-walnut underline">أرسل مواصفاتك</Link>
+        <h2 className="text-2xl font-extrabold text-manjoor-walnut">من فكرتك... نصنع قطعة مميزة</h2>
+        <p className="mt-2 max-w-3xl leading-7">استكشف نماذج تصميمية لمنتجات خشبية يمكن دراسة تنفيذها حسب مواصفاتك والكمية المطلوبة.</p>
+        <p className="mt-2 max-w-3xl text-sm leading-7 text-manjoor-charcoal/70">{CONCEPT_DISCLAIMER}</p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {MANUFACTURING_CONCEPTS.slice(0, 3).map((item) => (
+            <Link key={item.id} to="/custom-orders" className="overflow-hidden rounded-3xl bg-white shadow-sm">
+              <img src={item.image} alt="" className="h-44 w-full object-cover" />
+              <div className="p-4">
+                <p className="text-xs font-bold text-manjoor-brass">{CONCEPT_LABEL}</p>
+                <h3 className="mt-2 font-bold">{item.title}</h3>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <Link to="/custom-orders" className="mt-6 inline-block rounded-full bg-manjoor-walnut px-6 py-3 font-bold text-manjoor-sand">استعرض أفكار التصنيع</Link>
       </section>
 
       <section className="container py-4">

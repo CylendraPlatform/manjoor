@@ -63,6 +63,8 @@ export const customOrderSchema = leadContactSchema.extend({
   specifications: z.string().trim().min(10, "صف المواصفات بوضوح").max(1000),
   dimensions: z.string().trim().max(120).optional().or(z.literal("")),
   quantity: z.number().int().positive({ message: "الكمية يجب أن تكون أكبر من صفر" }),
+  conceptId: z.string().trim().max(64).optional().or(z.literal("")),
+  conceptTitle: z.string().trim().max(120).optional().or(z.literal("")),
 });
 
 export type QuoteRequestInput = z.infer<typeof quoteRequestSchema>;
@@ -111,9 +113,14 @@ export function submitWholesaleLead(input: WholesaleLeadInput): Promise<LeadSubm
 
 export function submitCustomOrder(input: CustomOrderInput): Promise<LeadSubmissionResult> {
   const parsed = customOrderSchema.parse(input);
-  const note = [parsed.specifications, parsed.dimensions ? `الأبعاد التقريبية: ${parsed.dimensions}` : ""]
-    .filter(Boolean)
-    .join("\n");
+  const conceptLine = parsed.conceptId
+    ? `مفهوم:${parsed.conceptId}${parsed.conceptTitle ? ` — ${parsed.conceptTitle}` : ""}`
+    : "";
+  const note = [
+    conceptLine,
+    parsed.specifications,
+    parsed.dimensions ? `الأبعاد التقريبية: ${parsed.dimensions}` : "",
+  ].filter(Boolean).join("\n");
   const shaped: WholesaleLeadInput = {
     name: parsed.name,
     phone: parsed.phone,
@@ -122,7 +129,7 @@ export function submitCustomOrder(input: CustomOrderInput): Promise<LeadSubmissi
     city: parsed.city,
     preferredContact: parsed.preferredContact,
     notes: note,
-    productInterest: "تصنيع حسب الطلب",
+    productInterest: conceptLine || "تصنيع حسب الطلب",
     expectedQuantity: String(parsed.quantity),
   };
   return submitViaRpc("custom_order", shaped);

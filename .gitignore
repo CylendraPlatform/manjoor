@@ -34,6 +34,10 @@ supabase/.temp/
 # Regulated workshop photographs. Do not publish. See docs/phase-03/ASSET_INVENTORY.md.
 photo/
 
+# Large source archives and unoptimized extracts. Optimized copies live in public/concepts/.
+design-assets/extracted/
+design-assets/*.zip
+
 # Original Dukany store documents — confidential reference material, must NOT be published
 # مستندات متجر دكاني الأصلي — مواد مرجعية سرية، يُمنع رفعها (تحوي بيانات وصول وروابط)
 مستندات متجر دكاني/
