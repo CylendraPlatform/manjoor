@@ -1,1 +1,3 @@
-Read `AGENTS.md` first, then `docs/README.md` and the P0 implementation report. This is an isolated Bounty adaptation of Dukany; never use original credentials.
+Read `AGENTS.md` first, then `README.md`, `docs/phase-01/` (Phase 01 reports), `docs/README.md`, and `docs/P0_IMPLEMENTATION_REPORT.md`.
+
+MANJOOR (منجور) is the active product, built on the Dukany code foundation (Bounty was an intermediate codename). It is internal-stage software: public commerce/outreach is disabled and must stay disabled without approval; the original Dukany database must never be used or modified; production DB changes require explicit approval. Keep TypeScript at zero errors without `any`/`@ts-ignore`; never commit secrets; never invent MANJOOR logo or business information.

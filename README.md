@@ -1,34 +1,35 @@
-> **Bounty adaptation:** Start with [`README_BOUNTY.md`](README_BOUNTY.md) and [`docs/P0_IMPLEMENTATION_REPORT.md`](docs/P0_IMPLEMENTATION_REPORT.md). This original Dukany README is retained as source reference only.
+# منجور | MANJOOR — فنّ الخشب العراقي
 
-# متجر دكاني | dukany Store
+**MANJOOR Manufacturing OS** — an internal-stage platform for Iraqi woodcraft manufacturing and commerce, based in **Karbala, Iraq**.
 
-متجر "سبأ" هو وجهتك المفضلة للتسوق أونلاين في العراق. نحن نوفر أفضل المنتجات بأسعار تنافسية مع خدمة توصيل سريعة لجميع المحافظات.
+> **Project lineage:** MANJOOR is the **active product**. It is built on the **Dukany** e‑commerce code foundation; **"Bounty"** was an intermediate adaptation codename. See `README_BOUNTY.md` and `docs/` for the original planning pack and history (retained as reference).
 
-## المميزات
-- واجهة مستخدم حديثة وسهلة الاستخدام باللغة العربية.
-- دفع عند الاستلام وتوصيل لكل محافظات العراق.
-- لوحة تحكم إدارية متكاملة لإدارة الطلبات والمنتجات.
-- متوافق مع كافة الأجهزة (Responsive Design).
-- نظام كوبونات خصم متطور.
+> **Status:** Internal development only. Public storefront, checkout, referral/affiliate promotion and outbound sales are **disabled by default** and must not be enabled without legal/commercial approval and backend controls. Trademark clearance is pending — this is not a public commercial launch.
 
-## التقنيات المستخدمة
-- **Frontend**: React + Vite + TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Backend/Database**: Supabase
-- **State Management**: Zustand
-- **Charts**: Recharts
+## Tech stack
+- **Frontend:** React 18 + Vite 5 + TypeScript 5
+- **UI:** Tailwind CSS + shadcn/ui · Arabic‑first, RTL · Tajawal typeface
+- **State:** Zustand · **Data:** TanStack Query
+- **Backend:** Supabase (isolated MANJOOR project — never the original Dukany DB)
+- **Mobile:** Capacitor (Android/iOS shells)
 
-## التشغيل المحلي
-قم باتباع الخطوات التالية لتشغيل المشروع على جهازك:
+## Getting started
+1. Create a **new, isolated** Supabase project for MANJOOR. **Never** use Dukany credentials or database.
+2. `cp .env.example .env.local` and set the new project's `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`. Keep `VITE_ENABLE_PUBLIC_SALES=false`.
+3. `npm ci`
+4. `npm run test:p0 && npm test && npm run lint && npm run build`
+5. `npm run dev`
 
-1. قم بتثبيت التبعيات:
-   ```sh
-   npm install
-   ```
-2. قم بتشغيل خادم التطوير:
-   ```sh
-   npm run dev
-   ```
+Admin panel: `/admin/login` (requires an admin‑role account). Public commerce routes render an internal‑only screen while `VITE_ENABLE_PUBLIC_SALES` is false.
 
-## لوحة التحكم (Admin)
-يمكن الوصول للوحة التحكم عبر الرابط `/admin/login`. يتطلب الدخول حساباً بصلاحية مسؤول (Admin).
+## Brand
+Canonical identity lives in `src/config/brand.ts`. Official logo artwork goes in `public/brand/` (see its README) — it is supplied by the brand owner, never generated. Palette: Walnut `#5B3A27` · Warm Sand `#DCC6A3` · Brass Gold `#B88946` · Charcoal `#2E2B28`.
+
+## Documentation
+- `docs/phase-01/` — Phase 01 baseline, legacy audit, stabilization, rebranding, QA, open risks.
+- `docs/` — original product/architecture/database/QA planning pack.
+- `docs/GITHUB_MIGRATION_REPORT.md` — initial publication record.
+- `AGENTS.md`, `CLAUDE.md` — rules for AI/developer contributors.
+
+## Guardrails
+Do not: point this app at the Dukany database, apply migrations to a live DB without review, re‑enable public sales without approval, commit secrets, or invent brand/contact information. Production database changes require explicit approval.

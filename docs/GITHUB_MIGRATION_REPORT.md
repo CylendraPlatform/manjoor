@@ -98,3 +98,15 @@ gh api repos/CylendraPlatform/manjoor/commits/main --jq .sha     # remote SHA â€
 
 - **Push pending** on write-access grant (section 5).
 - Pre-existing TypeScript + ESLint errors remain (section 4); left as-is per the "do not modify business logic / unrelated code" restriction. Recommend addressing in a follow-up, non-migration change.
+
+---
+
+## Verification update â€” 2026-11-19
+
+Independently verified this session via `gh api repos/CylendraPlatform/manjoor`:
+
+- The source repository has since been **published successfully**: the remote default branch `main` exists and its tip is `b701a8568d79508a4545092c97559d93f5ae1908`, matching the local initial commit recorded above.
+- The initial Git tree contains **256 tracked files** (confirmed via `git ls-tree -r origin/main`).
+- The active account `cylendralabs-blip` now has write access (`{admin,maintain,pull,push,triage}: true`); the earlier `403` push block (section 5) has been resolved.
+
+The historical account of the initial `403` push failure is preserved above. This update records the *verified current remote state only*; it does not attribute the successful push to any specific actor, which was not independently determined.
