@@ -1,20 +1,23 @@
 # Real lead capture report
 
-## Client
-Local `.env` (not committed) now has:
+Lead submission is on in local `.env`. The function exists on MANJOOR.
 
-- `VITE_ENABLE_PUBLIC_SITE=true`
-- `VITE_ENABLE_LEAD_SUBMISSION=true`
-- `VITE_ENABLE_PUBLIC_SALES=false`
-- `VITE_ALLOW_INDEXING=false`
+## Saved test rows
+All are labeled اختبار تقني منجور and are not customers.
 
-`.env.example` matches that policy with placeholder Supabase keys.
+| Reference | Source | How |
+|---|---|---|
+| `MJ-261119-09F39C` | wholesale | SQL call |
+| `MJ-261119-D3A1B6` | contact | anonymous REST RPC |
+| `MJ-261119-04870C` | contact | the website form at `/contact` showed the reference after save |
 
-Wholesale, quote, custom-order, and contact forms call `submit_quote_request`. A reference is rendered only from the RPC payload. A missing table or rejected call shows the server error and keeps the typed fields. No reference is invented.
+## Rejected
+- Same payload again: `duplicate submission`
+- Phone `123`: `invalid contact`
+- Quote for an unknown product: `product not approved`
+- Anonymous `GET /rest/v1/leads`: permission denied (401)
+- `SET ROLE authenticated` with no admin identity: 0 visible leads
+- `SET ROLE anon`: permission denied on `leads`
 
-Contact uses source `contact` and `productInterest` `تواصل عام`.
-
-## What was not proven
-No row was inserted. The MANJOOR project is not reachable from this login, and `public.products` was already missing in the earlier preview. `/admin/leads` will show that read error instead of sample customers.
-
-The unit test does not call the live RPC when the lead flag is on, so it cannot be cited as a saved-lead test.
+## Admin screen
+`/admin/leads` requires a signed-in `profiles.role = 'admin'`. There are no auth users yet, so that screen was not opened. A new signup becomes `customer` and cannot read leads until the role is set to `admin`.

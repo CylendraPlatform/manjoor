@@ -4,7 +4,7 @@
 
 > **Project lineage:** MANJOOR is the **active product**. It is built on the **Dukany** e‑commerce code foundation; **"Bounty"** was an intermediate adaptation codename. See `README_BOUNTY.md` and `docs/` for the original planning pack and history (retained as reference).
 
-> **Status:** The public brochure can be switched on with `VITE_ENABLE_PUBLIC_SITE`. Lead forms are wired (`VITE_ENABLE_LEAD_SUBMISSION`) but do not persist until the MANJOOR Supabase project `ovkhxhuucxisevuvmuoz` is reachable and the lead migration is applied. Direct checkout stays off. Hookah photographs in `photo/` are not published. See `docs/phase-03/`.
+> **Status:** Lead forms persist on the MANJOOR Supabase project `ovkhxhuucxisevuvmuoz`. The public catalog stays empty until non-regulated products are approved. Direct checkout stays off. Hookah photographs in `photo/` are not published. See `docs/phase-03/`.
 
 ## Commercial priority
 The near-term goal is qualified wholesale inquiries, not a deeper ERP. See `docs/phase-02/`. Do not publish legacy or hookah/tobacco products, invent contact details, or treat a WhatsApp click as a saved lead.

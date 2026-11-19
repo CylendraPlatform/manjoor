@@ -1,23 +1,18 @@
 # Phase 03 implementation report
 
-Branch: `feat/manjoor-live-leads-activation`, from the public sales branch. PR #1 was not edited.
+Branch: `feat/manjoor-live-leads-activation`. PR #1 was not edited.
 
 ## Done
-- Local flags: public site on, lead submission on, checkout off, indexing off. `.env` is not committed. `.env.example` matches.
-- Contact form posts through the same lead RPC with source `contact`.
-- The unapplied lead migration accepts that source.
-- `photo/` is gitignored and was not copied into `public/`.
-- Docs in this folder.
+- Public site and lead submission are on locally. Checkout and indexing stay off.
+- Contact, wholesale, custom-order, and quote forms call `submit_quote_request`.
+- `20261119200000_manjoor_public_leads.sql` is applied on MANJOOR (`ovkhxhuucxisevuvmuoz`). The Dukany migration chain was not applied.
+- A website contact submit saved `MJ-261119-04870C` and showed that reference.
+- The catalog reads `products` and shows the empty-catalog message. No hookah photos were published.
 
 ## Not done
-- No migration applied. The available Supabase login cannot see the MANJOOR project and must not be pointed at Masar or Orbitra.
-- No public product rows.
-- No generated marketing images.
-- No WhatsApp number.
-- No logo file in the repo to wire up.
-
-## Verification
-`npm ci` exit 0. TypeScript exit 0. ESLint exit 0. Vitest 43/43. Production build exit 0. Runtime: homepage renders; catalog reports the missing `products` table; quote validation works; contact submit fails with the missing RPC and shows no reference; `/checkout` stays locked; `/admin/leads` requires login; 360px has no horizontal overflow.
+- No admin user, so `/admin/leads` was not opened.
+- No public product rows, prices, WhatsApp number, or logo file.
+- Indexing stays closed.
 
 ## Launch status
-`NOT READY — CRITICAL BLOCKERS REMAIN`
+`CONDITIONALLY READY — BLOCKERS DOCUMENTED`
