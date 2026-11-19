@@ -1,9 +1,11 @@
 # Open risks
 
-1. Do not run `supabase db push`. It would apply the old Dukany migration chain. The live schema is `20261119200000_manjoor_public_leads.sql` only.
-2. No auth user exists, so `/admin/leads` cannot be opened until an admin account is created and `profiles.role` is set to `admin`.
-3. The public catalog is empty on purpose. Hookah photos in `photo/` stay unpublished.
-4. No WhatsApp number and no logo file.
-5. Anonymous read of `leads` is denied. A broader abuse review was not done.
+1. Do not run `supabase db push` to replay old work, and do not move `supabase/migration-history/` back into `supabase/migrations`. The live history contains only `20261119200000`.
+2. Rotate the database password that was typed into the terminal. Steps are in `MIGRATION_BASELINE.md`. Do not paste the old or new password into git.
+3. Change the temporary admin password in `supabase/.temp/admin-one-time.txt`, then delete the file.
+4. The public catalog is empty on purpose. Hookah photos in `photo/` stay unpublished.
+5. No WhatsApp number and no logo file.
 6. Indexing stays closed. Direct checkout stays off.
-7. Three labeled test inquiries are stored (`MJ-261119-09F39C`, `MJ-261119-D3A1B6`, `MJ-261119-04870C`). They are not customers.
+7. Older admin screens (orders, inventory, coupons) still expect tables that were not created. That is outside lead capture.
+8. Anonymous clients cannot read or change leads. A broader abuse review, beyond the rate limit and the permission tests below, was not done.
+9. Test inquiries still stored: `MJ-261119-09F39C` (contacted), `MJ-261119-D3A1B6` (contacted), `MJ-261119-04870C` (new). They are not customers.
