@@ -44,7 +44,7 @@ export default function Seo({ title, description, path, image }: SeoProps) {
     upsertMeta("property", "og:type", "website");
     upsertMeta("property", "og:locale", "ar_IQ");
     upsertMeta("name", "robots", import.meta.env.VITE_ALLOW_INDEXING === "true" ? "index,follow" : "noindex,nofollow");
-    if (image) upsertMeta("property", "og:image", image);
+    upsertMeta("property", "og:image", image ?? brand.logo.icon);
     if (path && typeof window !== "undefined") {
       upsertLink("canonical", window.location.origin + path);
     }

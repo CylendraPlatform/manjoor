@@ -29,8 +29,10 @@ export default function MarketingShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f7f1e8] text-manjoor-charcoal">
       <header className="sticky top-0 z-40 border-b border-manjoor-sand/80 bg-[#f7f1e8]/95 backdrop-blur">
-        <div className="container flex h-16 items-center justify-between gap-3">
-          <Link to="/" aria-label="منجور الرئيسية"><BrandMark className="h-10" /></Link>
+        <div className="container flex h-16 items-center justify-between gap-3 sm:h-20 md:h-24">
+          <Link to="/" aria-label="منجور الرئيسية" className="min-w-0 shrink">
+            <BrandMark />
+          </Link>
           <nav className="hidden items-center gap-5 text-sm font-medium lg:flex">
             {LINKS.map((link) => (
               <Link key={link.href} to={link.href} className={pathname === link.href ? "font-bold text-manjoor-walnut" : "hover:text-manjoor-walnut"}>
@@ -59,9 +61,11 @@ export default function MarketingShell({ children }: { children: ReactNode }) {
       <footer className="mt-16 border-t border-manjoor-sand bg-manjoor-charcoal text-manjoor-sand">
         <div className="container grid gap-6 py-10 md:grid-cols-3">
           <div>
-            <p className="text-2xl font-extrabold text-white">{brand.ar}</p>
-            <p className="mt-1 text-manjoor-brass">{brand.sloganAr}</p>
-            <p className="mt-3 text-sm">{brand.originAr}</p>
+            <div className="inline-block rounded-2xl bg-manjoor-sand p-2">
+              <BrandMark variant="horizontal" className="h-14 md:h-16" />
+            </div>
+            <p className="mt-3 text-manjoor-brass">{brand.sloganAr}</p>
+            <p className="mt-2 text-sm">{brand.originAr}</p>
           </div>
           <div className="flex flex-col gap-2 text-sm">
             {LINKS.map((link) => <Link key={link.href} to={link.href}>{link.label}</Link>)}

@@ -52,7 +52,7 @@ export default function AdminLogin() {
             <Card className="w-full max-w-md">
                 <CardHeader className="text-center">
                     <div className="flex justify-center mb-6">
-                        <img src="/brand/manjoor-logo-horizontal.png" alt="MANJOOR منجور" className="h-32 w-auto object-contain" />
+                        <img src="/brand/manjoor-logo-horizontal.png" alt="MANJOOR منجور" className="mx-auto h-24 w-auto max-w-full object-contain sm:h-32" />
                     </div>
                     <CardTitle className="text-2xl font-bold">تسجيل دخول المسؤول</CardTitle>
                 </CardHeader>
