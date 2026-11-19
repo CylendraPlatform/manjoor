@@ -22,7 +22,7 @@ export default function HomePage() {
   return (
     <MarketingShell>
       <Seo
-        title="خراطة خشبية تُتقن التفاصيل"
+        title="خراطة تُظهر عرق الخشب"
         description="خراطة وصناعة قطع خشبية في كربلاء، وتنفيذ تصاميم خاصة للتجار وأصحاب المشاريع حسب المواصفات والكميات المطلوبة."
         path="/"
       />
@@ -31,16 +31,24 @@ export default function HomePage() {
 
       <section className="container grid gap-4 py-8 md:grid-cols-3">
         {HOMEPAGE_SPOTLIGHTS.map((item) => (
-          <Link key={item.title} to={item.href} className="card-lift group relative overflow-hidden rounded-3xl bg-manjoor-walnut text-manjoor-sand">
-            {item.image ? (
-              <img src={item.image} alt="" width={1400} height={933} className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none" />
-            ) : (
-              <div className="aspect-[16/10] w-full bg-gradient-to-br from-manjoor-walnut to-manjoor-charcoal" />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-manjoor-walnut via-manjoor-walnut/40 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-4">
-              <h2 className="text-lg font-extrabold">{item.title}</h2>
-              <p className="mt-1 text-sm text-manjoor-sand/85">{item.subtitle}</p>
+          <Link
+            key={item.title}
+            to={item.href}
+            aria-label={`${item.title} — استعرض أفكار التصنيع`}
+            className="card-lift group relative overflow-hidden rounded-3xl bg-manjoor-charcoal text-manjoor-sand"
+          >
+            <img
+              src={item.image}
+              alt=""
+              width={1400}
+              height={933}
+              className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-manjoor-charcoal via-manjoor-charcoal/55 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 space-y-1 p-4">
+              <h2 className="text-lg font-extrabold drop-shadow">{item.title}</h2>
+              <p className="text-sm leading-6 text-manjoor-sand/90">{item.subtitle}</p>
+              <span className="inline-block text-xs font-bold text-manjoor-brass">استعرض الأفكار</span>
             </div>
           </Link>
         ))}

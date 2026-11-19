@@ -20,10 +20,13 @@ describe("homepage hero slides", () => {
     expect(publicHeroSlides().every((item) => item.image.startsWith("/concepts/") && !item.image.includes("photo"))).toBe(true);
   });
 
-  it("keeps homepage spotlights to three distinct destinations without repeating every concept card", () => {
+  it("gives every spotlight a unique image that is not reused as a hero frame", () => {
     expect(HOMEPAGE_SPOTLIGHTS).toHaveLength(3);
-    const images = HOMEPAGE_SPOTLIGHTS.map((item) => item.image).filter((value): value is string => Boolean(value));
-    expect(new Set(images).size).toBe(images.length);
-    expect(images.every((image) => !image.startsWith("/photo/"))).toBe(true);
+    expect(HOMEPAGE_SPOTLIGHTS.every((item) => item.image.length > 0)).toBe(true);
+    const spotlightImages = HOMEPAGE_SPOTLIGHTS.map((item) => item.image);
+    expect(new Set(spotlightImages).size).toBe(3);
+    const heroImages = publicHeroSlides().map((item) => item.image);
+    expect(spotlightImages.some((image) => heroImages.includes(image))).toBe(false);
+    expect(heroImages[0]).not.toBe(heroImages[1]);
   });
 });

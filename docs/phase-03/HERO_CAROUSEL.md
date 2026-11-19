@@ -6,8 +6,8 @@ Stacked on PR #5 (`feat/manjoor-visual-excellence`).
 
 | Slide | Theme | Asset | Kind | Primary CTA |
 |---|---|---|---|---|
-| A | Craftsmanship | `/concepts/hero/craftsmanship.jpg` from `candlesticks.jpg` | Conceptual illustration | `/custom-orders` |
-| B | Custom woodwork | `/concepts/hero/custom-woodwork.jpg` from `vases-ornaments.jpg` | Conceptual illustration | `/request-quote` |
+| A | Craftsmanship | `/concepts/hero/craftsmanship.jpg` — tight grain/turned-profile crop of `candlesticks.jpg` | Conceptual illustration | `/custom-orders` |
+| B | Custom woodwork | `/concepts/hero/custom-woodwork.jpg` from `furniture-components.jpg` | Conceptual illustration | `/request-quote` |
 
 Slide C (`workshop-products`) is coded but **disabled**. `VITE_ENABLE_WORKSHOP_PRODUCT_PROMO` defaults false and the slide has no image path. `photo/` remains unpublished.
 
@@ -23,7 +23,7 @@ The attached UI mockup (hookah-stem headline «بكار أراكيل خشبي»)
 
 ## Homepage imagery (no four-photo repetition)
 
-Hero uses candlesticks + vases. Spotlights use furniture-components, a typographic vessels card, and lamp-bases. The ten-concept gallery stays on `/custom-orders`.
+Hero A is a grain close-up (not a product lineup). Hero B is the furniture-component collection. Spotlight cards use `vases-ornaments`, `lamp-bases`, and the full `candlesticks` group — no empty walnut tile, and none of those files is reused as a hero frame. The ten-concept gallery stays on `/custom-orders`.
 
 ## Image processing
 

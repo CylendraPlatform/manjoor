@@ -57,9 +57,9 @@ const PUBLIC_SLIDES: HeroSlide[] = [
     imageHeight: 980,
     objectPosition: "center 35%",
     kicker: "منجور — فن الخشب العراقي | كربلاء",
-    title: "خراطة خشبية تُتقن التفاصيل",
-    body: "تصاميم متعددة بجودة عالية، وتصنيع كميات للتجار والمحلات حسب المواصفات المتفق عليها.",
-    chips: ["خشب طبيعي مختار", "خراطة دقيقة وتشطيب متقن", "تصاميم متعددة وأحجام مختلفة", "تنفيذ خاص للتجار"],
+    title: "خراطة تُظهر عرق الخشب",
+    body: "دقة التشكيل على المخرطة، وتشطيب يُبرز ملمس الخشب الطبيعي. الصورة تصور تفصيلاً تصميمياً وليست لقطة من داخل الورشة.",
+    chips: ["ملمس الخشب", "دقة الخراطة", "تشطيب متقن"],
     primary: { label: "استعرض أفكار التصنيع", href: "/custom-orders" },
     secondary: { label: "اطلب عرض سعر", href: "/request-quote" },
     caption: "تصور تصميمي — ليست صورة مخزون جاهز.",
@@ -74,9 +74,9 @@ const PUBLIC_SLIDES: HeroSlide[] = [
     imageHeight: 980,
     objectPosition: "center 45%",
     kicker: "تصنيع حسب المواصفات",
-    title: "من فكرتك... نصنع قطعة مميزة",
-    body: "نماذج تصميمية لأوعية ومكونات خشبية يمكن دراسة تنفيذها حسب طلبك والكمية المطلوبة.",
-    chips: ["أوعية وعلب", "مكونات أثاث", "إضاءة وعرض"],
+    title: "مكونات وتصاميم حسب طلبك",
+    body: "أرجل، مغازل، مقابض وأشكال مقترحة يمكن دراسة تنفيذها للتجار حسب الكمية والمقاس المتفق عليه.",
+    chips: ["مكونات أثاث", "قطع زخرفية", "تصنيع حسب المقاس"],
     primary: { label: "اطلب عرض سعر للتصنيع", href: "/request-quote" },
     secondary: { label: "استعرض التصاميم", href: "/custom-orders" },
     caption: "تصور تصميمي — التنفيذ يخضع لتقييم الورشة.",
@@ -87,24 +87,25 @@ export const HOMEPAGE_SPOTLIGHTS: Array<{
   title: string;
   subtitle: string;
   href: string;
-  image?: string;
+  image: string;
 }> = [
   {
-    title: "مكونات الأثاث",
-    subtitle: "أرجل، مغازل، وقطع زخرفية",
-    href: "/custom-orders",
-    image: "/concepts/furniture-components.jpg",
-  },
-  {
     title: "أوعية وتحف ديكورية",
-    subtitle: "أطباق، علب، ومزهريات خشبية",
+    subtitle: "مزهريات، علب، وأوعية مخرطة",
     href: "/custom-orders",
+    image: "/concepts/vases-ornaments.jpg",
   },
   {
     title: "إكسسوارات الإضاءة",
-    subtitle: "شمعدانات وقواعد مصابيح",
+    subtitle: "قواعد مصابيح يمكن دراسة تنفيذها",
     href: "/custom-orders",
     image: "/concepts/lamp-bases.jpg",
+  },
+  {
+    title: "شمعدانات مخرطة",
+    subtitle: "أشكال عرض وإضاءة شمعية",
+    href: "/custom-orders",
+    image: "/concepts/candlesticks.jpg",
   },
 ];
 
