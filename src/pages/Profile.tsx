@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import type { Tables } from "@/integrations/supabase/types";
+import type { Profile as ProfileRow } from "@/integrations/supabase/overrides";
+import { getErrorMessage } from "@/lib/utils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -15,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
     const { user, profile, loading: authLoading } = useAuth();
-    const [orders, setOrders] = useState<any[]>([]);
+    const [orders, setOrders] = useState<Tables<"orders">[]>([]);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
     const navigate = useNavigate();
@@ -37,9 +40,9 @@ export default function Profile() {
             setAddress(profile.address || "");
             fetchOrders();
         }
-    }, [user, profile, authLoading]);
+    }, [user, profile, authLoading, navigate, fetchOrders]);
 
-    const fetchOrders = async () => {
+    const fetchOrders = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from("orders")
@@ -54,7 +57,7 @@ export default function Profile() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [user?.id]);
 
     const handleUpdateProfile = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -72,8 +75,8 @@ export default function Profile() {
 
             if (error) throw error;
             toast.success("تم تحديث الملف الشخصي بنجاح");
-        } catch (error: any) {
-            toast.error(error.message || "حدث خطأ أثناء التحديث");
+        } catch (error) {
+            toast.error(getErrorMessage(error));
         } finally {
             setUpdating(false);
         }
@@ -101,8 +104,8 @@ export default function Profile() {
                         <CardContent>
                             <div className="flex items-end justify-between">
                                 <div>
-                                    <div className="text-4xl font-black mb-1">{(profile as any)?.points || 0}</div>
-                                    <p className="text-indigo-200 text-xs">تعادل خصم بقيمة {formatPrice(((profile as any)?.points || 0) * 10)}</p>
+                                    <div className="text-4xl font-black mb-1">{(profile as ProfileRow | null)?.points || 0}</div>
+                                    <p className="text-indigo-200 text-xs">تعادل خصم بقيمة {formatPrice(((profile as ProfileRow | null)?.points || 0) * 10)}</p>
                                 </div>
                                 <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-sm border border-white/10">
                                     <Package className="text-white" size={24} />
