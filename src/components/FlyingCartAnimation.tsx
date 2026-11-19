@@ -1,27 +1,16 @@
 import { useEffect, useState } from "react";
 import { ShoppingBag } from "lucide-react";
 
-export const triggerCartAnimation = (startElement: HTMLElement) => {
-    const event = new CustomEvent("fly-to-cart", {
-        detail: {
-            x: startElement.getBoundingClientRect().left + startElement.offsetWidth / 2,
-            y: startElement.getBoundingClientRect().top + startElement.offsetHeight / 2,
-        }
-    });
-    window.dispatchEvent(event);
-};
-
 const FlyingCartAnimation = () => {
     const [animations, setAnimations] = useState<{ id: number, x: number, y: number, targetX: number, targetY: number }[]>([]);
 
     useEffect(() => {
-        const handleFly = (e: any) => {
+        const handleFly = (e: Event) => {
             const target = document.getElementById("cart-icon-header");
             if (!target) return;
 
+            const { x: startX, y: startY } = (e as CustomEvent<{ x: number; y: number }>).detail;
             const targetRect = target.getBoundingClientRect();
-            const startX = e.detail.x;
-            const startY = e.detail.y;
             const targetX = targetRect.left + targetRect.width / 2;
             const targetY = targetRect.top + targetRect.height / 2;
 
@@ -48,7 +37,7 @@ const FlyingCartAnimation = () => {
                         "--start-y": `${anim.y}px`,
                         "--end-x": `${anim.targetX}px`,
                         "--end-y": `${anim.targetY}px`,
-                    } as any}
+                    } as React.CSSProperties}
                 >
                     <div className="bg-primary text-white p-2 rounded-full shadow-lg">
                         <ShoppingBag size={20} />

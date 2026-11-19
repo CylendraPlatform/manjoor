@@ -5,7 +5,7 @@ import { useCartStore } from "@/lib/cart-store";
 import { useWishlistStore } from "@/lib/wishlist-store";
 import { ShoppingBag, Timer, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
-import { triggerCartAnimation } from "@/components/FlyingCartAnimation";
+import { triggerCartAnimation } from "@/lib/cart-animation";
 
 const CountdownTimer = ({ targetDate }: { targetDate: string }) => {
   const [timeLeft, setTimeLeft] = useState<{ h: number, m: number, s: number } | null>(null);

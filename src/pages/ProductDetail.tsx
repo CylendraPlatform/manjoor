@@ -13,7 +13,7 @@ import { ShoppingBag, MessageCircle, ArrowRight, Heart, AlertTriangle, XCircle }
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect, useCallback } from "react";
 import { storeConfig } from "@/config/store";
-import { triggerCartAnimation } from "@/components/FlyingCartAnimation";
+import { triggerCartAnimation } from "@/lib/cart-animation";
 
 const PLACEHOLDER_IMG = "/placeholder.svg";
 
