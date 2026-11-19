@@ -7,6 +7,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import type { PluginListenerHandle } from "@capacitor/core";
 import { isNative, shouldOpenExternally, openExternal } from "@/lib/capacitor";
 import OfflineScreen from "./OfflineScreen";
 
@@ -26,7 +27,7 @@ const CapacitorAppWrapper = ({ children }: Props) => {
 
   useEffect(() => {
     if (!isNative()) return;
-    let handle: { remove: () => Promise<void> } | null = null;
+    let handle: PluginListenerHandle | null = null;
 
     const setupNetwork = async () => {
       const { Network } = await import("@capacitor/network");
@@ -62,11 +63,11 @@ const CapacitorAppWrapper = ({ children }: Props) => {
 
   useEffect(() => {
     if (!isNative()) return;
-    let unlisten: (() => Promise<void>) | undefined;
+    let handle: PluginListenerHandle | null = null;
 
     const setupBack = async () => {
       const { App } = await import("@capacitor/app");
-      unlisten = await App.addListener("backButton", () => {
+      handle = await App.addListener("backButton", () => {
         if (location.pathname === "/" || !document.referrer) {
           App.exitApp();
         } else {
@@ -76,7 +77,7 @@ const CapacitorAppWrapper = ({ children }: Props) => {
     };
     setupBack();
     return () => {
-      unlisten?.();
+      handle?.remove();
     };
   }, [navigate, location.pathname]);
 

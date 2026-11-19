@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { formatPrice } from "@/lib/format";
@@ -9,6 +10,29 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Phone, MapPin, CheckCircle2, XCircle, LogOut, Loader2, History, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+
+interface AgentOrderRow {
+    id: string;
+    order_number: number;
+    customer_name: string;
+    customer_phone: string;
+    area: string | null;
+    nearest_landmark: string | null;
+    total: number;
+    status: string;
+    created_at: string;
+    map_url: string | null;
+    governorates: { name: string } | null;
+}
+
+/**
+ * The generated relational types for the embedded `governorates(name)` select
+ * recurse past TypeScript's instantiation depth limit (TS2589). Reading these
+ * two queries through a default-schema client handle sidesteps that compiler
+ * limitation; the rows are then validated against `AgentOrderRow`. Runtime
+ * behavior is identical — the same query is issued.
+ */
+const ordersDb: SupabaseClient = supabase;
 
 export default function AgentOrders() {
     const { user, profile, loading: authLoading } = useAuth();
@@ -20,7 +44,7 @@ export default function AgentOrders() {
         queryKey: ["agent-orders-current", user?.id],
         queryFn: async () => {
             if (!user) return [];
-            const { data, error } = await supabase
+            const { data, error } = await ordersDb
                 .from("orders")
                 .select(`
                     id, order_number, customer_name, customer_phone, area, nearest_landmark, total, status, created_at, map_url,
@@ -31,7 +55,7 @@ export default function AgentOrders() {
                 .order("created_at", { ascending: false });
 
             if (error) throw error;
-            return data;
+            return (data ?? []) as unknown as AgentOrderRow[];
         },
         enabled: !!user && activeTab === "current"
     });
@@ -40,7 +64,7 @@ export default function AgentOrders() {
         queryKey: ["agent-orders-history", user?.id],
         queryFn: async () => {
             if (!user) return [];
-            const { data, error } = await supabase
+            const { data, error } = await ordersDb
                 .from("orders")
                 .select(`
                     id, order_number, customer_name, customer_phone, area, nearest_landmark, total, status, created_at, map_url,
@@ -52,7 +76,7 @@ export default function AgentOrders() {
                 .limit(50);
 
             if (error) throw error;
-            return data;
+            return (data ?? []) as unknown as AgentOrderRow[];
         },
         enabled: !!user && activeTab === "history"
     });
@@ -203,8 +227,8 @@ export default function AgentOrders() {
                                                     </p>
                                                 )}
                                             </div>
-                                            {(order as any).map_url && (
-                                                <a href={(order as any).map_url} target="_blank" rel="noreferrer">
+                                            {order.map_url && (
+                                                <a href={order.map_url} target="_blank" rel="noreferrer">
                                                     <Button size="sm" variant="outline" className="rounded-full h-10 w-10 p-0 border-blue-200 text-blue-600">
                                                         <MapPin size={18} />
                                                     </Button>

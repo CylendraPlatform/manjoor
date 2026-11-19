@@ -11,14 +11,23 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import { arSA } from "date-fns/locale";
 import { storeConfig } from "@/config/store";
+import { asJsonRecord, asString, asNumber, asBoolean } from "@/lib/json";
 
 type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+
+interface TrackedOrder {
+    status: OrderStatus;
+    order_number: string;
+    created_at: string;
+    total: number;
+    delivery_company: string;
+}
 
 const TrackOrder = () => {
     const [orderNumber, setOrderNumber] = useState("");
     const [phone, setPhone] = useState("");
     const [loading, setLoading] = useState(false);
-    const [orderData, setOrderData] = useState<any>(null);
+    const [orderData, setOrderData] = useState<TrackedOrder | null>(null);
     const [error, setError] = useState("");
 
     const handleSearch = async (e: React.FormEvent) => {
@@ -40,12 +49,20 @@ const TrackOrder = () => {
 
             if (error) throw error;
 
-            if (data.found) {
-                setOrderData(data);
+            const result = asJsonRecord(data);
+            if (asBoolean(result.found)) {
+                setOrderData({
+                    status: asString(result.status) as OrderStatus,
+                    order_number: asString(result.order_number),
+                    created_at: asString(result.created_at),
+                    total: asNumber(result.total),
+                    delivery_company: asString(result.delivery_company),
+                });
                 toast.success("تم العثور على الطلب");
             } else {
-                setError(data.message || "الطلب غير موجود");
-                toast.error(data.message || "الطلب غير موجود");
+                const message = asString(result.message) || "الطلب غير موجود";
+                setError(message);
+                toast.error(message);
             }
         } catch (err) {
             console.error(err);

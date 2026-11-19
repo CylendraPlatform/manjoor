@@ -10,6 +10,8 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { asJsonRecord, asString, asNumber, asBoolean } from "@/lib/json";
+import type { Coupon } from "@/lib/cart-store";
 
 const Cart = () => {
     const { items, getTotal, getSubtotal, getDiscountAmount, coupon, applyCoupon, removeCoupon, removeItem, updateQuantity } = useCartStore();
@@ -31,17 +33,20 @@ const Cart = () => {
 
             if (error) throw error;
 
-            if (data.valid) {
-                applyCoupon({
-                    id: data.id,
-                    code: data.code,
-                    type: data.discount_type,
-                    value: data.value
-                });
+            const result = asJsonRecord(data);
+            if (asBoolean(result.valid)) {
+                const discountType = asString(result.discount_type) === "percentage" ? "percentage" : "fixed";
+                const coupon: Coupon = {
+                    id: asString(result.id),
+                    code: asString(result.code),
+                    type: discountType,
+                    value: asNumber(result.value),
+                };
+                applyCoupon(coupon);
                 toast.success("تم تطبيق الكوبون بنجاح");
                 setCouponInput("");
             } else {
-                toast.error(data.message || "الكوبون غير صالح");
+                toast.error(asString(result.message) || "الكوبون غير صالح");
             }
         } catch (error) {
             console.error(error);
