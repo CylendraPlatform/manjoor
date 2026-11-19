@@ -26,7 +26,7 @@ COMMENT ON COLUMN public.products.price_public IS
 CREATE TABLE IF NOT EXISTS public.leads (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     reference TEXT NOT NULL UNIQUE,
-    source TEXT NOT NULL CHECK (source IN ('quote_request','wholesale','custom_order')),
+    source TEXT NOT NULL CHECK (source IN ('quote_request','wholesale','custom_order','contact')),
     name TEXT NOT NULL,
     phone TEXT NOT NULL,
     business_name TEXT,
@@ -107,7 +107,7 @@ DECLARE
     v_active BOOLEAN;
     v_qty INTEGER;
 BEGIN
-    IF p_source NOT IN ('quote_request','wholesale','custom_order') THEN
+    IF p_source NOT IN ('quote_request','wholesale','custom_order','contact') THEN
         RAISE EXCEPTION 'invalid source';
     END IF;
     IF length(v_name) < 2 OR length(v_name) > 120 OR v_phone !~ '^(\+964|0)7[0-9]{9}$' THEN

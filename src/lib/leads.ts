@@ -81,7 +81,7 @@ export interface LeadSubmissionResult {
 }
 
 async function submitViaRpc(
-  source: "quote_request" | "wholesale" | "custom_order",
+  source: "quote_request" | "wholesale" | "custom_order" | "contact",
   payload: QuoteRequestInput | WholesaleLeadInput | CustomOrderInput,
 ): Promise<LeadSubmissionResult> {
   if (!features.leadSubmission) throw new LeadSubmissionDisabledError();
@@ -126,6 +126,28 @@ export function submitCustomOrder(input: CustomOrderInput): Promise<LeadSubmissi
     expectedQuantity: String(parsed.quantity),
   };
   return submitViaRpc("custom_order", shaped);
+}
+
+export const contactLeadSchema = leadContactSchema.extend({
+  message: z.string().trim().min(5, "اكتب رسالتك").max(1000),
+});
+
+export type ContactLeadInput = z.infer<typeof contactLeadSchema>;
+
+export function submitContactInquiry(input: ContactLeadInput): Promise<LeadSubmissionResult> {
+  const parsed = contactLeadSchema.parse(input);
+  const shaped: WholesaleLeadInput = {
+    name: parsed.name,
+    phone: parsed.phone,
+    businessName: parsed.businessName,
+    governorate: parsed.governorate,
+    city: parsed.city,
+    preferredContact: parsed.preferredContact,
+    notes: parsed.message,
+    productInterest: "تواصل عام",
+    expectedQuantity: "",
+  };
+  return submitViaRpc("contact", shaped);
 }
 
 export { IRAQI_GOVERNORATES };

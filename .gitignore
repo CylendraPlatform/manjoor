@@ -31,6 +31,9 @@ dist-ssr
 # كاش Supabase CLI المحلي
 supabase/.temp/
 
+# Regulated workshop photographs. Do not publish. See docs/phase-03/ASSET_INVENTORY.md.
+photo/
+
 # Original Dukany store documents — confidential reference material, must NOT be published
 # مستندات متجر دكاني الأصلي — مواد مرجعية سرية، يُمنع رفعها (تحوي بيانات وصول وروابط)
 مستندات متجر دكاني/

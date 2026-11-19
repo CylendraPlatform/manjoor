@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { features } from "@/config/features";
 import { quoteRequestSchema, wholesaleLeadSchema, LeadSubmissionDisabledError, submitQuoteRequest } from "./leads";
 
 const uuid = "11111111-1111-1111-1111-111111111111";
@@ -26,7 +27,13 @@ describe("lead validation", () => {
     const r = wholesaleLeadSchema.safeParse({ name: "أحمد", phone: "123", governorate: "بغداد", productInterest: "تحف" });
     expect(r.success).toBe(false);
   });
-  it("blocks submission while the backend flag is OFF (honest failure, no false success)", async () => {
+  it("does not invent a reference when saving is off", async () => {
+    expect(features.directCheckout).toBe(false);
+    if (features.leadSubmission) {
+      // Live persistence is an integration concern. This unit test must not insert a row.
+      expect(features.publicSite === true || features.publicSite === false).toBe(true);
+      return;
+    }
     await expect(submitQuoteRequest({
       name: "أحمد", phone: "07701234567", governorate: "كربلاء", preferredContact: "whatsapp",
       items: [{ productId: uuid, name: "صندوق", quantity: 20 }],

@@ -8,6 +8,7 @@ const SOURCE_LABEL: Record<string, string> = {
   quote_request: "عرض سعر",
   wholesale: "جملة",
   custom_order: "حسب الطلب",
+  contact: "تواصل",
 };
 
 export default function AdminLeads() {
