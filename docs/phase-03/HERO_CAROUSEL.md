@@ -6,12 +6,11 @@ Stacked on PR #5 (`feat/manjoor-visual-excellence`).
 
 | Slide | Theme | Asset | Kind | Primary CTA |
 |---|---|---|---|---|
-| A | Craftsmanship | `/concepts/hero/craftsmanship.jpg` — tight grain/turned-profile crop of `candlesticks.jpg` | Conceptual illustration | `/custom-orders` |
-| B | Custom woodwork | `/concepts/hero/custom-woodwork.jpg` from `furniture-components.jpg` | Conceptual illustration | `/request-quote` |
+| A | Craft | `/concepts/hero/craftsmanship.jpg` — conceptual lathe-process illustration | Conceptual | تقييم تصنيع |
+| B | Custom | `/concepts/hero/custom-woodwork.jpg` — one lamp base from `lamp-bases.jpg` | Conceptual | دراسة حسب المقاسات |
+| C | Décor | `/concepts/hero/decor-concepts.jpg` — conceptual interior-use scene | Conceptual | معرض الأفكار |
 
-Slide C (`workshop-products`) is coded but **disabled**. `VITE_ENABLE_WORKSHOP_PRODUCT_PROMO` defaults false and the slide has no image path. `photo/` remains unpublished.
-
-The attached UI mockup (hookah-stem headline «بكار أراكيل خشبي») is design reference only. That copy is not on the live site.
+Public slide C is decorative concepts, not workshop merchandise. `photo/` and `VITE_ENABLE_WORKSHOP_PRODUCT_PROMO` stay unpublished/off. The hookah-stem mockup headline is design reference only.
 
 ## Carousel behaviour
 
@@ -19,11 +18,11 @@ The attached UI mockup (hookah-stem headline «بكار أراكيل خشبي»)
 - Autoplay 7s, paused on hover/focus/control click.
 - `prefers-reduced-motion`: no autoplay, no fade duration.
 - Keyboard: Left = next (RTL), Right = previous. Ignored inside form fields.
-- First image `fetchPriority=high`, fixed 1920×980 to limit CLS.
+- First image `fetchpriority=high`. Frames are 1920×900. Hero height is `min(68vh, 34rem)` with a light type panel, not a full walnut wash.
 
-## Homepage imagery (no four-photo repetition)
+## Homepage below the hero
 
-Hero A is a grain close-up (not a product lineup). Hero B is the furniture-component collection. Spotlight cards use `vases-ornaments`, `lamp-bases`, and the full `candlesticks` group — no empty walnut tile, and none of those files is reused as a hero frame. The ten-concept gallery stays on `/custom-orders`.
+Typography inquiry paths (no repeated photo grid). Gallery remains `/custom-orders`.
 
 ## Image processing
 

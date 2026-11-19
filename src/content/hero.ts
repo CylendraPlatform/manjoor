@@ -9,7 +9,7 @@ export interface HeroCta {
 
 export interface HeroSlide {
   id: string;
-  theme: "craftsmanship" | "custom-woodwork" | "workshop-products";
+  theme: "craftsmanship" | "custom-woodwork" | "decorative";
   kind: HeroAssetKind;
   restricted: boolean;
   image: string;
@@ -26,25 +26,16 @@ export interface HeroSlide {
 }
 
 /**
- * Slide C is prepared but disabled. It must not load `photo/` (regulated hookah stems).
+ * Real workshop merchandise remains unpublished until legal review.
+ * Do not attach `photo/` paths here.
  */
-const WORKSHOP_SLIDE: HeroSlide = {
-  id: "workshop-products",
-  theme: "workshop-products",
-  kind: "workshop",
-  restricted: true,
-  image: "",
-  imageWidth: 1920,
-  imageHeight: 980,
-  objectPosition: "center",
-  kicker: "منجور — الإنتاج الحقيقي",
-  title: "منتجات الورشة المعتمدة للعرض",
-  body: "صور الإنتاج الحقيقي تُنشر هنا بعد المراجعة القانونية واعتماد كل صنف للعرض العام. هذا الشريط غير مفعّل حالياً.",
-  chips: [],
-  primary: { label: "اطلب عرض سعر", href: "/request-quote" },
-  secondary: { label: "تواصل مع الورشة", href: "/contact" },
-  caption: "منتجات حقيقية — تُعرض فقط بعد الاعتماد.",
-};
+const WORKSHOP_SLIDE_DISABLED = true;
+
+export const INQUIRY_PATHS = [
+  { title: "تقييم تصنيع", body: "أرسل الفكرة أو المقاس. نراجع الإمكانية في الورشة.", href: "/custom-orders", cta: "اطلب دراسة تصنيع" },
+  { title: "عرض سعر", body: "للكميات والمواصفات المتفق عليها. السعر يُؤكد بعد المراجعة.", href: "/request-quote", cta: "اطلب عرض سعر" },
+  { title: "أفكار تصميمية", body: "نماذج تصورية غير مخزونة. التنفيذ يخضع لموافقة المعمل.", href: "/custom-orders", cta: "استعرض الأفكار" },
+] as const;
 
 const PUBLIC_SLIDES: HeroSlide[] = [
   {
@@ -54,15 +45,15 @@ const PUBLIC_SLIDES: HeroSlide[] = [
     restricted: false,
     image: "/concepts/hero/craftsmanship.jpg",
     imageWidth: 1920,
-    imageHeight: 980,
-    objectPosition: "center 35%",
-    kicker: "منجور — فن الخشب العراقي | كربلاء",
-    title: "خراطة تُظهر عرق الخشب",
-    body: "دقة التشكيل على المخرطة، وتشطيب يُبرز ملمس الخشب الطبيعي. الصورة تصور تفصيلاً تصميمياً وليست لقطة من داخل الورشة.",
-    chips: ["ملمس الخشب", "دقة الخراطة", "تشطيب متقن"],
-    primary: { label: "استعرض أفكار التصنيع", href: "/custom-orders" },
-    secondary: { label: "اطلب عرض سعر", href: "/request-quote" },
-    caption: "تصور تصميمي — ليست صورة مخزون جاهز.",
+    imageHeight: 900,
+    objectPosition: "center",
+    kicker: "منجور · كربلاء",
+    title: "فنّ الخشب العراقي",
+    body: "خراطة وتشكيل خشبي في ورشة منجور بكربلاء. المشهد تصور لمهارة الخراطة، وليس تصويراً فوتوغرافياً للمعمل.",
+    chips: [],
+    primary: { label: "اطلب تقييم تصنيع", href: "/custom-orders" },
+    secondary: { label: "تعرّف على الورشة", href: "/about" },
+    caption: "تصور تصميمي لعملية الخراطة — ليست صورة من داخل معمل منجور.",
   },
   {
     id: "custom-woodwork",
@@ -71,52 +62,39 @@ const PUBLIC_SLIDES: HeroSlide[] = [
     restricted: false,
     image: "/concepts/hero/custom-woodwork.jpg",
     imageWidth: 1920,
-    imageHeight: 980,
-    objectPosition: "center 45%",
+    imageHeight: 900,
+    objectPosition: "center right",
     kicker: "تصنيع حسب المواصفات",
-    title: "مكونات وتصاميم حسب طلبك",
-    body: "أرجل، مغازل، مقابض وأشكال مقترحة يمكن دراسة تنفيذها للتجار حسب الكمية والمقاس المتفق عليه.",
-    chips: ["مكونات أثاث", "قطع زخرفية", "تصنيع حسب المقاس"],
-    primary: { label: "اطلب عرض سعر للتصنيع", href: "/request-quote" },
-    secondary: { label: "استعرض التصاميم", href: "/custom-orders" },
-    caption: "تصور تصميمي — التنفيذ يخضع لتقييم الورشة.",
-  },
-];
-
-export const HOMEPAGE_SPOTLIGHTS: Array<{
-  title: string;
-  subtitle: string;
-  href: string;
-  image: string;
-}> = [
-  {
-    title: "أوعية وتحف ديكورية",
-    subtitle: "مزهريات، علب، وأوعية مخرطة",
-    href: "/custom-orders",
-    image: "/concepts/vases-ornaments.jpg",
+    title: "قطعة واضحة… حسب مقاسك",
+    body: "خراطة وتصنيع قطع خشبية حسب التصميم والمواصفات والكميات المطلوبة.",
+    chips: [],
+    primary: { label: "اطلب دراسة تصنيع حسب المقاسات", href: "/custom-orders" },
+    secondary: { label: "اطلب عرض سعر", href: "/request-quote" },
+    caption: "تصور تصميمي لقطعة واحدة، وليس منتجاً جاهزاً في المخزون.",
   },
   {
-    title: "إكسسوارات الإضاءة",
-    subtitle: "قواعد مصابيح يمكن دراسة تنفيذها",
-    href: "/custom-orders",
-    image: "/concepts/lamp-bases.jpg",
-  },
-  {
-    title: "شمعدانات مخرطة",
-    subtitle: "أشكال عرض وإضاءة شمعية",
-    href: "/custom-orders",
-    image: "/concepts/candlesticks.jpg",
+    id: "decorative",
+    theme: "decorative",
+    kind: "conceptual",
+    restricted: false,
+    image: "/concepts/hero/decor-concepts.jpg",
+    imageWidth: 1920,
+    imageHeight: 900,
+    objectPosition: "center",
+    kicker: "تطبيقات ديكور",
+    title: "أفكار خشبية للمشاريع",
+    body: "اتجاه بصري لتطبيقات ديكور في بيئة استخدام. هذه الصور التصورية ليست منتجات مصنّعة معروضة للبيع.",
+    chips: [],
+    primary: { label: "استعرض أفكار التصنيع", href: "/custom-orders" },
+    secondary: { label: "تواصل معنا", href: "/contact" },
+    caption: "تصور تطبيقي في بيئة استخدام — ليس مخزوناً جاهزاً.",
   },
 ];
 
 export function publicHeroSlides(): HeroSlide[] {
-  const slides = [...PUBLIC_SLIDES];
-  if (features.workshopProductPromo && WORKSHOP_SLIDE.image.length > 0) {
-    slides.push(WORKSHOP_SLIDE);
-  }
-  return slides;
+  return [...PUBLIC_SLIDES];
 }
 
 export function workshopPromoReady(): boolean {
-  return features.workshopProductPromo && WORKSHOP_SLIDE.image.length > 0;
+  return features.workshopProductPromo && !WORKSHOP_SLIDE_DISABLED;
 }

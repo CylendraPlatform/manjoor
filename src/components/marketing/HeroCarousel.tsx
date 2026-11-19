@@ -46,7 +46,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-manjoor-walnut"
+      className="relative w-full overflow-hidden bg-[#efe6d8]"
       aria-roledescription="carousel"
       aria-labelledby={labelId}
       onMouseEnter={() => { paused.current = true; }}
@@ -55,7 +55,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       onBlur={() => { paused.current = false; }}
     >
       <h2 id={labelId} className="sr-only">عروض منجور الرئيسية</h2>
-      <div className="relative min-h-[28rem] md:min-h-[34rem] lg:min-h-[38rem]">
+      <div className="relative h-[min(68vh,34rem)] w-full">
         {slides.map((item, slideIndex) => (
           <div
             key={item.id}
@@ -68,45 +68,38 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               width={item.imageWidth}
               height={item.imageHeight}
               fetchpriority={slideIndex === 0 ? "high" : "low"}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-center"
               style={{ objectPosition: item.objectPosition }}
             />
-            <div className="absolute inset-0 bg-gradient-to-l from-manjoor-walnut via-manjoor-walnut/80 to-manjoor-walnut/10" />
           </div>
         ))}
+        <div className="pointer-events-none absolute inset-y-0 start-0 w-full bg-gradient-to-l from-[#f7f1e8] via-[#f7f1e8]/55 to-transparent md:w-5/12" />
 
-        <div className="relative z-10 mx-auto flex min-h-[28rem] max-w-6xl flex-col justify-end gap-5 px-4 py-10 md:min-h-[34rem] md:justify-center md:py-16 lg:min-h-[38rem]">
-          <p className="text-sm font-bold text-manjoor-brass">{slide.kicker}</p>
-          <h1 className="max-w-xl text-3xl font-extrabold leading-tight text-manjoor-sand sm:text-4xl md:text-5xl">
-            {slide.title}
-          </h1>
-          <p className="max-w-lg text-base leading-8 text-manjoor-sand/90">{slide.body}</p>
-          {slide.chips.length > 0 && (
-            <ul className="flex max-w-xl flex-wrap gap-2">
-              {slide.chips.map((chip) => (
-                <li key={chip} className="rounded-full border border-manjoor-sand/30 bg-manjoor-charcoal/30 px-3 py-1 text-xs font-bold text-manjoor-sand">
-                  {chip}
-                </li>
-              ))}
-            </ul>
-          )}
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Link
-              to={slide.primary.href}
-              className="rounded-full bg-manjoor-brass px-6 py-3 text-center font-bold text-manjoor-charcoal"
-              onClick={() => trackEvent("hero_cta_click", { slide: slide.id, cta: "primary" })}
-            >
-              {slide.primary.label}
-            </Link>
-            <Link
-              to={slide.secondary.href}
-              className="rounded-full border border-manjoor-sand px-6 py-3 text-center font-bold text-manjoor-sand"
-              onClick={() => trackEvent("hero_cta_click", { slide: slide.id, cta: "secondary" })}
-            >
-              {slide.secondary.label}
-            </Link>
+        <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center px-4">
+          <div className="max-w-lg space-y-4 rounded-3xl bg-[#f7f1e8]/80 p-5 backdrop-blur-sm md:bg-transparent md:p-0 md:backdrop-blur-none">
+            <p className="text-sm font-bold text-manjoor-brass">{slide.kicker}</p>
+            <h1 className="text-3xl font-extrabold leading-tight text-manjoor-walnut sm:text-4xl md:text-5xl">
+              {slide.title}
+            </h1>
+            <p className="text-base leading-8 text-manjoor-charcoal/85">{slide.body}</p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                to={slide.primary.href}
+                className="rounded-full bg-manjoor-walnut px-6 py-3 text-center font-bold text-manjoor-sand"
+                onClick={() => trackEvent("hero_cta_click", { slide: slide.id, cta: "primary" })}
+              >
+                {slide.primary.label}
+              </Link>
+              <Link
+                to={slide.secondary.href}
+                className="rounded-full border border-manjoor-walnut px-6 py-3 text-center font-bold text-manjoor-walnut"
+                onClick={() => trackEvent("hero_cta_click", { slide: slide.id, cta: "secondary" })}
+              >
+                {slide.secondary.label}
+              </Link>
+            </div>
+            <p className="text-xs leading-5 text-manjoor-charcoal/60">{slide.caption}</p>
           </div>
-          <p className="text-xs text-manjoor-sand/70">{slide.caption}</p>
         </div>
       </div>
 
