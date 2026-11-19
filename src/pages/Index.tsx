@@ -4,6 +4,9 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/integrations/supabase/db";
+import type { Tables } from "@/integrations/supabase/types";
+import type { Product } from "@/integrations/supabase/overrides";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ShoppingBag, Truck, ShieldCheck, RefreshCcw, CreditCard, ChevronLeft, Timer } from "lucide-react";
@@ -46,40 +49,40 @@ const Index = () => {
     queryKey: ["categories"],
     queryFn: async () => {
       const { data } = await supabase.from("categories").select("*").order("sort_order");
-      return data ?? [];
+      return (data ?? []) as Tables<"categories">[];
     },
-  } as any);
+  });
 
 
   const { data: featuredProducts, isLoading: isFeaturedLoading } = useQuery({
     queryKey: ["featured-products"],
     queryFn: async () => {
-      const { data } = await supabase.from("products").select("*").eq("is_best_seller", true).eq("is_active", true).limit(8);
-      return data ?? [];
+      const { data } = await db.from("products").select("*").eq("is_best_seller", true).eq("is_active", true).limit(8);
+      return (data ?? []) as Product[];
     },
-  } as any);
+  });
 
   const { data: newProducts } = useQuery({
     queryKey: ["new-products"],
     queryFn: async () => {
-      const { data } = await supabase.from("products").select("*").eq("is_new", true).eq("is_active", true).limit(8);
-      return data ?? [];
+      const { data } = await db.from("products").select("*").eq("is_new", true).eq("is_active", true).limit(8);
+      return (data ?? []) as Product[];
     },
-  } as any);
+  });
 
   const { data: offerProducts, isLoading: isOffersLoading } = useQuery({
     queryKey: ["offer-products"],
     queryFn: async () => {
       const { data } = await supabase.from("products").select("*").not("discount_price", "is", null).eq("is_active", true).limit(8);
-      return data ?? [];
+      return (data ?? []) as Product[];
     },
-  } as any);
+  });
 
   // Featured categories (e.g., top 12)
-  const topCategories: any[] = (categories as any)?.slice(0, 12) || [];
-  const offers: any[] = (offerProducts as any) || [];
-  const featured: any[] = (featuredProducts as any) || [];
-  const news: any[] = (newProducts as any) || [];
+  const topCategories: Tables<"categories">[] = categories?.slice(0, 12) || [];
+  const offers: Product[] = offerProducts || [];
+  const featured: Product[] = featuredProducts || [];
+  const news: Product[] = newProducts || [];
 
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, direction: 'rtl' });
@@ -297,7 +300,7 @@ const Index = () => {
             </div>
           ) : (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-              {offers.map((p: any) => <ProductCard key={p.id} product={p} />)}
+              {offers.map((p) => <ProductCard key={p.id} product={p} />)}
             </div>
           )}
         </section>
@@ -320,7 +323,7 @@ const Index = () => {
             </div>
           ) : (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-              {featured.map((p: any) => <ProductCard key={p.id} product={p} />)}
+              {featured.map((p) => <ProductCard key={p.id} product={p} />)}
             </div>
           )}
         </section>
@@ -376,7 +379,7 @@ const Index = () => {
               </Link>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-              {news.map((p: any) => <ProductCard key={p.id} product={p} />)}
+              {news.map((p) => <ProductCard key={p.id} product={p} />)}
             </div>
           </section>
         )}

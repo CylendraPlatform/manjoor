@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Tables } from "@/integrations/supabase/types";
+import type { Product } from "@/integrations/supabase/overrides";
 import { formatPrice } from "@/lib/format";
 import { useCartStore } from "@/lib/cart-store";
 import { useWishlistStore } from "@/lib/wishlist-store";
@@ -38,13 +38,12 @@ const CountdownTimer = ({ targetDate }: { targetDate: string }) => {
 };
 
 interface Props {
-  product: Tables<"products">;
+  product: Product;
 }
 
 const PLACEHOLDER_IMG = "/placeholder.svg";
 
-const ProductCard = ({ product: p }: Props) => {
-  const product = p as any;
+const ProductCard = ({ product }: Props) => {
   const addToCart = useCartStore((s) => s.addItem);
   const { addItem, removeItem, hasItem } = useWishlistStore();
   const [imgSrc, setImgSrc] = useState(() => product.images?.[0] || PLACEHOLDER_IMG);
@@ -139,7 +138,7 @@ const ProductCard = ({ product: p }: Props) => {
             <button
               onClick={(e) => {
                 if (isOutOfStock) return;
-                addToCart(p);
+                addToCart(product);
                 triggerCartAnimation(e.currentTarget);
               }}
               disabled={isOutOfStock}

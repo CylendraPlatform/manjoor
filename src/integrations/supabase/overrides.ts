@@ -17,34 +17,34 @@ import type { Tables } from "./types";
 
 // add_offers_and_badges / inventory_management / loyalty migrations.
 export type Product = Tables<"products"> & {
-  purchase_price: number | null; // NUMERIC DEFAULT 0
-  low_stock_threshold: number | null; // INTEGER DEFAULT 5
-  loyalty_points_enabled: boolean | null; // BOOLEAN DEFAULT TRUE
-  points_multiplier: number | null; // NUMERIC DEFAULT 1.0
-  is_best_seller: boolean | null; // BOOLEAN DEFAULT FALSE
-  offer_ends_at: string | null; // TIMESTAMPTZ
+  purchase_price?: number | null; // NUMERIC DEFAULT 0
+  low_stock_threshold?: number | null; // INTEGER DEFAULT 5
+  loyalty_points_enabled?: boolean | null; // BOOLEAN DEFAULT TRUE
+  points_multiplier?: number | null; // NUMERIC DEFAULT 1.0
+  is_best_seller?: boolean | null; // BOOLEAN DEFAULT FALSE
+  offer_ends_at?: string | null; // TIMESTAMPTZ
 };
 
 // add_location_and_regions / loyalty migrations.
 export type Profile = Tables<"profiles"> & {
-  points: number | null; // BIGINT DEFAULT 0
-  latitude: number | null; // DOUBLE PRECISION
-  longitude: number | null; // DOUBLE PRECISION
-  map_url: string | null; // TEXT
+  points?: number | null; // BIGINT DEFAULT 0
+  latitude?: number | null; // DOUBLE PRECISION
+  longitude?: number | null; // DOUBLE PRECISION
+  map_url?: string | null; // TEXT
 };
 
 // order_tracking / delivery_system / loyalty migrations.
 export type Order = Tables<"orders"> & {
-  points_earned: number | null; // INTEGER DEFAULT 0
-  points_spent: number | null; // INTEGER DEFAULT 0
-  points_discount: number | null; // NUMERIC DEFAULT 0
-  admin_notes: string | null; // TEXT
-  agent_id: string | null; // UUID REFERENCES profiles(id)
+  points_earned?: number | null; // INTEGER DEFAULT 0
+  points_spent?: number | null; // INTEGER DEFAULT 0
+  points_discount?: number | null; // NUMERIC DEFAULT 0
+  admin_notes?: string | null; // TEXT
+  agent_id?: string | null; // UUID REFERENCES profiles(id)
 };
 
 // add_parent_id_to_categories migration.
 export type Category = Tables<"categories"> & {
-  parent_id: string | null; // UUID REFERENCES categories(id)
+  parent_id?: string | null; // UUID REFERENCES categories(id)
 };
 
 // coupons_system / loyalty migrations (table not present in generated types).

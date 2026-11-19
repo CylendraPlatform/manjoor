@@ -5,6 +5,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Category as CategoryRow } from "@/integrations/supabase/overrides";
+import { db } from "@/integrations/supabase/db";
+
+interface SubCategory {
+    id: string;
+    name: string;
+    slug: string;
+}
 
 export default function Category() {
     const { slug } = useParams();
@@ -18,31 +26,30 @@ export default function Category() {
                 .eq("slug", slug)
                 .maybeSingle();
             if (error) throw error;
-            return data;
+            return data as CategoryRow | null;
         },
     });
 
     const { data: subcategories } = useQuery({
-        queryKey: ["subcategories", (category as any)?.id],
-        enabled: !!(category as any)?.id,
+        queryKey: ["subcategories", category?.id],
+        enabled: !!category?.id,
         queryFn: async () => {
-            const { data, error } = await supabase
+            const { data, error } = await db
                 .from("categories")
                 .select("id, name, slug")
-                .eq("parent_id", (category as any).id)
+                .eq("parent_id", category!.id)
                 .order("sort_order", { ascending: true });
             if (error) throw error;
-            return data ?? [];
+            return (data ?? []) as SubCategory[];
         },
-    } as any);
+    });
 
 
     const { data: products, isLoading: productsLoading } = useQuery({
-        queryKey: ["category-products", (category as any)?.id, (subcategories as any)?.map((s: any) => s.id)],
-        enabled: !!(category as any)?.id,
+        queryKey: ["category-products", category?.id, subcategories?.map((s) => s.id)],
+        enabled: !!category?.id,
         queryFn: async () => {
-            const cat = category as any;
-            const categoryIds = [cat.id, ...((subcategories as any)?.map((s: any) => s.id) || [])];
+            const categoryIds = [category!.id, ...(subcategories?.map((s) => s.id) || [])];
 
             const { data, error } = await supabase
                 .from("products")
@@ -53,7 +60,7 @@ export default function Category() {
             if (error) throw error;
             return data ?? [];
         },
-    } as any);
+    });
 
 
     if (categoryLoading) {
@@ -91,13 +98,13 @@ export default function Category() {
             <Header />
             <main className="flex-1 container py-12">
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-3xl font-bold">{(category as any)?.name}</h1>
-                    <p className="text-muted-foreground">{(products as any)?.length || 0} منتج</p>
+                    <h1 className="text-3xl font-bold">{category?.name}</h1>
+                    <p className="text-muted-foreground">{products?.length || 0} منتج</p>
                 </div>
 
-                {subcategories && (subcategories as any).length > 0 && (
+                {subcategories && subcategories.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-8 bg-muted/30 p-3 rounded-lg">
-                        {(subcategories as any).map((sub: any) => (
+                        {subcategories.map((sub) => (
                             <Link
                                 key={sub.id}
                                 to={`/category/${sub.slug}`}
@@ -116,13 +123,13 @@ export default function Category() {
                             <Skeleton key={n} className="h-64 w-full" />
                         ))}
                     </div>
-                ) : (products as any)?.length === 0 ? (
+                ) : products?.length === 0 ? (
                     <div className="text-center py-20 bg-muted/20 rounded-lg">
                         <p className="text-muted-foreground">لا توجد منتجات في هذا القسم حالياً</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                        {(products as any)?.map((product: any) => (
+                        {products?.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>
