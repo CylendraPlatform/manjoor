@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { db } from "@/integrations/supabase/db";
 import { features } from "@/config/features";
-import { isValidIraqiPhone } from "@/lib/phone";
+import { toIraqiE164 } from "@/lib/phone";
 import { getAttribution } from "@/lib/analytics";
 
 /**
@@ -30,14 +30,24 @@ export const quoteLineItemSchema = z.object({
   quantity: z.number().int().positive({ message: "الكمية يجب أن تكون أكبر من صفر" }),
 });
 
+/** Normalizes to E.164 so the server regex and stored value stay consistent. */
+export const iraqiPhoneSchema = z.string().transform((value, ctx) => {
+  const e164 = toIraqiE164(value);
+  if (!e164) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "رقم هاتف عراقي غير صالح" });
+    return z.NEVER;
+  }
+  return e164;
+});
+
 export const leadContactSchema = z.object({
-  name: z.string().trim().min(2, "الاسم مطلوب"),
-  phone: z.string().refine(isValidIraqiPhone, "رقم هاتف عراقي غير صالح"),
+  name: z.string().trim().min(2, "الاسم مطلوب").max(120),
+  phone: iraqiPhoneSchema,
   businessName: z.string().trim().max(120).optional().or(z.literal("")),
   governorate: z.enum(IRAQI_GOVERNORATES, { message: "اختر المحافظة" }),
   city: z.string().trim().max(120).optional().or(z.literal("")),
   preferredContact: z.enum(["whatsapp", "phone"]).default("whatsapp"),
-  notes: z.string().trim().max(1000).optional().or(z.literal("")),
+  notes: z.string().trim().max(1000, "الملاحظة طويلة جداً").optional().or(z.literal("")),
 });
 
 export const quoteRequestSchema = leadContactSchema.extend({
@@ -45,12 +55,19 @@ export const quoteRequestSchema = leadContactSchema.extend({
 });
 
 export const wholesaleLeadSchema = leadContactSchema.extend({
-  productInterest: z.string().trim().min(2, "اذكر المنتجات التي تهمّك"),
+  productInterest: z.string().trim().min(2, "اذكر المنتجات التي تهمّك").max(300),
   expectedQuantity: z.string().trim().max(120).optional().or(z.literal("")),
+});
+
+export const customOrderSchema = leadContactSchema.extend({
+  specifications: z.string().trim().min(10, "صف المواصفات بوضوح").max(1000),
+  dimensions: z.string().trim().max(120).optional().or(z.literal("")),
+  quantity: z.number().int().positive({ message: "الكمية يجب أن تكون أكبر من صفر" }),
 });
 
 export type QuoteRequestInput = z.infer<typeof quoteRequestSchema>;
 export type WholesaleLeadInput = z.infer<typeof wholesaleLeadSchema>;
+export type CustomOrderInput = z.infer<typeof customOrderSchema>;
 
 export class LeadSubmissionDisabledError extends Error {
   constructor() {
@@ -65,7 +82,7 @@ export interface LeadSubmissionResult {
 
 async function submitViaRpc(
   source: "quote_request" | "wholesale" | "custom_order",
-  payload: QuoteRequestInput | WholesaleLeadInput,
+  payload: QuoteRequestInput | WholesaleLeadInput | CustomOrderInput,
 ): Promise<LeadSubmissionResult> {
   if (!features.leadSubmission) throw new LeadSubmissionDisabledError();
   const attribution = getAttribution();
@@ -92,4 +109,54 @@ export function submitWholesaleLead(input: WholesaleLeadInput): Promise<LeadSubm
   return submitViaRpc("wholesale", parsed);
 }
 
+export function submitCustomOrder(input: CustomOrderInput): Promise<LeadSubmissionResult> {
+  const parsed = customOrderSchema.parse(input);
+  const note = [parsed.specifications, parsed.dimensions ? `الأبعاد التقريبية: ${parsed.dimensions}` : ""]
+    .filter(Boolean)
+    .join("\n");
+  const shaped: WholesaleLeadInput = {
+    name: parsed.name,
+    phone: parsed.phone,
+    businessName: parsed.businessName,
+    governorate: parsed.governorate,
+    city: parsed.city,
+    preferredContact: parsed.preferredContact,
+    notes: note,
+    productInterest: "تصنيع حسب الطلب",
+    expectedQuantity: String(parsed.quantity),
+  };
+  return submitViaRpc("custom_order", shaped);
+}
+
 export { IRAQI_GOVERNORATES };
+
+export interface ContactDraft {
+  name: string;
+  phone: string;
+  businessName: string;
+  governorate: string;
+  city: string;
+  preferredContact: "whatsapp" | "phone";
+  notes: string;
+}
+
+export function emptyContact(): ContactDraft {
+  return {
+    name: "",
+    phone: "",
+    businessName: "",
+    governorate: "",
+    city: "",
+    preferredContact: "whatsapp",
+    notes: "",
+  };
+}
+
+export function zodFieldErrors(error: { issues: { path: PropertyKey[]; message: string }[] }): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const issue of error.issues) {
+    const key = String(issue.path[0] ?? "form");
+    if (!out[key]) out[key] = issue.message;
+  }
+  return out;
+}

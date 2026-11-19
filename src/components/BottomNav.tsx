@@ -2,6 +2,7 @@ import { Home, LayoutGrid, Tag, ShoppingBag, User, Truck, LayoutDashboard } from
 import { Link, useLocation } from "react-router-dom";
 import { useCartStore } from "@/lib/cart-store";
 import { useAuth } from "@/hooks/use-auth";
+import { features } from "@/config/features";
 
 const BottomNav = () => {
     const location = useLocation();
@@ -9,6 +10,7 @@ const BottomNav = () => {
     const { profile, isAdmin } = useAuth();
     const itemCount = getItemCount();
     const isAgent = profile?.role === "agent";
+    if (features.publicSite) return null;
 
     const navItems = [
         { icon: Home, label: "الرئيسية", path: "/" },

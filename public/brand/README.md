@@ -24,6 +24,17 @@ references these exact paths (see `src/config/brand.ts`, `index.html`,
 - Origin: كربلاء، العراق (Karbala, Iraq)
 - Palette: Walnut `#5B3A27` · Warm Sand `#DCC6A3` · Brass Gold `#B88946` · Charcoal `#2E2B28`
 
+## Photography slots (supplied later, never generated)
+
+| File | Purpose | Suggested size |
+|------|---------|----------------|
+| `hero-workshop.jpg` | Homepage hero | 1600×1200 |
+| `gallery-turning.jpg` | Woodturning | 1200×900 |
+| `gallery-finishing.jpg` | Finishing | 1200×900 |
+| `gallery-finished.jpg` | Finished piece | 1200×900 |
+
+Until these exist, the site shows labeled placeholders and must not present them as workshop output.
+
 ## After adding the files
 
 - Native app icons regenerate from the square icon via `npm run cap:icons`

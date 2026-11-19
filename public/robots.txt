@@ -1,14 +1,3 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# Pre-launch. Indexing stays closed until LAUNCH_READINESS gates pass.
 User-agent: *
-Allow: /
+Disallow: /

@@ -4,7 +4,10 @@
 
 > **Project lineage:** MANJOOR is the **active product**. It is built on the **Dukany** e‑commerce code foundation; **"Bounty"** was an intermediate adaptation codename. See `README_BOUNTY.md` and `docs/` for the original planning pack and history (retained as reference).
 
-> **Status:** Internal development only. Public storefront, checkout, referral/affiliate promotion and outbound sales are **disabled by default** and must not be enabled without legal/commercial approval and backend controls. Trademark clearance is pending — this is not a public commercial launch.
+> **Status:** Internal development. Phase 02 adds a sales-first marketing site (homepage, approved-product catalog, quotation cart, wholesale and custom inquiries). It stays **off** until `VITE_ENABLE_PUBLIC_SITE=true`. Direct checkout stays behind `VITE_ENABLE_PUBLIC_SALES`. Saving inquiries stays behind `VITE_ENABLE_LEAD_SUBMISSION` until the isolated migration is applied and reviewed. This is not a public launch.
+
+## Commercial priority
+The near-term goal is qualified wholesale inquiries, not a deeper ERP. See `docs/phase-02/`. Do not publish legacy or hookah/tobacco products, invent contact details, or treat a WhatsApp click as a saved lead.
 
 ## Tech stack
 - **Frontend:** React 18 + Vite 5 + TypeScript 5
@@ -26,6 +29,7 @@ Admin panel: `/admin/login` (requires an admin‑role account). Public commerce 
 Canonical identity lives in `src/config/brand.ts`. Official logo artwork goes in `public/brand/` (see its README) — it is supplied by the brand owner, never generated. Palette: Walnut `#5B3A27` · Warm Sand `#DCC6A3` · Brass Gold `#B88946` · Charcoal `#2E2B28`.
 
 ## Documentation
+- `docs/phase-02/` — sales-first website, leads, SEO, launch gates.
 - `docs/phase-01/` — Phase 01 baseline, legacy audit, stabilization, rebranding, QA, open risks.
 - `docs/` — original product/architecture/database/QA planning pack.
 - `docs/GITHUB_MIGRATION_REPORT.md` — initial publication record.

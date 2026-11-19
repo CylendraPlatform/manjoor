@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Host unconfirmed. Replace SITE_ORIGIN_UNCONFIRMED before any search submission. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://SITE_ORIGIN_UNCONFIRMED/</loc></url>
+  <url><loc>https://SITE_ORIGIN_UNCONFIRMED/products</loc></url>
+  <url><loc>https://SITE_ORIGIN_UNCONFIRMED/wholesale</loc></url>
+  <url><loc>https://SITE_ORIGIN_UNCONFIRMED/custom-orders</loc></url>
+  <url><loc>https://SITE_ORIGIN_UNCONFIRMED/about</loc></url>
+  <url><loc>https://SITE_ORIGIN_UNCONFIRMED/contact</loc></url>
+  <url><loc>https://SITE_ORIGIN_UNCONFIRMED/request-quote</loc></url>
+  <url><loc>https://SITE_ORIGIN_UNCONFIRMED/privacy</loc></url>
+</urlset>

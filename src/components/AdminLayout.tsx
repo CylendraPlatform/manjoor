@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import { Navigate, Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, ShoppingBag, Box, Tags, LogOut, Menu, Package, Truck, Ticket, Users, Coins, X } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Box, Tags, LogOut, Menu, Package, Truck, Ticket, Users, Coins, X, Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,6 +31,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
     const navItems = [
         { label: "نظرة عامة", icon: LayoutDashboard, href: "/admin" },
+        { label: "استفسارات البيع", icon: Inbox, href: "/admin/leads" },
         { label: "الطلبات", icon: ShoppingBag, href: "/admin/orders" },
         { label: "المنتجات", icon: Box, href: "/admin/products" },
         { label: "الأقسام", icon: Tags, href: "/admin/categories" },
