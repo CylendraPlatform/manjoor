@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 35 30% 96%;
+    --foreground: 0 0% 8%;
+
+    --card: 35 25% 98%;
+    --card-foreground: 0 0% 8%;
+
+    --popover: 35 25% 98%;
+    --popover-foreground: 0 0% 8%;
+
+    --primary: 0 0% 8%;
+    --primary-foreground: 35 30% 96%;
+
+    --secondary: 35 20% 90%;
+    --secondary-foreground: 0 0% 8%;
+
+    --muted: 35 15% 92%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 35 25% 88%;
+    --accent-foreground: 0 0% 8%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 15% 88%;
+    --input: 35 15% 88%;
+    --ring: 0 0% 8%;
+
+    --radius: 0.5rem;
+
+    --dukany-gold: 38 60% 55%;
+    --dukany-beige-dark: 35 20% 82%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    direction: rtl;
+  }
+
+  body {
+    @apply bg-background text-foreground font-tajawal;
+  }
+}
+
+/* Safe area for Capacitor (status bar / notch) - prevents header overlap */
+.safe-top {
+  padding-top: max(env(safe-area-inset-top), 24px);
+}
+
+@layer utilities {
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+
+  @keyframes fly-to-cart {
+    0% {
+      transform: translate(var(--start-x), var(--start-y)) scale(1.5);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--end-x), var(--end-y)) scale(0.2);
+      opacity: 0;
+    }
+  }
+
+  .animate-fly-to-cart {
+    animation: fly-to-cart 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-left: -20px; /* Offset to center the icon */
+    margin-top: -20px;
+  }
+}
