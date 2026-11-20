@@ -27,7 +27,6 @@ export default function ProductPage() {
   const stem = stemBySlug(slug);
   const product = catalog.data?.products.find((item) => item.slug === slug);
   const [active, setActive] = useState<string | null>(null);
-  const [qty, setQty] = useState(1);
 
   useEffect(() => {
     if (product) trackEvent("product_view", { product_id: product.id });
@@ -72,9 +71,12 @@ export default function ProductPage() {
               <h1 className="text-3xl font-extrabold text-manjoor-walnut">{stem.title}</h1>
               <p className="mt-3 leading-8">{stem.descriptor}</p>
               <p className="mt-4 text-sm">السعر والتوفر ومدة التجهيز تُؤكد بعد مراجعة الطلب. هذا استفسار وليس شراءً.</p>
-              <Link to={stemInquiryPath(stem.slug)} className="mt-6 inline-block rounded-full bg-manjoor-walnut px-6 py-3 font-bold text-manjoor-sand">
-                اطلب هذا الموديل
-              </Link>
+              <div className="mt-6 flex flex-col items-start gap-3">
+                <Link to={stemInquiryPath(stem.slug)} className="inline-block rounded-full bg-manjoor-walnut px-6 py-3 font-bold text-manjoor-sand">
+                  اطلب هذا الموديل
+                </Link>
+                <WhatsAppCta topic="product" model={stem.slug} label="اسأل عن هذا الموديل عبر واتساب" />
+              </div>
             </div>
           </div>
         )}
@@ -113,14 +115,9 @@ export default function ProductPage() {
               <div className="mt-6 flex flex-col gap-3">
                 <QuoteButton
                   showQuantity
-                  defaultQuantity={qty}
                   product={{ productId: product.id, slug: product.slug, name: product.name, imageUrl: product.images[0] ?? null }}
                 />
-                <label className="text-sm">
-                  كمية رسالة واتساب
-                  <input className="mt-1 h-12 w-28 rounded-xl border px-3" type="number" min={1} value={qty} onChange={(event) => setQty(Math.max(1, Number(event.target.value) || 1))} />
-                </label>
-                <WhatsAppCta topic="product" productName={product.name} productRef={product.slug} quantity={qty} label="اسأل عن هذا المنتج" />
+                <WhatsAppCta topic="product" model={product.slug} productName={product.name} productRef={product.slug} label="اسأل عن هذا المنتج" />
               </div>
             </div>
           </div>

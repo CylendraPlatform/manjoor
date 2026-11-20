@@ -72,7 +72,12 @@ export default function ContactPage() {
           {status === "disabled" && <p role="alert">لم تُحفظ الرسالة. حفظ الاستفسارات غير مفعّل.</p>}
           {status === "duplicate" && <p role="alert">هذه الرسالة مكررة. انتظر قليلاً.</p>}
           {status === "error" && <p role="alert">{errors.form ?? "فشل الحفظ. لا يوجد رقم مرجعي."}</p>}
-          {status === "saved" && <p role="status">تم الحفظ. المرجع: {reference}</p>}
+          {status === "saved" && (
+            <div className="space-y-3">
+              <p role="status">تم الحفظ. المرجع: {reference}. واتساب لا يرسل الطلب تلقائياً.</p>
+              <WhatsAppCta topic="followup" referenceNumber={reference} label="متابعة الطلب عبر واتساب" />
+            </div>
+          )}
         </form>
         <div className="mt-6 flex flex-col gap-3">
           <WhatsAppCta topic="general" label="افتح واتساب" />

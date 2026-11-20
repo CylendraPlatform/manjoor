@@ -86,7 +86,12 @@ export default function WholesalePage() {
           {status === "disabled" && <p role="alert">حفظ الطلبات غير مفعّل بعد. راجعنا البيانات محلياً ولم يُسجَّل طلب على الخادم.</p>}
           {status === "duplicate" && <p role="alert">وصلنا نفس الطلب قبل لحظات. انتظر قليلاً قبل إعادة الإرسال.</p>}
           {status === "error" && <p role="alert">{errors.form ?? "تعذّر الحفظ. لم يُؤكد الطلب."}</p>}
-          {status === "saved" && <p role="status">تم حفظ الاستفسار. الرقم المرجعي: {reference}. هذا ليس تأكيداً للبيع.</p>}
+          {status === "saved" && (
+            <div className="space-y-3">
+              <p role="status">تم حفظ الاستفسار. الرقم المرجعي: {reference}. هذا ليس تأكيداً للبيع، وواتساب لا يرسل الطلب تلقائياً.</p>
+              <WhatsAppCta topic="followup" referenceNumber={reference} label="متابعة الطلب عبر واتساب" />
+            </div>
+          )}
         </form>
         <div className="mt-6"><WhatsAppCta topic="wholesale" label="واتساب الجملة" /></div>
       </div>

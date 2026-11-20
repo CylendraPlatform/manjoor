@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ZodError } from "zod";
 import Seo from "@/components/Seo";
+import WhatsAppCta from "@/components/WhatsAppCta";
 import MarketingShell from "@/components/marketing/MarketingShell";
 import ContactFields from "@/components/marketing/ContactFields";
 import Reveal from "@/components/marketing/Reveal";
@@ -146,7 +147,15 @@ export default function CustomOrderPage() {
           {status === "disabled" && <p role="alert">لم يُحفظ الطلب. إرسال الاستفسارات غير مفعّل على الخادم بعد.</p>}
           {status === "duplicate" && <p role="alert">هذا الطلب مكرر خلال الدقيقة الأخيرة.</p>}
           {status === "error" && <p role="alert">{errors.form}</p>}
-          {status === "saved" && <p role="status">وصل الاستفسار برقم {reference}. ليس التزاماً بالتصنيع.</p>}
+          {status === "saved" && (
+            <div className="space-y-3">
+              <p role="status">وصل الاستفسار برقم {reference}. ليس التزاماً بالتصنيع، وواتساب لا يرسل الطلب تلقائياً.</p>
+              <WhatsAppCta topic="followup" referenceNumber={reference} label="متابعة الطلب عبر واتساب" />
+            </div>
+          )}
+          {status !== "saved" && (
+            <WhatsAppCta topic="custom" label="استفسر عبر واتساب" />
+          )}
         </form>
       </div>
     </MarketingShell>

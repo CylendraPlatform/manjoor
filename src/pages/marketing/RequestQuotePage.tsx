@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ZodError } from "zod";
 import Seo from "@/components/Seo";
+import WhatsAppCta from "@/components/WhatsAppCta";
 import MarketingShell from "@/components/marketing/MarketingShell";
 import ContactFields from "@/components/marketing/ContactFields";
 import { useQuoteStore } from "@/lib/quote-store";
@@ -88,7 +89,12 @@ export default function RequestQuotePage() {
           {status === "disabled" && <p role="alert">لم يُحفظ الطلب على الخادم. الإرسال العام ما زال مغلقاً حتى اجتياز فحص الأمان، لذلك لا يوجد رقم مرجعي.</p>}
           {status === "duplicate" && <p role="alert">تم منع إرسال مكرر.</p>}
           {status === "error" && <p role="alert">{errors.form ?? "فشل الحفظ. لا تعتبر الطلب ناجحاً."}</p>}
-          {status === "saved" && <p role="status">تم الحفظ. المرجع: {reference}</p>}
+          {status === "saved" && (
+            <div className="space-y-3">
+              <p role="status">تم الحفظ. المرجع: {reference}. واتساب لا يرسل الطلب تلقائياً.</p>
+              <WhatsAppCta topic="followup" referenceNumber={reference} label="متابعة الطلب عبر واتساب" />
+            </div>
+          )}
         </form>
       </div>
     </MarketingShell>

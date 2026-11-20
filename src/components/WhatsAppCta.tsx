@@ -14,8 +14,18 @@ interface Props extends WhatsAppContext {
  * Hidden entirely when no approved business number is configured (never invents one).
  * A click is an intent signal, tracked as `whatsapp_click` — NOT a confirmed lead.
  */
-export default function WhatsAppCta({ className, label = "تواصل عبر واتساب", variant = "solid", topic, productName, productRef, quantity }: Props) {
-  const url = buildWhatsAppUrl({ topic, productName, productRef, quantity });
+export default function WhatsAppCta({
+  className,
+  label = "تواصل عبر واتساب",
+  variant = "solid",
+  topic,
+  productName,
+  productRef,
+  model,
+  quantity,
+  referenceNumber,
+}: Props) {
+  const url = buildWhatsAppUrl({ topic, productName, productRef, model, quantity, referenceNumber });
   if (!url) return null;
 
   return (

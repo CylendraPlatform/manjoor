@@ -9,8 +9,8 @@
  * development only, not public commercial launch.
  *
  * Contact / social fields are intentionally EMPTY placeholders. Do not invent
- * phone numbers, domains, or social handles — fill them only with confirmed,
- * real values (ideally from environment configuration) when available.
+ * phone numbers, domains, or social handles. The public sales WhatsApp number
+ * is configured via VITE_BUSINESS_WHATSAPP (see src/lib/whatsapp.ts).
  */
 export const brand = {
   ar: "منجور",

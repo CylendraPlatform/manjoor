@@ -74,7 +74,14 @@ function MarketingHeader() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          {isWhatsAppConfigured() && (
+            <WhatsAppCta
+              topic="general"
+              label="واتساب"
+              className="hidden px-3 py-2 text-sm shadow-none lg:inline-flex"
+            />
+          )}
           <Link to="/wholesale" className={ctaClass}>
             اطلب عرض سعر{count > 0 ? ` (${count})` : ""}
           </Link>
@@ -94,6 +101,9 @@ function MarketingHeader() {
           {LINKS.map((link) => (
             <Link key={link.href} to={link.href} className="py-2 text-lg">{link.label}</Link>
           ))}
+          {isWhatsAppConfigured() && (
+            <WhatsAppCta topic="general" label="تواصل عبر واتساب" className="mt-2 justify-center" />
+          )}
         </nav>
       )}
     </header>
@@ -126,10 +136,13 @@ export default function MarketingShell({ children }: { children: ReactNode }) {
               {LINKS.map((link) => <Link key={link.href} to={link.href}>{link.label}</Link>)}
               <Link to="/privacy">الخصوصية</Link>
             </div>
-            <p className="text-sm leading-7">
-              إرسال استفسار لا يعني إتمام شراء ولا التزاماً بالتصنيع. الأسعار والتسليم تُؤكد بعد مراجعة الطلب.
-              العنوان التفصيلي ورقم التواصل يُضيفان عند اعتمادها.
-            </p>
+            <div className="flex flex-col items-start gap-3">
+              <p className="text-sm leading-7">
+                إرسال استفسار لا يعني إتمام شراء ولا التزاماً بالتصنيع. الأسعار والتسليم تُؤكد بعد مراجعة الطلب.
+                العنوان التفصيلي ورقم التواصل يُضيفان عند اعتمادها.
+              </p>
+              <WhatsAppCta topic="general" label="واتساب" className="px-4 py-2 text-sm" />
+            </div>
           </div>
         </footer>
         {isWhatsAppConfigured() && (

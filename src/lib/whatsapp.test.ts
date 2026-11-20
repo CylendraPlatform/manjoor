@@ -1,21 +1,73 @@
 import { describe, it, expect } from "vitest";
-import { buildWhatsAppMessage, buildWhatsAppUrl, isWhatsAppConfigured, toWaNumber } from "./whatsapp";
+import {
+  buildWhatsAppMessage,
+  buildWhatsAppUrl,
+  normalizeBusinessWhatsApp,
+  toWaNumber,
+} from "./whatsapp";
 
-describe("WhatsApp link builder", () => {
-  it("builds a product-context message with quantity", () => {
-    const msg = buildWhatsAppMessage({ productName: "صندوق خشبي", quantity: 50, topic: "product" });
-    expect(msg).toContain("صندوق خشبي");
-    expect(msg).toContain("50");
+const TEST_NUMBER = "9647871857930";
+
+describe("WhatsApp number normalization", () => {
+  it("strips non-digits", () => {
+    expect(toWaNumber("+964 787-185-7930")).toBe("9647871857930");
   });
-  it("builds a wholesale message", () => {
-    expect(buildWhatsAppMessage({ topic: "wholesale" })).toContain("الجملة");
+
+  it("converts a local Iraqi 07 number to wa.me format", () => {
+    expect(normalizeBusinessWhatsApp("07871857930")).toBe(TEST_NUMBER);
   });
-  it("strips non-digits from the number", () => {
-    expect(toWaNumber("+964 770-123-4567")).toBe("9647701234567");
+
+  it("accepts the international test number", () => {
+    expect(normalizeBusinessWhatsApp("+9647871857930")).toBe(TEST_NUMBER);
   });
-  it("returns null when no business number is configured (never invents one)", () => {
-    // brand.contact.whatsapp is an empty placeholder by default.
-    expect(isWhatsAppConfigured()).toBe(false);
-    expect(buildWhatsAppUrl({ topic: "general" })).toBeNull();
+
+  it("rejects empty or non-Iraqi values", () => {
+    expect(normalizeBusinessWhatsApp("")).toBe("");
+    expect(normalizeBusinessWhatsApp("12345")).toBe("");
+  });
+});
+
+describe("WhatsApp messages", () => {
+  it("uses the general inquiry copy", () => {
+    expect(buildWhatsAppMessage({ topic: "general" })).toBe(
+      "السلام عليكم، أريد الاستفسار عن منتجات منجور الخشبية.",
+    );
+  });
+
+  it("uses bakarat model copy without inventing quantity", () => {
+    expect(buildWhatsAppMessage({ topic: "product", model: "bakara-02" })).toBe(
+      "السلام عليكم، أريد الاستفسار عن بكار خشبي من منجور، الموديل: bakara-02.",
+    );
+  });
+
+  it("uses wholesale copy", () => {
+    expect(buildWhatsAppMessage({ topic: "wholesale" })).toBe(
+      "السلام عليكم، أريد الاستفسار عن تجهيز كميات جملة من منتجات منجور.",
+    );
+  });
+
+  it("uses custom manufacturing copy", () => {
+    expect(buildWhatsAppMessage({ topic: "custom" })).toBe(
+      "السلام عليكم، أريد الاستفسار عن تصنيع قطعة خشبية حسب الطلب.",
+    );
+  });
+
+  it("includes a saved reference only when provided", () => {
+    expect(buildWhatsAppMessage({ topic: "followup", referenceNumber: "MJ-1001" })).toBe(
+      "السلام عليكم، قدمت طلباً لدى منجور وأرغب بمتابعته. رقم الطلب: MJ-1001.",
+    );
+  });
+});
+
+describe("WhatsApp URLs", () => {
+  it("encodes Arabic text and uses only the business number", () => {
+    const url = buildWhatsAppUrl({ topic: "general" }, TEST_NUMBER);
+    expect(url).toBe(
+      `https://wa.me/${TEST_NUMBER}?text=${encodeURIComponent("السلام عليكم، أريد الاستفسار عن منتجات منجور الخشبية.")}`,
+    );
+  });
+
+  it("returns null when no business number is configured", () => {
+    expect(buildWhatsAppUrl({ topic: "general" }, "")).toBeNull();
   });
 });
