@@ -46,8 +46,8 @@ function MarketingHeader() {
   const headerTone = overlayHome
     ? transparent
       ? craft
-        ? "fixed border-transparent bg-gradient-to-b from-black/40 to-transparent text-manjoor-sand"
-        : "fixed border-transparent bg-transparent text-manjoor-walnut"
+        ? "fixed border-transparent bg-gradient-to-b from-black/45 to-transparent text-[#f4ece0]"
+        : "fixed border-transparent bg-gradient-to-b from-[rgba(250,246,239,0.58)] to-transparent text-manjoor-walnut"
       : "fixed border-manjoor-sand/80 bg-[#f7f1e8]/95 text-manjoor-walnut backdrop-blur"
     : "sticky border-manjoor-sand/80 bg-[#f7f1e8]/95 text-manjoor-walnut backdrop-blur";
 
@@ -61,7 +61,7 @@ function MarketingHeader() {
         <Link to="/" aria-label="منجور الرئيسية" className={`min-w-0 shrink ${transparent ? "rounded-xl bg-[#f7f1e8]/90 px-2 py-1" : ""}`}>
           <BrandMark />
         </Link>
-        <nav className={`hidden items-center gap-6 text-sm font-medium lg:flex ${transparent && !craft ? "drop-shadow-[0_1px_10px_rgba(247,241,232,0.85)]" : ""}`}>
+        <nav className={`hidden items-center gap-5 text-sm font-semibold lg:flex ${transparent ? (craft ? "rounded-full bg-black/35 px-4 py-2 backdrop-blur-md" : "rounded-full bg-[rgba(250,246,239,0.78)] px-4 py-2 text-[#3d2a1f] shadow-sm backdrop-blur-md") : ""}`}>
           {LINKS.map((link) => (
             <Link
               key={link.href}
