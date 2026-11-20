@@ -9,39 +9,33 @@ const AUTOPLAY_MS = 8000;
 
 const THEME = {
   production: {
-    overlay: "bg-gradient-to-l from-black/[0.06] to-transparent",
-    top: "bg-gradient-to-b from-[rgba(250,246,239,0.28)] to-transparent",
-    panel: "hero-glass hero-glass-light",
-    kicker: "text-[#9a7040]",
-    title: "text-manjoor-walnut",
+    copy: "hero-copy hero-copy-light hero-copy-production",
+    kicker: "text-[#8a6230]",
+    title: "text-manjoor-walnut [text-shadow:0_1px_0_rgba(250,246,239,0.55)]",
     body: "text-manjoor-charcoal",
-    caption: "text-[#5c4e40]",
+    caption: "text-[#4f4338]",
     primary: "bg-manjoor-walnut text-manjoor-sand",
     secondary: "border-manjoor-walnut bg-[#faf6ef] text-manjoor-walnut",
     control: "border-manjoor-walnut/20 bg-[#faf6ef]/80 text-manjoor-walnut",
     dot: "bg-manjoor-walnut/40",
   },
   craft: {
-    overlay: "bg-gradient-to-l from-black/20 to-transparent",
-    top: "bg-gradient-to-b from-black/30 to-transparent",
-    panel: "hero-glass hero-glass-dark",
+    copy: "hero-copy",
     kicker: "text-[#d4b06a]",
-    title: "text-[#f4ece0]",
-    body: "text-[#efe6d8]",
-    caption: "text-[#d9cbb8]",
+    title: "text-[#f4ece0] [text-shadow:0_2px_18px_rgba(0,0,0,0.35)]",
+    body: "text-[#efe6d8] [text-shadow:0_1px_10px_rgba(0,0,0,0.28)] max-md:[text-shadow:0_2px_14px_rgba(0,0,0,0.72)]",
+    caption: "text-[#e4d6c4]",
     primary: "bg-manjoor-brass text-manjoor-charcoal",
-    secondary: "border-[#efe6d8]/50 bg-black/25 text-[#f4ece0]",
+    secondary: "border-[#efe6d8]/60 bg-black/20 text-[#f4ece0]",
     control: "border-white/15 bg-black/45 text-[#f4ece0]",
     dot: "bg-[#f4ece0]/45",
   },
   custom: {
-    overlay: "bg-gradient-to-l from-black/[0.05] to-transparent",
-    top: "bg-gradient-to-b from-[rgba(250,246,239,0.22)] to-transparent",
-    panel: "hero-glass hero-glass-light",
-    kicker: "text-[#9a7040]",
-    title: "text-manjoor-walnut",
+    copy: "hero-copy hero-copy-light hero-copy-custom",
+    kicker: "text-[#8a6230]",
+    title: "text-manjoor-walnut [text-shadow:0_1px_0_rgba(250,246,239,0.5)]",
     body: "text-manjoor-charcoal",
-    caption: "text-[#5c4e40]",
+    caption: "text-[#4f4338]",
     primary: "bg-manjoor-walnut text-manjoor-sand",
     secondary: "border-manjoor-walnut bg-[#faf6ef] text-manjoor-walnut",
     control: "border-manjoor-walnut/20 bg-[#faf6ef]/80 text-manjoor-walnut",
@@ -131,13 +125,10 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           </picture>
         </div>
       ))}
-      <div className={`pointer-events-none absolute inset-0 ${theme.overlay}`} />
-      <div className={`pointer-events-none absolute inset-x-0 top-0 h-24 md:h-32 ${theme.top}`} />
-
       <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl items-center px-4 pb-24 pt-28 md:px-20 md:pt-32">
-        <div className={`${theme.panel} space-y-4 md:space-y-5`}>
+        <div className={`${theme.copy} space-y-4 md:space-y-5`}>
           <p className={`text-sm font-bold ${theme.kicker}`}>{slide.kicker}</p>
-          <h1 className={`max-w-[15ch] text-[1.85rem] font-extrabold leading-[1.4] sm:text-4xl md:text-[2.85rem] md:leading-[1.32] ${theme.title}`}>
+          <h1 className={`max-w-[18ch] text-[1.85rem] font-extrabold leading-[1.35] sm:text-4xl md:text-[2.85rem] md:leading-[1.3] ${theme.title}`}>
             {slide.title}
           </h1>
           <p className={`max-w-md text-base font-medium leading-8 md:text-[1.05rem] md:leading-9 ${theme.body}`}>
