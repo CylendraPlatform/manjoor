@@ -22,7 +22,7 @@ describe("homepage hero slides", () => {
     const slides = publicHeroSlides();
     expect(slides[0].title).toBe("بكّارات خشبية من إنتاج منجور");
     expect(slides[0].primary).toEqual({ label: "استعرض البكّارات", href: "/products" });
-    expect(slides[1].title).toBe("خراطة خشبية دقيقة وصناعة متقنة");
+    expect(slides[1].title).toBe("خراطة خشبية دقيقة... وصناعة متقنة");
     expect(slides[1].primary).toEqual({ label: "تعرّف على الحرفة", href: "/about" });
     expect(slides[2].title).toBe("من فكرتك... نصنع قطعة مميزة");
     expect(slides[2].primary).toEqual({ label: "اطلب تصنيعاً خاصاً", href: "/custom-orders" });

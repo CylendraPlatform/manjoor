@@ -7,40 +7,25 @@ import type { HeroSlide } from "@/content/hero";
 
 const AUTOPLAY_MS = 8000;
 
+// The owner's redesigned hero photos each carry a naturally dark negative-space
+// region where the copy sits, so every slide uses one ivory-on-dark treatment —
+// no cream/dark CSS scrim; contrast comes from the photography plus text-shadow.
+const DARK_THEME = {
+  copy: "hero-copy",
+  kicker: "text-[#e6c07c] [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]",
+  title: "text-[#f7f0e5] [text-shadow:0_2px_18px_rgba(0,0,0,0.6),0_1px_3px_rgba(0,0,0,0.55)]",
+  body: "text-[#f1e8da] [text-shadow:0_2px_14px_rgba(0,0,0,0.66),0_1px_2px_rgba(0,0,0,0.5)]",
+  caption: "text-[#e7dbc8] [text-shadow:0_1px_10px_rgba(0,0,0,0.62)]",
+  primary: "bg-manjoor-brass text-manjoor-charcoal",
+  secondary: "border-[#efe6d8]/70 bg-black/25 text-[#f4ece0]",
+  control: "border-white/20 bg-black/40 text-[#f4ece0]",
+  dot: "bg-[#f4ece0]/50",
+} as const;
+
 const THEME = {
-  production: {
-    copy: "hero-copy hero-copy-light hero-copy-production",
-    kicker: "text-[#7a5324]",
-    title: "text-manjoor-charcoal [text-shadow:0_1px_2px_rgba(250,246,239,0.7)]",
-    body: "text-manjoor-charcoal [text-shadow:0_1px_2px_rgba(250,246,239,0.75)]",
-    caption: "text-[#352b22] [text-shadow:0_1px_2px_rgba(250,246,239,0.9)]",
-    primary: "bg-manjoor-walnut text-manjoor-sand",
-    secondary: "border-manjoor-walnut bg-[#faf6ef] text-manjoor-walnut",
-    control: "border-manjoor-walnut/20 bg-[#faf6ef]/80 text-manjoor-walnut",
-    dot: "bg-manjoor-walnut/40",
-  },
-  craft: {
-    copy: "hero-copy hero-copy-craft",
-    kicker: "text-[#e2bd76] [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]",
-    title: "text-[#f6efe4] [text-shadow:0_2px_16px_rgba(0,0,0,0.6)]",
-    body: "text-[#f1e8da] [text-shadow:0_2px_14px_rgba(0,0,0,0.7)]",
-    caption: "text-[#ecdfce] [text-shadow:0_1px_9px_rgba(0,0,0,0.6)]",
-    primary: "bg-manjoor-brass text-manjoor-charcoal",
-    secondary: "border-[#efe6d8]/60 bg-black/20 text-[#f4ece0]",
-    control: "border-white/15 bg-black/45 text-[#f4ece0]",
-    dot: "bg-[#f4ece0]/45",
-  },
-  custom: {
-    copy: "hero-copy hero-copy-light hero-copy-custom",
-    kicker: "text-[#7a5324]",
-    title: "text-manjoor-charcoal [text-shadow:0_1px_2px_rgba(250,246,239,0.65)]",
-    body: "text-manjoor-charcoal [text-shadow:0_1px_2px_rgba(250,246,239,0.7)]",
-    caption: "text-[#352b22] [text-shadow:0_1px_2px_rgba(250,246,239,0.9)]",
-    primary: "bg-manjoor-walnut text-manjoor-sand",
-    secondary: "border-manjoor-walnut bg-[#faf6ef] text-manjoor-walnut",
-    control: "border-manjoor-walnut/20 bg-[#faf6ef]/80 text-manjoor-walnut",
-    dot: "bg-manjoor-walnut/40",
-  },
+  production: DARK_THEME,
+  craft: DARK_THEME,
+  custom: DARK_THEME,
 } as const;
 
 export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
@@ -125,7 +110,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           </picture>
         </div>
       ))}
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl items-center px-4 pb-24 pt-28 md:px-20 md:pt-32">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl items-start px-4 pb-24 pt-28 md:items-center md:px-20 md:pt-32">
         <div className={`${theme.copy} space-y-4 md:space-y-5`}>
           <p className={`text-sm font-bold ${theme.kicker}`}>{slide.kicker}</p>
           <h1 className={`max-w-[18ch] text-[1.85rem] font-extrabold leading-[1.35] sm:text-4xl md:text-[2.85rem] md:leading-[1.3] ${theme.title}`}>
