@@ -46,8 +46,8 @@ function MarketingHeader() {
   const headerTone = overlayHome
     ? transparent
       ? craft
-        ? "fixed border-transparent bg-gradient-to-b from-black/55 to-transparent text-manjoor-sand"
-        : "fixed border-transparent bg-gradient-to-b from-[#f7f1e8]/80 to-transparent text-manjoor-walnut"
+        ? "fixed border-transparent bg-gradient-to-b from-black/40 to-transparent text-manjoor-sand"
+        : "fixed border-transparent bg-transparent text-manjoor-walnut"
       : "fixed border-manjoor-sand/80 bg-[#f7f1e8]/95 text-manjoor-walnut backdrop-blur"
     : "sticky border-manjoor-sand/80 bg-[#f7f1e8]/95 text-manjoor-walnut backdrop-blur";
 
@@ -61,7 +61,7 @@ function MarketingHeader() {
         <Link to="/" aria-label="منجور الرئيسية" className={`min-w-0 shrink ${transparent ? "rounded-xl bg-[#f7f1e8]/90 px-2 py-1" : ""}`}>
           <BrandMark />
         </Link>
-        <nav className="hidden items-center gap-5 text-sm font-medium lg:flex">
+        <nav className={`hidden items-center gap-6 text-sm font-medium lg:flex ${transparent && !craft ? "drop-shadow-[0_1px_10px_rgba(247,241,232,0.85)]" : ""}`}>
           {LINKS.map((link) => (
             <Link
               key={link.href}
@@ -76,7 +76,13 @@ function MarketingHeader() {
           <Link to="/wholesale" className={ctaClass}>
             اطلب عرض سعر{count > 0 ? ` (${count})` : ""}
           </Link>
-          <button type="button" className="p-2 lg:hidden" aria-expanded={open} aria-label="القائمة" onClick={() => setOpen((v) => !v)}>
+          <button
+            type="button"
+            className={`p-2 lg:hidden ${transparent ? (craft ? "rounded-lg bg-black/35" : "rounded-lg bg-[#f7f1e8]/85") : ""}`}
+            aria-expanded={open}
+            aria-label="القائمة"
+            onClick={() => setOpen((v) => !v)}
+          >
             {open ? <X /> : <Menu />}
           </button>
         </div>
