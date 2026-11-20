@@ -1,3 +1,13 @@
 # Pre-launch. Indexing stays closed until LAUNCH_READINESS gates pass.
 User-agent: *
 Disallow: /
+
+# WhatsApp/Facebook/Twitter link previews need to fetch og:image. They do not index.
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Twitterbot
+Allow: /

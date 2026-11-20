@@ -17,13 +17,17 @@ The near-term goal is qualified wholesale inquiries, not a deeper ERP. See `docs
 - **Mobile:** Capacitor (Android/iOS shells)
 
 ## Getting started
-1. Create a **new, isolated** Supabase project for MANJOOR. **Never** use Dukany credentials or database.
-2. `cp .env.example .env.local` and set the new project's `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`. Keep `VITE_ENABLE_PUBLIC_SALES=false`.
-3. `npm ci`
-4. `npm run test:p0 && npm test && npm run lint && npm run build`
-5. `npm run dev`
 
-Admin panel: `/admin/login` (requires an admin‑role account). Public commerce routes render an internal‑only screen while `VITE_ENABLE_PUBLIC_SALES` is false.
+Requires **Node.js 20** (see `.nvmrc`; minimum 18.18).
+
+1. Clone `https://github.com/CylendraPlatform/manjoor` and use branch `main`.
+2. Copy `.env.example` to `.env` (gitignored). For the live MANJOOR project set `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY` from the isolated project `ovkhxhuucxisevuvmuoz` — **never** Dukany. Keep `VITE_ENABLE_PUBLIC_SALES=false` and `VITE_ALLOW_INDEXING=false`.
+3. `npm ci`
+4. `npm run test:p0 && npm test && npm run lint && npx tsc -p tsconfig.app.json --noEmit`
+5. `npm run dev` — http://localhost:8080/
+6. Production bundle: `npm run build` then `npm run preview`. Publish `dist/` per `docs/launch/DEPLOYMENT_GUIDE.md` (manual Netlify upload today; Hostinger/Apache or nginx later). Do not connect Git auto-deploy unless asked.
+
+Admin panel: `/admin/login` (requires an admin‑role account). Public commerce routes render an internal‑only screen while `VITE_ENABLE_PUBLIC_SALES` is false. Live site (manual `dist` upload): `https://manjoor.netlify.app/`.
 
 ## Brand
 Canonical identity lives in `src/config/brand.ts`. Official logo artwork goes in `public/brand/` (see its README) — it is supplied by the brand owner, never generated. Palette: Walnut `#5B3A27` · Warm Sand `#DCC6A3` · Brass Gold `#B88946` · Charcoal `#2E2B28`.

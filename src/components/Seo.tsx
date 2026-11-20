@@ -44,7 +44,13 @@ export default function Seo({ title, description, path, image }: SeoProps) {
     upsertMeta("property", "og:type", "website");
     upsertMeta("property", "og:locale", "ar_IQ");
     upsertMeta("name", "robots", import.meta.env.VITE_ALLOW_INDEXING === "true" ? "index,follow" : "noindex,nofollow");
-    upsertMeta("property", "og:image", image ?? brand.logo.icon);
+    const origin = import.meta.env.VITE_SITE_ORIGIN || window.location.origin;
+    const imagePath = image ?? brand.logo.icon;
+    const imageUrl = imagePath.startsWith("http") ? imagePath : `${origin.replace(/\/$/, "")}${imagePath}`;
+    upsertMeta("property", "og:image", imageUrl);
+    upsertMeta("property", "og:image:alt", `${brand.ar} ${brand.en}`);
+    upsertMeta("name", "twitter:card", "summary");
+    upsertMeta("name", "twitter:image", imageUrl);
     if (path && typeof window !== "undefined") {
       upsertLink("canonical", window.location.origin + path);
     }

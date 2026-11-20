@@ -13,6 +13,7 @@ VITE_ENABLE_PUBLIC_SALES=false
 VITE_ALLOW_INDEXING=false
 VITE_ENABLE_WORKSHOP_PRODUCT_PROMO=false
 VITE_BUSINESS_WHATSAPP=9647871857930
+VITE_SITE_ORIGIN=https://manjoor.netlify.app
 ```
 
 Plus the isolated project:
@@ -22,7 +23,9 @@ Plus the isolated project:
 
 Do not put `service_role` in any `VITE_` variable or client file. Do not commit `.env`.
 
-Local `.env` already matches the flags above (gitignored). Hosting env is **not** configured because there is no authorized production site yet.
+Local `.env` already matches the flags above (gitignored). The public site is a **manual** Netlify upload of `dist` to `https://manjoor.netlify.app/`. Git auto-deploy is intentionally **not** connected. If a host builds from git later, set the same names as **build** variables there.
+
+Pending (not done in this repo): rotate the database password that previously appeared in local scrollback, and confirm the admin login password was changed after the one-time file was removed. See `docs/launch/SECURITY_CHECKLIST.md`. Do not print those values.
 
 ## WhatsApp
 
@@ -40,7 +43,7 @@ Keep closed until a canonical domain, legal copy, and launch approval exist. Pro
 2. Allow `/` in `public/robots.txt`; disallow `/admin`, `/checkout`, `/cart`.
 3. Set `VITE_ALLOW_INDEXING=true` and rebuild.
 
-Currently: `robots.txt` Disallow `/`, `index.html` `noindex, nofollow`, `Seo` repeats that unless the flag is the string `true`.
+Currently: `User-agent: *` still `Disallow: /` (search engines stay closed). `facebookexternalhit`, `WhatsApp`, and `Twitterbot` are allowed so link previews can fetch `og:image`. `index.html` and `Seo` keep `noindex, nofollow` unless `VITE_ALLOW_INDEXING` is the string `true`.
 
 ## Direct checkout
 

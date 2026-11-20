@@ -38,6 +38,9 @@ photo/
 design-assets/extracted/
 design-assets/*.zip
 
+# Duplicate working copies of the six public/hero/*.webp files. Do not publish.
+hero-assets/
+
 # Original Dukany store documents — confidential reference material, must NOT be published
 # مستندات متجر دكاني الأصلي — مواد مرجعية سرية، يُمنع رفعها (تحوي بيانات وصول وروابط)
 مستندات متجر دكاني/

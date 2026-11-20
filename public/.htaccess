@@ -1,0 +1,9 @@
+# Apache SPA fallback for Hostinger and other Apache static hosts.
+# Existing files (hashed assets, images) are served as-is.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

@@ -18,7 +18,6 @@ export interface HeroSlide {
   body: string;
   primary: HeroCta;
   secondary: HeroCta;
-  caption: string;
 }
 
 export const CAPABILITIES = [
@@ -45,7 +44,6 @@ const PUBLIC_SLIDES: HeroSlide[] = [
     body: "نستعرض نماذج من البكّارات الخشبية التي يصنعها المعمل في كربلاء، بتصاميم مختلفة وإمكانية الاستفسار عن الكميات والتصنيع حسب الطلب.",
     primary: { label: "استعرض البكّارات", href: "/products" },
     secondary: { label: "اطلب عرض سعر", href: "/wholesale" },
-    caption: "مشهد تصوري بتقنيات الذكاء الاصطناعي، والمنتجات الحقيقية في كتالوج البكّارات.",
   },
   {
     id: "craft",
@@ -62,7 +60,6 @@ const PUBLIC_SLIDES: HeroSlide[] = [
     body: "من تشكيل الخشب إلى أدق التفاصيل، نعمل على صناعة قطع خشبية وفق التصميم والمواصفات المطلوبة.",
     primary: { label: "تعرّف على الحرفة", href: "/about" },
     secondary: { label: "اطلب تصنيعاً خاصاً", href: "/custom-orders" },
-    caption: "تصور فني بتقنيات الذكاء الاصطناعي لحرفة الخراطة، وليس لقطة من داخل المعمل.",
   },
   {
     id: "custom",
@@ -79,7 +76,6 @@ const PUBLIC_SLIDES: HeroSlide[] = [
     body: "نستقبل أفكار وتصاميم المنتجات الخشبية، وندرس إمكانية تنفيذها حسب المواصفات والكميات المطلوبة.",
     primary: { label: "اطلب تصنيعاً خاصاً", href: "/custom-orders" },
     secondary: { label: "استعرض الأفكار", href: "/custom-orders" },
-    caption: "تطبيقات مقترحة بتقنيات الذكاء الاصطناعي، وليست مخزوناً جاهزاً.",
   },
 ];
 

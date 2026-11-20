@@ -15,8 +15,7 @@ const DARK_THEME = {
   kicker: "text-[#e6c07c] [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]",
   title: "text-[#f7f0e5] [text-shadow:0_2px_18px_rgba(0,0,0,0.6),0_1px_3px_rgba(0,0,0,0.55)]",
   body: "text-[#f1e8da] [text-shadow:0_2px_14px_rgba(0,0,0,0.66),0_1px_2px_rgba(0,0,0,0.5)]",
-  caption: "text-[#e7dbc8] [text-shadow:0_1px_10px_rgba(0,0,0,0.62)]",
-  primary: "bg-manjoor-brass text-manjoor-charcoal",
+  primary: "bg-[#d4af5a] text-white shadow-[0_10px_28px_rgba(184,137,70,0.55)] hover:bg-[#e0bc6a]",
   secondary: "border-[#efe6d8]/70 bg-black/25 text-[#f4ece0]",
   control: "border-white/20 bg-black/40 text-[#f4ece0]",
   dot: "bg-[#f4ece0]/50",
@@ -35,7 +34,14 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const paused = useRef(false);
   const [index, setIndex] = useState(0);
   const [mobile, setMobile] = useState(false);
+  const [firstPainted, setFirstPainted] = useState(false);
+  const firstImageRef = useRef<HTMLImageElement | null>(null);
   const count = slides.length;
+  const nextIndex = count > 1 ? (index + 1) % count : -1;
+
+  useEffect(() => {
+    if (firstImageRef.current?.complete) setFirstPainted(true);
+  }, []);
 
   useEffect(() => {
     reduced.current = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
@@ -52,12 +58,12 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   }, [count]);
 
   useEffect(() => {
-    if (count < 2 || reduced.current) return;
+    if (!firstPainted || count < 2 || reduced.current) return;
     const timer = window.setInterval(() => {
       if (!paused.current) go(index + 1);
     }, AUTOPLAY_MS);
     return () => window.clearInterval(timer);
-  }, [count, go, index]);
+  }, [count, firstPainted, go, index]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -81,7 +87,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <section
-      className="relative min-h-[100svh] overflow-hidden"
+      className="relative min-h-[100svh] overflow-hidden bg-[#1a120c]"
       aria-roledescription="carousel"
       aria-labelledby={labelId}
       onMouseEnter={() => { paused.current = true; }}
@@ -90,26 +96,38 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       onBlur={() => { paused.current = false; }}
     >
       <h2 id={labelId} className="sr-only">عروض منجور الرئيسية</h2>
-      {slides.map((item, slideIndex) => (
+      {slides.map((item, slideIndex) => {
+        const active = slideIndex === index;
+        const prefetch = firstPainted && slideIndex === nextIndex;
+        if (!active && !prefetch) return null;
+        return (
         <div
           key={item.id}
-          className={`absolute inset-0 ${slideIndex === index ? "opacity-100" : "pointer-events-none opacity-0"} motion-reduce:transition-none transition-opacity duration-700`}
-          aria-hidden={slideIndex !== index}
+          className={`absolute inset-0 ${active ? "opacity-100" : "pointer-events-none opacity-0"} motion-reduce:transition-none transition-opacity duration-500`}
+          aria-hidden={!active}
         >
           <picture>
-            <source media="(max-width: 767px)" srcSet={item.imageMobile} width={900} height={1600} />
+            <source media="(max-width: 767px)" srcSet={item.imageMobile} type="image/webp" width={900} height={1600} />
             <img
+              ref={slideIndex === 0 ? firstImageRef : undefined}
               src={item.image}
               alt=""
               width={item.imageWidth}
               height={item.imageHeight}
-              fetchPriority={slideIndex === 0 ? "high" : "low"}
+              sizes="100vw"
+              decoding="async"
+              loading={active || slideIndex === 0 ? "eager" : "lazy"}
+              fetchPriority={active && slideIndex === 0 ? "high" : "low"}
               className="h-full w-full object-cover"
               style={{ objectPosition: mobile ? item.objectPositionMobile : item.objectPosition }}
+              onLoad={() => {
+                if (slideIndex === 0) setFirstPainted(true);
+              }}
             />
           </picture>
         </div>
-      ))}
+        );
+      })}
       <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl items-start px-4 pb-24 pt-28 md:items-center md:px-20 md:pt-32">
         <div className={`${theme.copy} space-y-4 md:space-y-5`}>
           <p className={`text-sm font-bold ${theme.kicker}`}>{slide.kicker}</p>
@@ -135,7 +153,6 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               {slide.secondary.label}
             </Link>
           </div>
-          <p className={`max-w-sm pt-1 text-xs font-medium leading-6 ${theme.caption}`}>{slide.caption}</p>
         </div>
       </div>
 
